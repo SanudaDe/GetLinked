@@ -51,7 +51,7 @@ export default function ApplyPage() {
     consentGiven: false,
   });
 
-  // Step validation
+  // Step
   const validateStep = (currentStep: number): boolean => {
     setErrorMsg(null);
 
