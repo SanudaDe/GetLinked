@@ -14,6 +14,7 @@ import {
   ClipboardCheck,
 } from "lucide-react";
 import { useStore } from "@/data/store";
+import { Logo } from "@/components/ui/Logo";
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -55,19 +56,7 @@ export const Navbar: React.FC = () => {
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-sand-300 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           {/* Brand Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-teal-900 flex items-center justify-center text-gold-400 shadow-warm group-hover:bg-teal-800 transition-colors">
-              <Compass className="w-6 h-6" />
-            </div>
-            <div>
-              <span className="font-serif text-2xl font-bold tracking-tight text-teal-950 block leading-tight">
-                Get Linked
-              </span>
-              <span className="text-[10px] uppercase tracking-widest text-ink-600 font-semibold block">
-                Sri Lanka • Verified Marketplace
-              </span>
-            </div>
-          </Link>
+          <Logo href="/" height={42} variant="dark" priority showSubtext subtext="Sri Lanka" />
 
           {/* Center Primary Navigation */}
           <nav className="hidden lg:flex items-center gap-8 text-sm font-medium text-ink-800">

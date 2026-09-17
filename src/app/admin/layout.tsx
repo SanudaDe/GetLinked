@@ -17,6 +17,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import Link from "next/link";
+import { Logo } from "@/components/ui/Logo";
 
 export default function AdminLayout({
   children,
@@ -50,13 +51,8 @@ export default function AdminLayout({
     return (
       <div className="min-h-screen bg-sand-100/60 flex items-center justify-center p-4">
         <div className="bg-white rounded-2xl border border-sand-300 p-8 sm:p-10 max-w-md w-full shadow-elevated space-y-6">
-          <div className="text-center space-y-2">
-            <div className="w-14 h-14 rounded-2xl bg-teal-900 text-gold-400 flex items-center justify-center mx-auto shadow-warm">
-              <ShieldCheck className="w-7 h-7" />
-            </div>
-            <h2 className="font-serif text-2xl font-bold text-teal-950">
-              Staff Admin Workspace
-            </h2>
+          <div className="text-center space-y-3">
+            <Logo variant="dark" height={52} className="mx-auto" showSubtext subtext="Staff Workspace" />
             <p className="text-xs text-ink-600">
               Authorized team access for creator verification, property review, and curated WhatsApp introductions.
             </p>
@@ -127,19 +123,7 @@ export default function AdminLayout({
 
       {/* Mobile Header Bar */}
       <div className="md:hidden bg-teal-950 text-sand-50 px-4 py-3 border-b border-teal-900 flex items-center justify-between sticky top-0 z-50">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-teal-900 flex items-center justify-center text-gold-400 border border-teal-800">
-            <Compass className="w-5 h-5" />
-          </div>
-          <div>
-            <span className="font-serif text-base font-bold text-sand-50 block leading-tight">
-              Get Linked
-            </span>
-            <span className="text-[9px] uppercase tracking-widest text-gold-400 font-semibold block">
-              Admin Operations
-            </span>
-          </div>
-        </div>
+        <Logo variant="light" height={34} href="/admin" showSubtext subtext="Staff" />
 
         <div className="flex items-center gap-2">
           {pendingCount > 0 && (

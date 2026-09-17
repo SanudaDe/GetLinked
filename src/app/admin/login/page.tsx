@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useStore } from "@/data/store";
 import { ShieldCheck, Lock, Compass } from "lucide-react";
 import Link from "next/link";
+import { Logo } from "@/components/ui/Logo";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -25,13 +26,8 @@ export default function AdminLoginPage() {
   return (
     <div className="min-h-screen bg-teal-950 flex items-center justify-center p-4">
       <div className="bg-sand-50 rounded-2xl border border-sand-300 p-8 max-w-md w-full shadow-elevated space-y-6">
-        <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-xl bg-teal-900 text-gold-400 flex items-center justify-center mx-auto shadow-warm">
-            <ShieldCheck className="w-6 h-6" />
-          </div>
-          <h2 className="font-serif text-2xl font-bold text-teal-950">
-            Get Linked Staff Portal
-          </h2>
+        <div className="text-center space-y-3">
+          <Logo variant="dark" height={54} className="mx-auto" showSubtext subtext="Staff Portal" />
           <p className="text-xs text-ink-600">
             Authorized admin access for verification and matchmaking.
           </p>

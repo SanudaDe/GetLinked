@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Compass, ShieldCheck, Heart, MapPin } from "lucide-react";
+import { Logo } from "@/components/ui/Logo";
 
 export const Footer: React.FC = () => {
   const pathname = usePathname();
@@ -15,19 +16,7 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Col 1 & 2: Brand & Ethos */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-teal-900 flex items-center justify-center text-gold-400 border border-teal-800">
-                <Compass className="w-5 h-5" />
-              </div>
-              <div>
-                <span className="font-serif text-2xl font-bold tracking-tight text-sand-50 block leading-tight">
-                  Get Linked
-                </span>
-                <span className="text-[10px] uppercase tracking-widest text-gold-400 font-semibold block">
-                  Sri Lanka • Two-Sided Marketplace
-                </span>
-              </div>
-            </div>
+            <Logo variant="light" height={44} href="/" showSubtext subtext="Sri Lanka • Marketplace" />
             <p className="text-sm text-sand-300 max-w-sm leading-relaxed">
               Sri Lanka&apos;s curated collaboration platform connecting verified social media creators with hand-selected hotels, villas, and guesthouses. Curated with human review and personal introductions.
             </p>

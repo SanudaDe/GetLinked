@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Logo } from "@/components/ui/Logo";
 import {
   Compass,
   LayoutDashboard,
@@ -102,20 +103,8 @@ export const AdminSidebar: React.FC = () => {
     <aside className="w-64 bg-teal-950 text-sand-100 border-r border-teal-900 flex flex-col justify-between shrink-0 h-screen sticky top-0">
       <div>
         {/* Logo */}
-        <div className="p-5 border-b border-teal-900/80 flex items-center justify-between">
-          <Link href="/admin" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-lg bg-teal-900 flex items-center justify-center text-gold-400 border border-teal-800">
-              <Compass className="w-5 h-5" />
-            </div>
-            <div>
-              <span className="font-serif text-lg font-bold text-sand-50 block leading-tight">
-                Get Linked
-              </span>
-              <span className="text-[9px] uppercase tracking-widest text-gold-400 font-semibold block">
-                Staff Workspace
-              </span>
-            </div>
-          </Link>
+        <div className="p-4 border-b border-teal-900/80 flex items-center justify-between">
+          <Logo variant="light" height={36} href="/admin" showSubtext subtext="Staff" />
           <span className="text-[10px] bg-teal-900 text-gold-400 px-2 py-0.5 rounded font-mono border border-teal-800">
             Admin
           </span>

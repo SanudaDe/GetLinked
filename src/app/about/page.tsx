@@ -1,16 +1,14 @@
 import React from "react";
 import Link from "next/link";
 import { Compass, ShieldCheck, Heart, MapPin, Sparkles } from "lucide-react";
+import { Logo } from "@/components/ui/Logo";
 
 export default function AboutPage() {
   return (
     <div className="py-16 bg-sand-50">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-900/10 text-teal-900 text-xs font-semibold uppercase tracking-wider">
-            <Compass className="w-3.5 h-3.5 text-gold-500" />
-            Our Story
-          </div>
+        <div className="text-center space-y-4">
+          <Logo variant="dark" height={60} className="mx-auto" priority />
           <h1 className="font-serif text-4xl sm:text-5xl font-bold text-teal-950">
             About Get Linked
           </h1>
