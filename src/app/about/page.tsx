@@ -8,7 +8,7 @@ export default function AboutPage() {
     <div className="py-16 bg-sand-50">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="text-center space-y-4">
-          <Logo variant="dark" height={60} className="mx-auto" priority />
+          <Logo variant="dark" height={44} className="mx-auto" priority />
           <h1 className="font-serif text-4xl sm:text-5xl font-bold text-teal-950">
             About Get Linked
           </h1>

@@ -52,7 +52,7 @@ export default function AdminLayout({
       <div className="min-h-screen bg-sand-100/60 flex items-center justify-center p-4">
         <div className="bg-white rounded-2xl border border-sand-300 p-8 sm:p-10 max-w-md w-full shadow-elevated space-y-6">
           <div className="text-center space-y-3">
-            <Logo variant="dark" height={52} className="mx-auto" showSubtext subtext="Staff Workspace" />
+            <Logo variant="dark" height={38} className="mx-auto" showSubtext subtext="Staff Workspace" />
             <p className="text-xs text-ink-600">
               Authorized team access for creator verification, property review, and curated WhatsApp introductions.
             </p>
@@ -123,7 +123,7 @@ export default function AdminLayout({
 
       {/* Mobile Header Bar */}
       <div className="md:hidden bg-teal-950 text-sand-50 px-4 py-3 border-b border-teal-900 flex items-center justify-between sticky top-0 z-50">
-        <Logo variant="light" height={34} href="/admin" showSubtext subtext="Staff" />
+        <Logo variant="light" height={28} href="/admin" showSubtext subtext="Staff" />
 
         <div className="flex items-center gap-2">
           {pendingCount > 0 && (

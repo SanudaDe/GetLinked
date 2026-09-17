@@ -15,14 +15,14 @@ interface LogoProps {
 export const Logo: React.FC<LogoProps> = ({
   variant = "dark",
   className = "",
-  height = 44,
+  height = 34,
   showSubtext = false,
   subtext = "Sri Lanka",
   href,
   priority = false,
 }) => {
-  // Width calculated based on 254:150 ratio (~1.693)
-  const width = Math.round(height * (254 / 150));
+  // Width calculated based on 300:61 ratio (~4.918)
+  const width = Math.round(height * (300 / 61));
   
   const imageSrc =
     variant === "light"

@@ -27,7 +27,7 @@ export default function AdminLoginPage() {
     <div className="min-h-screen bg-teal-950 flex items-center justify-center p-4">
       <div className="bg-sand-50 rounded-2xl border border-sand-300 p-8 max-w-md w-full shadow-elevated space-y-6">
         <div className="text-center space-y-3">
-          <Logo variant="dark" height={54} className="mx-auto" showSubtext subtext="Staff Portal" />
+          <Logo variant="dark" height={38} className="mx-auto" showSubtext subtext="Staff Portal" />
           <p className="text-xs text-ink-600">
             Authorized admin access for verification and matchmaking.
           </p>

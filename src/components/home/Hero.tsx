@@ -29,7 +29,7 @@ export const Hero: React.FC = () => {
         {/* Hero Copy */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-6">
           <div className="flex justify-center">
-            <Logo variant="light" height={58} priority />
+            <Logo variant="light" height={44} priority />
           </div>
 
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-500/20 border border-gold-500/40 text-gold-400 text-xs font-bold uppercase tracking-widest backdrop-blur-sm">

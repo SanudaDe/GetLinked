@@ -56,7 +56,7 @@ export const Navbar: React.FC = () => {
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-sand-300 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           {/* Brand Logo */}
-          <Logo href="/" height={42} variant="dark" priority showSubtext subtext="Sri Lanka" />
+          <Logo href="/" height={34} variant="dark" priority showSubtext subtext="Sri Lanka" />
 
           {/* Center Primary Navigation */}
           <nav className="hidden lg:flex items-center gap-8 text-sm font-medium text-ink-800">

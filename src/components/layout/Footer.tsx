@@ -16,7 +16,7 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Col 1 & 2: Brand & Ethos */}
           <div className="lg:col-span-2 space-y-4">
-            <Logo variant="light" height={44} href="/" showSubtext subtext="Sri Lanka • Marketplace" />
+            <Logo variant="light" height={34} href="/" showSubtext subtext="Sri Lanka • Marketplace" />
             <p className="text-sm text-sand-300 max-w-sm leading-relaxed">
               Sri Lanka&apos;s curated collaboration platform connecting verified social media creators with hand-selected hotels, villas, and guesthouses. Curated with human review and personal introductions.
             </p>

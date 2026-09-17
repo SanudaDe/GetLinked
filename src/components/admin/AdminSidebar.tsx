@@ -104,7 +104,7 @@ export const AdminSidebar: React.FC = () => {
       <div>
         {/* Logo */}
         <div className="p-4 border-b border-teal-900/80 flex items-center justify-between">
-          <Logo variant="light" height={36} href="/admin" showSubtext subtext="Staff" />
+          <Logo variant="light" height={26} href="/admin" showSubtext subtext="Staff" />
           <span className="text-[10px] bg-teal-900 text-gold-400 px-2 py-0.5 rounded font-mono border border-teal-800">
             Admin
           </span>
