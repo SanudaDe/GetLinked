@@ -1,34 +1,34 @@
 import React from "react";
 import { Hero } from "@/components/home/Hero";
 import { EditorialStorySection } from "@/components/home/EditorialStorySection";
-import { ForCreatorsSection } from "@/components/home/ForCreatorsSection";
-import { ForStaysSection } from "@/components/home/ForStaysSection";
+import { DestinationsGrid } from "@/components/home/DestinationsGrid";
+import { FeaturedCreators } from "@/components/home/FeaturedCreators";
+import { FeaturedAccommodations } from "@/components/home/FeaturedAccommodations";
 import { VideoReelsSection } from "@/components/home/VideoReelsSection";
-import { HowItWorksCurated } from "@/components/home/HowItWorksCurated";
 import { SriLankaAwaitsBanner } from "@/components/home/SriLankaAwaitsBanner";
 
 export default function HomePage() {
   return (
     <main className="bg-[#FAF8F5] text-[#122026] selection:bg-[#16252C] selection:text-white">
-      {/* 1. Hero: Where good stays meet good stories */}
+      {/* 1. Hero: An island tells its story best through the people who stay */}
       <Hero />
 
-      {/* 2. Editorial Story: People. Places. Possibilities. */}
+      {/* 2. Editorial Story: People. Places. Possibilities */}
       <EditorialStorySection />
 
-      {/* 3. For Creators: Be discovered by places worth telling stories about */}
-      <ForCreatorsSection />
+      {/* 3. Destinations: Six places, each holding its own quiet */}
+      <DestinationsGrid />
 
-      {/* 4. For Stays: Find creators who fit your world */}
-      <ForStaysSection />
+      {/* 4. Creators: A few of the voices heading to Sri Lanka this season */}
+      <FeaturedCreators />
 
-      {/* 5. Stories in Motion: User Video Reels Showcase (public/videos) */}
+      {/* 5. Stays: Stays chosen with the same care as the work they inspire */}
+      <FeaturedAccommodations />
+
+      {/* 6. Stories in Motion: User Video Reels Showcase (public/videos) */}
       <VideoReelsSection />
 
-      {/* 6. How It Works: Curated, not crowded (with circular palm tree seal badge) */}
-      <HowItWorksCurated />
-
-      {/* 7. Bottom Hero: Sri Lanka Awaits — Extraordinary stays. Incredible stories. */}
+      {/* 7. Bottom Hero: Sri Lanka Awaits — Extraordinary stays. Incredible stories */}
       <SriLankaAwaitsBanner />
     </main>
   );

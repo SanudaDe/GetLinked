@@ -75,24 +75,23 @@ export const Hero: React.FC = () => {
             </span>
           </div>
 
-          {/* Editorial Display Headline */}
-          <h1 className="font-serif text-4xl sm:text-6xl lg:text-[68px] font-normal tracking-tight text-[#122026] leading-[1.08]">
-            Where good stays <br className="hidden sm:block" />
-            meet good stories.
+          {/* Editorial Display Headline (Italic serif per voice principles) */}
+          <h1 className="font-serif italic text-4xl sm:text-6xl lg:text-[66px] font-normal tracking-tight text-[#122026] leading-[1.12]">
+            An island tells its story best through the people who stay.
           </h1>
 
           {/* Subtitle */}
           <p className="mt-5 text-sm sm:text-base text-[#122026]/85 max-w-xl font-normal leading-relaxed">
-            Get Linked connects verified creators with distinctive stays across Sri Lanka.
+            We bring Sri Lanka&apos;s finest stays together with the voices worth trusting with them.
           </p>
 
-          {/* Dual CTAs matching reference pill buttons */}
+          {/* Dual CTAs (Functional — keep plain, not italic) */}
           <div className="flex items-center gap-4 mt-8 flex-wrap">
             <Link
-              href="/apply"
+              href="/creators"
               className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#16252C] hover:bg-black text-white text-xs font-medium tracking-wider shadow-md hover:shadow-lg transition-all duration-200 group"
             >
-              <span>For Creators</span>
+              <span>Find Creators</span>
               <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
             </Link>
 
@@ -100,10 +99,15 @@ export const Hero: React.FC = () => {
               href="/list-property"
               className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-white/40 hover:bg-white/60 text-[#122026] text-xs font-medium tracking-wider border border-black/15 backdrop-blur-md shadow-xs hover:shadow-sm transition-all duration-200 group"
             >
-              <span>For Stays</span>
+              <span>List Your Stay</span>
               <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
+
+          {/* Trust Line (Replaces badge grid) */}
+          <p className="mt-8 text-xs sm:text-sm text-[#122026]/75 tracking-wide font-normal">
+            Every introduction made by hand. Nothing rushed, nothing automated.
+          </p>
         </div>
       </div>
 
