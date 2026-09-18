@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, ArrowRight, User, ShieldCheck } from "lucide-react";
 import { WaitlistModal } from "@/components/home/WaitlistModal";
+import { Logo } from "@/components/ui/Logo";
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -54,14 +55,9 @@ export const Navbar: React.FC = () => {
             ))}
           </nav>
 
-          {/* Center Brand Wordmark */}
-          <div className="flex-1 md:flex-initial text-left md:text-center">
-            <Link
-              href="/"
-              className="inline-block font-serif text-2xl sm:text-3xl text-[#122026] tracking-tight hover:opacity-90 transition-opacity"
-            >
-              Get Linked
-            </Link>
+          {/* Center Brand Wordmark / Logo */}
+          <div className="flex-1 md:flex-initial text-left md:text-center flex justify-start md:justify-center items-center">
+            <Logo href="/" height={34} variant="dark" priority />
           </div>
 
           {/* Right Navigation & CTAs */}

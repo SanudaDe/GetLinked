@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { Logo } from "@/components/ui/Logo";
 
 export const Footer: React.FC = () => {
   return (
@@ -11,12 +12,7 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-16">
           {/* Brand & Tagline */}
           <div className="md:col-span-4 space-y-3">
-            <Link
-              href="/"
-              className="inline-block font-serif text-2xl sm:text-3xl text-[#122026] tracking-tight hover:opacity-90 transition-opacity"
-            >
-              Get Linked
-            </Link>
+            <Logo href="/" height={28} variant="dark" />
             <p className="font-serif italic text-base text-[#5E686F]">
               Sri Lanka, told properly.
             </p>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 38" fill="none" role="img" aria-label="Get Linked">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&amp;family=Playfair+Display:wght@500&amp;display=swap');
+    .brand {
+      font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+      font-size: 32px;
+      font-weight: 500;
+      fill: #122026;
+      letter-spacing: -0.015em;
+    }
+  </style>
+  <text x="0" y="29" class="brand">Get Linked</text>
+</svg>

@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -21,22 +23,17 @@ export const Logo: React.FC<LogoProps> = ({
   href,
   priority = false,
 }) => {
-  // Width calculated based on 300:61 ratio (~4.918)
+  // Original aspect ratio 300:61
   const width = Math.round(height * (300 / 61));
-  
-  const imageSrc =
-    variant === "light"
-      ? "/logo-white.png"
-      : variant === "original"
-      ? "/logo.png"
-      : "/logo-transparent.png";
+  const isLight = variant === "light";
+  const imageSrc = isLight ? "/logo-white.png" : "/logo.png";
 
   const content = (
-    <div className={`inline-flex items-center gap-2.5 ${className}`}>
+    <div className={`inline-flex items-center gap-2.5 select-none ${className}`}>
       <div className="relative shrink-0 flex items-center">
         <Image
           src={imageSrc}
-          alt="GetLinked Sri Lanka Logo"
+          alt="GetLinked Logo"
           width={width}
           height={height}
           className="object-contain w-auto transition-transform duration-200 group-hover:scale-[1.02]"
@@ -44,12 +41,13 @@ export const Logo: React.FC<LogoProps> = ({
           priority={priority}
         />
       </div>
+
       {showSubtext && (
         <span
-          className={`text-[10px] uppercase tracking-widest font-semibold px-2 py-0.5 rounded-full ${
-            variant === "light"
-              ? "bg-teal-900/80 text-sand-200 border border-teal-800"
-              : "bg-teal-50 text-teal-600 border border-teal-100"
+          className={`text-[9px] uppercase tracking-[0.22em] font-medium px-2 py-0.5 rounded-full border ${
+            isLight
+              ? "text-[#FAF8F5]/80 border-white/20 bg-white/10"
+              : "text-[#8A949C] border-[#E7E2DA] bg-[#F4EFEA]"
           }`}
         >
           {subtext}
@@ -60,7 +58,10 @@ export const Logo: React.FC<LogoProps> = ({
 
   if (href) {
     return (
-      <Link href={href} className="group inline-flex items-center focus:outline-none">
+      <Link
+        href={href}
+        className="group inline-flex items-center focus:outline-none hover:opacity-90 transition-opacity"
+      >
         {content}
       </Link>
     );
