@@ -1,191 +1,167 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Menu,
-  X,
-  Compass,
-  Sparkles,
-  UserCheck,
-  Building2,
-  HelpCircle,
-  ClipboardCheck,
-} from "lucide-react";
-import { useStore } from "@/data/store";
-import { Logo } from "@/components/ui/Logo";
+import { Menu, X, ArrowRight, User, ShieldCheck } from "lucide-react";
+import { WaitlistModal } from "@/components/home/WaitlistModal";
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
   const pathname = usePathname();
-  const { settings } = useStore();
+  const isHomePage = pathname === "/";
 
-  const publicNavLinks = [
-    { href: "/creators", label: "Find Creators" },
-    { href: "/for-creators", label: "For Creators" },
-    { href: "/for-accommodations", label: "For Properties" },
-    { href: "/how-it-works", label: "How It Works" },
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 30) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navLinks = [
+    { href: "/creators", label: "Creators" },
+    { href: "/for-accommodations", label: "Stays" },
+    { href: isHomePage ? "#our-story" : "/about", label: "Our Story" },
   ];
-
-  const isActive = (href: string) => pathname === href;
 
   return (
     <>
-      {/* Platform Announcement Bar */}
-      <div className="bg-teal-950 text-sand-100 text-xs py-2 px-4 border-b border-teal-900/50">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2 overflow-hidden text-ellipsis whitespace-nowrap">
-            <Sparkles className="w-3.5 h-3.5 text-gold-400 shrink-0 animate-pulse" />
-            <span className="font-medium text-[11px] sm:text-xs text-sand-200">
-              {settings.platform_phase === "FREE"
-                ? "Phase 1 Launch: Verified Sri Lankan stay listings and creator matchmaking are currently 100% free."
-                : "Curated collaborations connecting verified creators with exceptional Sri Lankan accommodations."}
-            </span>
-          </div>
-
-          <div className="hidden md:flex items-center gap-3 shrink-0 text-[11px] text-sand-300 font-mono">
-            <span>getlinkedlk.com</span>
-            <span className="text-teal-700">•</span>
-            <span>getlinked.today</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Header (Clean White / Warm-tinted Background) */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-sand-300 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          {/* Brand Logo */}
-          <Logo href="/" height={34} variant="dark" priority showSubtext subtext="Sri Lanka" />
-
-          {/* Center Primary Navigation */}
-          <nav className="hidden lg:flex items-center gap-8 text-sm font-medium text-ink-800">
-            {publicNavLinks.map((link) => (
+      <header
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+          isScrolled || !isHomePage
+            ? "bg-[#FAF8F5]/95 backdrop-blur-md border-b border-[#E7E2DA] py-3.5 shadow-xs"
+            : "bg-gradient-to-b from-black/20 via-transparent to-transparent py-5"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+          {/* Left Navigation Links */}
+          <nav className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
               <Link
-                key={link.href}
+                key={link.label}
                 href={link.href}
-                className={`transition-colors hover:text-teal-600 relative py-1 ${
-                  isActive(link.href)
-                    ? "text-teal-600 font-bold after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-teal-600"
-                    : "text-ink-700"
-                }`}
+                className="text-[13px] font-sans font-medium tracking-wide text-[#122026] hover:text-black transition-colors relative py-1"
               >
                 {link.label}
               </Link>
             ))}
           </nav>
 
-          {/* Right Controls & Primary CTAs */}
-          <div className="hidden lg:flex items-center gap-4">
+          {/* Center Brand Wordmark */}
+          <div className="flex-1 md:flex-initial text-left md:text-center">
             <Link
-              href="/status"
-              className="text-xs font-semibold text-ink-700 hover:text-teal-600 flex items-center gap-1.5 transition-colors py-1.5 px-2"
+              href="/"
+              className="inline-block font-serif text-2xl sm:text-3xl text-[#122026] tracking-tight hover:opacity-90 transition-opacity"
             >
-              <ClipboardCheck className="w-4 h-4 text-teal-600" />
-              <span>Check Application</span>
-            </Link>
-
-            <Link
-              href="/contact"
-              className="text-xs font-semibold text-ink-700 hover:text-teal-600 flex items-center gap-1.5 transition-colors py-1.5 px-2"
-            >
-              <HelpCircle className="w-4 h-4 text-teal-600" />
-              <span>Help</span>
-            </Link>
-
-            <div className="h-6 w-px bg-sand-300 mx-1" />
-
-            <Link
-              href="/list-property"
-              className="text-xs font-semibold uppercase tracking-wider text-teal-950 bg-sand-100 hover:bg-sand-200 px-4 py-2.5 rounded-lg border border-sand-300 transition-all shadow-xs"
-            >
-              List Your Property
-            </Link>
-
-            <Link
-              href="/apply"
-              className="text-xs font-bold uppercase tracking-wider text-white bg-teal-600 hover:bg-teal-700 px-4 py-2.5 rounded-lg shadow-sm transition-all flex items-center gap-1.5"
-            >
-              <UserCheck className="w-3.5 h-3.5 text-white" />
-              <span>Join as Creator</span>
+              Get Linked
             </Link>
           </div>
 
-          {/* Mobile Navigation Trigger */}
-          <div className="flex items-center gap-3 lg:hidden">
+          {/* Right Navigation & CTAs */}
+          <div className="hidden md:flex items-center gap-6">
             <Link
-              href="/status"
-              className="text-xs font-semibold text-teal-950 flex items-center gap-1 bg-sand-100 px-2.5 py-1.5 rounded-md border border-sand-300"
+              href="/admin/login"
+              className="text-[13px] font-sans font-medium tracking-wide text-[#122026] hover:text-black transition-colors"
             >
-              <ClipboardCheck className="w-3.5 h-3.5 text-teal-800" />
-              <span>Status</span>
+              Log in
             </Link>
+
+            <button
+              onClick={() => setWaitlistOpen(true)}
+              className="px-5 py-2 rounded-full bg-[#16252C] hover:bg-black text-white text-xs font-medium tracking-wide shadow-sm hover:shadow transition-all duration-200"
+            >
+              Join waitlist
+            </button>
+          </div>
+
+          {/* Mobile Hamburger Button */}
+          <div className="flex md:hidden items-center gap-3">
+            <button
+              onClick={() => setWaitlistOpen(true)}
+              className="px-3.5 py-1.5 rounded-full bg-[#16252C] text-white text-[11px] font-medium tracking-wide"
+            >
+              Join waitlist
+            </button>
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2.5 rounded-lg text-ink-800 hover:bg-sand-100 focus:outline-none focus:ring-2 focus:ring-teal-900"
-              aria-label="Toggle navigation menu"
+              className="p-2 text-[#122026] rounded-lg hover:bg-black/5 transition-colors"
+              aria-label="Toggle Navigation Menu"
             >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Dropdown Menu */}
+        {/* Mobile Navigation Drawer */}
         {isOpen && (
-          <div className="lg:hidden bg-white border-b border-sand-300 px-6 py-6 space-y-5 animate-in slide-in-from-top-2 shadow-lg">
-            <div className="flex flex-col space-y-3 font-medium text-ink-800">
-              {publicNavLinks.map((link) => (
+          <div className="md:hidden bg-[#FAF8F5] border-b border-[#E7E2DA] px-6 py-6 space-y-4 shadow-lg animate-in slide-in-from-top duration-200">
+            <div className="space-y-3">
+              {navLinks.map((link) => (
                 <Link
-                  key={link.href}
+                  key={link.label}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className={`py-2 px-3 rounded-lg text-base transition-colors ${
-                    isActive(link.href)
-                      ? "bg-sand-100 text-teal-950 font-semibold"
-                      : "hover:bg-sand-50"
-                  }`}
+                  className="block text-base font-serif text-[#122026] py-1 hover:text-[#C4A67B]"
                 >
                   {link.label}
                 </Link>
               ))}
-              <Link
-                href="/status"
-                onClick={() => setIsOpen(false)}
-                className="py-2 px-3 rounded-lg text-base text-ink-700 hover:bg-sand-50 flex items-center gap-2"
-              >
-                <ClipboardCheck className="w-4 h-4 text-teal-800" />
-                <span>Check Application Status</span>
-              </Link>
-              <Link
-                href="/contact"
-                onClick={() => setIsOpen(false)}
-                className="py-2 px-3 rounded-lg text-base text-ink-700 hover:bg-sand-50 flex items-center gap-2"
-              >
-                <HelpCircle className="w-4 h-4 text-teal-800" />
-                <span>Help & Concierge Inquiries</span>
-              </Link>
+              <div className="pt-2 border-t border-[#E7E2DA] space-y-2">
+                <Link
+                  href="/apply"
+                  onClick={() => setIsOpen(false)}
+                  className="block text-xs uppercase tracking-wider text-[#5E686F] py-1 hover:text-[#122026]"
+                >
+                  Apply as Creator
+                </Link>
+                <Link
+                  href="/list-property"
+                  onClick={() => setIsOpen(false)}
+                  className="block text-xs uppercase tracking-wider text-[#5E686F] py-1 hover:text-[#122026]"
+                >
+                  List Property
+                </Link>
+                <Link
+                  href="/status"
+                  onClick={() => setIsOpen(false)}
+                  className="block text-xs uppercase tracking-wider text-[#5E686F] py-1 hover:text-[#122026]"
+                >
+                  Check Application Status
+                </Link>
+                <Link
+                  href="/admin/login"
+                  onClick={() => setIsOpen(false)}
+                  className="block text-xs uppercase tracking-wider text-[#122026] font-semibold py-1"
+                >
+                  Admin / Log in →
+                </Link>
+              </div>
             </div>
 
-            <div className="pt-4 border-t border-sand-300 flex flex-col gap-3">
-              <Link
-                href="/list-property"
-                onClick={() => setIsOpen(false)}
-                className="w-full text-center text-sm font-semibold uppercase tracking-wider text-teal-950 bg-sand-100 hover:bg-sand-200 py-3 rounded-lg border border-sand-400/80 shadow-xs"
+            <div className="pt-2">
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  setWaitlistOpen(true);
+                }}
+                className="w-full py-3 rounded-full bg-[#16252C] text-white text-xs font-medium uppercase tracking-widest text-center shadow-sm"
               >
-                List Your Property
-              </Link>
-              <Link
-                href="/apply"
-                onClick={() => setIsOpen(false)}
-                className="w-full text-center text-sm font-bold uppercase tracking-wider text-white bg-teal-600 hover:bg-teal-700 py-3 rounded-lg shadow-sm flex items-center justify-center gap-2"
-              >
-                <UserCheck className="w-4 h-4 text-white" />
-                <span>Join as Creator</span>
-              </Link>
+                Join waitlist
+              </button>
             </div>
           </div>
         )}
       </header>
+
+      {/* Waitlist Modal Triggerable Globally */}
+      <WaitlistModal isOpen={waitlistOpen} onClose={() => setWaitlistOpen(false)} />
     </>
   );
 };

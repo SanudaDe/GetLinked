@@ -1,43 +1,59 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Work+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
+  --font-playfair: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  --font-cormorant: 'Cormorant Garamond', Georgia, serif;
+  --font-caveat: 'Caveat', cursive;
+  --font-plus-jakarta: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-fraunces: 'Fraunces', Georgia, serif;
   --font-work-sans: 'Work Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 body {
-  color: #0F294D;
-  background-color: #F5F7FA;
-  font-family: var(--font-work-sans);
+  color: #122026;
+  background-color: #FAF8F5;
+  font-family: var(--font-plus-jakarta);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, .font-serif {
-  font-family: var(--font-fraunces);
+.font-editorial-serif {
+  font-family: var(--font-playfair);
 }
 
-/* Custom scrollbar for Trip.com feel */
+.font-cormorant {
+  font-family: var(--font-cormorant);
+}
+
+.font-script {
+  font-family: var(--font-caveat);
+}
+
+.font-editorial-sans {
+  font-family: var(--font-plus-jakarta);
+}
+
+/* Custom scrollbar for Warm Editorial feel */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #F0F3F7;
+  background: #FAF8F5;
 }
 ::-webkit-scrollbar-thumb {
-  background: #CFD7E3;
+  background: #D9D2C7;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #2681FF;
+  background: #B8ADA0;
 }
 
-/* Safe touch target minimums per modern web guidance */
+/* Safe touch target minimums */
 @media (pointer: coarse) {
   button, a, input, select, textarea {
     min-height: 48px;

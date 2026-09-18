@@ -39,7 +39,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className="min-h-screen flex flex-col bg-[#F5F7FA] text-[#0F294D] antialiased selection:bg-[#2681FF] selection:text-white">
+      <body className="min-h-screen flex flex-col bg-[#FAF8F5] text-[#122026] antialiased selection:bg-[#16252C] selection:text-white">
         <StoreProvider>
           <AppShell>{children}</AppShell>
         </StoreProvider>

@@ -2,146 +2,115 @@
 
 import React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Compass, ShieldCheck, Heart, MapPin } from "lucide-react";
-import { Logo } from "@/components/ui/Logo";
+import { ArrowUpRight } from "lucide-react";
 
 export const Footer: React.FC = () => {
-  const pathname = usePathname();
-
-
   return (
-    <footer className="bg-teal-950 text-sand-100 border-t border-teal-900 mt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
-          {/* Col 1 & 2: Brand & Ethos */}
-          <div className="lg:col-span-2 space-y-4">
-            <Logo variant="light" height={34} href="/" showSubtext subtext="Sri Lanka • Marketplace" />
-            <p className="text-sm text-sand-300 max-w-sm leading-relaxed">
-              Sri Lanka&apos;s curated collaboration platform connecting verified social media creators with hand-selected hotels, villas, and guesthouses. Curated with human review and personal introductions.
+    <footer className="bg-[#FAF8F5] text-[#122026] border-t border-[#E7E2DA]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-16">
+          {/* Brand & Mission Statement */}
+          <div className="md:col-span-5 space-y-4">
+            <Link
+              href="/"
+              className="inline-block font-serif text-2xl sm:text-3xl text-[#122026] tracking-tight hover:opacity-90 transition-opacity"
+            >
+              Get Linked
+            </Link>
+            <p className="text-xs sm:text-sm text-[#5E686F] max-w-sm leading-relaxed">
+              Connecting verified creators with distinctive boutique stays across Sri Lanka. Every introduction is curated with care and verified with authentic review.
             </p>
-            <div className="flex items-center gap-2 text-xs text-sand-300">
-              <MapPin className="w-4 h-4 text-gold-400 shrink-0" />
-              <span>Colombo • Galle • Kandy • Ella • Mirissa • Sigiriya</span>
+            <p className="text-[11px] font-mono tracking-wider text-[#8A949C] uppercase">
+              SRI LANKA • REAL CONNECTIONS
+            </p>
+          </div>
+
+          {/* Navigation Columns */}
+          <div className="md:col-span-2 space-y-3">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#8A949C] block">
+              PLATFORM
+            </span>
+            <ul className="space-y-2.5 text-xs sm:text-sm text-[#5E686F]">
+              <li>
+                <Link href="/creators" className="hover:text-[#122026] transition-colors">
+                  Creators Directory
+                </Link>
+              </li>
+              <li>
+                <Link href="/for-accommodations" className="hover:text-[#122026] transition-colors">
+                  For Properties
+                </Link>
+              </li>
+              <li>
+                <Link href="/for-creators" className="hover:text-[#122026] transition-colors">
+                  For Creators
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="hover:text-[#122026] transition-colors">
+                  Our Story
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div className="md:col-span-2 space-y-3">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#8A949C] block">
+              ONBOARDING
+            </span>
+            <ul className="space-y-2.5 text-xs sm:text-sm text-[#5E686F]">
+              <li>
+                <Link href="/apply" className="hover:text-[#122026] transition-colors flex items-center gap-1">
+                  <span>Apply as Creator</span>
+                  <ArrowUpRight className="w-3 h-3 text-[#8A949C]" />
+                </Link>
+              </li>
+              <li>
+                <Link href="/list-property" className="hover:text-[#122026] transition-colors flex items-center gap-1">
+                  <span>List Your Stay</span>
+                  <ArrowUpRight className="w-3 h-3 text-[#8A949C]" />
+                </Link>
+              </li>
+              <li>
+                <Link href="/status" className="hover:text-[#122026] transition-colors">
+                  Application Status
+                </Link>
+              </li>
+              <li>
+                <Link href="/faq" className="hover:text-[#122026] transition-colors">
+                  Frequently Asked
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div className="md:col-span-3 space-y-3">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#8A949C] block">
+              COLOMBO & COAST
+            </span>
+            <p className="text-xs text-[#5E686F] leading-relaxed">
+              Curating stays in Galle Fort, Thalpe, Mirissa, Tangalle, Ella Highlands, Kandy, Sigiriya, and Colombo.
+            </p>
+            <div className="pt-2 text-xs text-[#5E686F]">
+              <Link href="/contact" className="underline hover:text-[#122026]">
+                Get in touch with curators
+              </Link>
             </div>
-            <div className="pt-2 text-xs text-sand-300">
-              Domains: <span className="text-sand-100">getlinkedlk.com</span> | <span className="text-sand-100">getlinked.today</span>
-            </div>
-          </div>
-
-          {/* Col 3: For Creators */}
-          <div className="space-y-3">
-            <h4 className="font-serif text-base font-semibold text-sand-50 tracking-wide">
-              For Creators
-            </h4>
-            <ul className="space-y-2 text-sm text-sand-300">
-              <li>
-                <Link href="/for-creators" className="hover:text-gold-400 transition-colors">
-                  Creator Benefits
-                </Link>
-              </li>
-              <li>
-                <Link href="/apply" className="hover:text-gold-400 transition-colors font-medium text-gold-400">
-                  Apply to Join (5K+ Followers)
-                </Link>
-              </li>
-              <li>
-                <Link href="/status" className="hover:text-gold-400 transition-colors">
-                  Check Application Status
-                </Link>
-              </li>
-              <li>
-                <Link href="/how-it-works" className="hover:text-gold-400 transition-colors">
-                  The Verification Process
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Col 4: For Accommodations */}
-          <div className="space-y-3">
-            <h4 className="font-serif text-base font-semibold text-sand-50 tracking-wide">
-              For Stays
-            </h4>
-            <ul className="space-y-2 text-sm text-sand-300">
-              <li>
-                <Link href="/for-accommodations" className="hover:text-gold-400 transition-colors">
-                  Host Program
-                </Link>
-              </li>
-              <li>
-                <Link href="/list-property" className="hover:text-gold-400 transition-colors font-medium text-gold-400">
-                  List Your Property (Free)
-                </Link>
-              </li>
-              <li>
-                <Link href="/creators" className="hover:text-gold-400 transition-colors">
-                  Browse Creator Directory
-                </Link>
-              </li>
-              <li>
-                <Link href="/status" className="hover:text-gold-400 transition-colors">
-                  Check Listing Status
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Col 5: Trust & Compliance */}
-          <div className="space-y-3">
-            <h4 className="font-serif text-base font-semibold text-sand-50 tracking-wide">
-              Trust & Privacy
-            </h4>
-            <ul className="space-y-2 text-sm text-sand-300">
-              <li>
-                <Link href="/privacy" className="hover:text-gold-400 transition-colors">
-                  Privacy Policy (PDPA)
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="hover:text-gold-400 transition-colors">
-                  Terms of Collaboration
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="hover:text-gold-400 transition-colors">
-                  About Get Linked
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="hover:text-gold-400 transition-colors">
-                  Contact Support
-                </Link>
-              </li>
-              <li>
-                <Link href="/faq" className="hover:text-gold-400 transition-colors">
-                  Frequently Asked Questions
-                </Link>
-              </li>
-              <li className="pt-1">
-                <Link href="/admin" className="hover:text-gold-400 transition-colors inline-flex items-center gap-1.5 text-xs text-sand-300">
-                  <ShieldCheck className="w-3.5 h-3.5 text-gold-400" />
-                  <span>Staff / Admin</span>
-                </Link>
-              </li>
-            </ul>
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-teal-900/70 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-sand-300">
-          <p>© {new Date().getFullYear()} Get Linked Sri Lanka. All rights reserved. Private identity documents never exposed.</p>
-          <div className="flex flex-wrap items-center gap-4">
-            <div className="flex items-center gap-1 text-sand-300">
-              <span>Built with care for Sri Lankan hospitality</span>
-              <Heart className="w-3.5 h-3.5 text-gold-500 fill-gold-500" />
-            </div>
-            <Link
-              href="/admin"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-teal-900 hover:bg-teal-800 text-sand-100 hover:text-white border border-teal-700/70 font-medium text-xs transition-all shadow-sm hover:shadow"
-              title="Staff Admin Portal"
-            >
-              <ShieldCheck className="w-3.5 h-3.5 text-gold-400" />
-              <span>Admin Panel</span>
+        {/* Bottom Hairline & Legal */}
+        <div className="mt-14 pt-8 border-t border-[#E7E2DA] flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-[#8A949C]">
+          <p>© 2026 Get Linked Sri Lanka. All rights reserved.</p>
+          <div className="flex items-center gap-6">
+            <Link href="/privacy" className="hover:text-[#122026] transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="hover:text-[#122026] transition-colors">
+              Terms of Collaboration
+            </Link>
+            <Link href="/admin/login" className="hover:text-[#122026] transition-colors">
+              Admin Portal
             </Link>
           </div>
         </div>
