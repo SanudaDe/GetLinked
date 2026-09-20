@@ -9,57 +9,59 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Trip.com Signature Color Palette
-        // Primary Blue & Deep Navy
+        // GetLinked Brand Teal Signature Color Palette
+        // Signature Teal & Deep Marine Pine
         teal: {
-          950: "#0A1B33", // Trip.com Dark Midnight Navy (headers, hero dark gradient)
-          900: "#0F294D", // Trip.com Iconic Deep Navy (navbars, main headers, footers)
-          800: "#143D73", // Deep Travel Navy
-          700: "#1A5BB8", // Rich Royal Blue
-          600: "#2681FF", // Trip.com Signature Primary Royal Blue (buttons, active tabs)
-          500: "#287DFA", // Trip.com Bright Vibrant Blue
-          400: "#529CFF", // Soft Blue Accent
-          100: "#EBF3FF", // Trip.com Ice-Blue Tag / Pill Background
-          50: "#F2F7FF",  // Trip.com Ultra Light Blue Surface
+          950: "#042022", // Deep Midnight Teal (headers, dark sidebars, dark banners)
+          900: "#0A3B3E", // Deep Brand Teal (navbars, main headers, footers)
+          800: "#10595C", // Deep Forest Teal
+          700: "#15777B", // Rich Dark Teal
+          600: "#1A9499", // Primary Vibrant Teal (buttons, active tabs)
+          500: "#25ACA9", // GetLinked Signature Brand Teal (exact logo match)
+          400: "#42C4C1", // Soft Bright Teal Accent
+          300: "#73D8D5", // Muted Teal Highlight
+          200: "#ADEAE8", // Light Mint-Teal
+          100: "#DDF6F5", // Ice-Teal Tag / Pill Background
+          50: "#F0FAF9",  // Ultra Light Teal Surface
         },
-        // Trip.com Signature Orange & Amber Accent
+        // Signature Orange & Amber Accent
         gold: {
           600: "#E65A00", // Dark Orange (hover)
-          500: "#FF7700", // Trip.com Iconic Bright Orange (ratings, deals, badges)
+          500: "#FF7700", // Iconic Bright Orange (ratings, deals, badges)
           400: "#FF8C33", // Bright Orange Accent
           300: "#FFA866",
           100: "#FFF0E6", // Soft Orange Badge Background
           50: "#FFF8F5",  // Ultra Soft Orange
         },
-        // Trip.com Clean Travel Portal Surfaces & Borders
+        // Clean Travel Portal Surfaces & Borders
         sand: {
           500: "#9AA7B8",
           400: "#CFD7E3",
-          300: "#E4E8EE", // Trip.com Standard Card & Input Borders
-          200: "#ECEFF4", // Trip.com Inactive Tab / Neutral Fill
-          100: "#F0F3F7", // Trip.com Subtle Surface Grey
-          50: "#F5F7FA",  // Trip.com Canvas Background (crisp off-white / light grey)
+          300: "#E4E8EE", // Standard Card & Input Borders
+          200: "#ECEFF4", // Inactive Tab / Neutral Fill
+          100: "#F0F3F7", // Subtle Surface Grey
+          50: "#F5F7FA",  // Canvas Background (crisp off-white / light grey)
         },
-        // Trip.com Deep Navy Typography Ink
+        // Deep Teal Typography Ink
         ink: {
-          950: "#0A1B33",
-          900: "#0F294D", // Trip.com Primary Headline Navy
-          800: "#1D3557",
-          700: "#334C70",
-          600: "#455873", // Trip.com Secondary Body Text
-          500: "#6E829E",
-          400: "#8592A6", // Trip.com Muted / Placeholder Text
-          200: "#D8E0EC",
-          100: "#EEF2F8",
+          950: "#041C1E", // Deepest Midnight Teal-Ink
+          900: "#092E32", // Primary Headline Deep Teal-Ink
+          800: "#134246",
+          700: "#22565C",
+          600: "#386C72", // Secondary Body Text
+          500: "#5B8D93",
+          400: "#83A9AF", // Muted / Placeholder Text
+          200: "#D0E4E7",
+          100: "#EDF6F7",
         },
-        // Explicit Trip.com Tokens
+        // Explicit Brand Tokens
         trip: {
-          blue: "#2681FF",
-          "blue-hover": "#1870ED",
-          navy: "#0F294D",
+          blue: "#25ACA9",
+          "blue-hover": "#1D9693",
+          navy: "#0A3B3E",
           orange: "#FF7700",
           "orange-hover": "#E65A00",
-          ice: "#EBF3FF",
+          ice: "#DDF6F5",
           canvas: "#F5F7FA",
           border: "#E4E8EE",
         },
@@ -75,8 +77,8 @@ const config: Config = {
           border: "#E7E2DA",
           "border-dark": "#D5CEBF",
           gold: "#C4A67B",
-          pill: "#16252C",
-          "pill-hover": "#0C161B",
+          pill: "#25aca9",
+          "pill-hover": "#1e9693",
           script: "#7D7266",
         },
       },
@@ -89,10 +91,10 @@ const config: Config = {
         work: ["var(--font-work-sans)", "Work Sans", "sans-serif"],
       },
       boxShadow: {
-        'warm': '0 4px 20px -2px rgba(15, 41, 77, 0.08), 0 2px 6px -1px rgba(15, 41, 77, 0.04)',
-        'warm-lg': '0 10px 30px -4px rgba(15, 41, 77, 0.12), 0 4px 12px -2px rgba(15, 41, 77, 0.06)',
-        'elevated': '0 20px 40px -8px rgba(15, 41, 77, 0.16), 0 6px 16px -4px rgba(15, 41, 77, 0.08)',
-        'editorial': '0 25px 50px -12px rgba(18, 32, 38, 0.15)',
+        'warm': '0 4px 20px -2px rgba(10, 59, 62, 0.08), 0 2px 6px -1px rgba(10, 59, 62, 0.04)',
+        'warm-lg': '0 10px 30px -4px rgba(10, 59, 62, 0.12), 0 4px 12px -2px rgba(10, 59, 62, 0.06)',
+        'elevated': '0 20px 40px -8px rgba(10, 59, 62, 0.16), 0 6px 16px -4px rgba(10, 59, 62, 0.08)',
+        'editorial': '0 25px 50px -12px rgba(10, 59, 62, 0.15)',
       }
     },
   },

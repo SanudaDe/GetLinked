@@ -65,12 +65,14 @@ export const FeaturedAccommodations: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {approvedStays.map((stay) => {
             const photoUrl =
+              stay.image_url ||
+              (stay.images && stay.images.length > 0 ? stay.images[0] : null) ||
               stayPhotos[stay.id] ||
               "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80";
 
             const sensory = sensoryMap[stay.id] || {
-              line: "Private verandahs, coastal breezes, and thoughtful hospitality.",
-              offer: "Complimentary Stay",
+              line: stay.requirements || "Private verandahs, coastal breezes, and thoughtful hospitality.",
+              offer: stay.offer_type || "Complimentary Stay",
             };
 
             return (
@@ -115,7 +117,7 @@ export const FeaturedAccommodations: React.FC = () => {
                 <div className="px-6 pb-6 pt-2">
                   <Link
                     href="/apply"
-                    className="block text-center py-2.5 px-4 rounded-full bg-[#FAF8F5] hover:bg-[#16252C] text-[#122026] hover:text-white border border-[#E7E2DA] text-xs font-medium tracking-wide transition-colors"
+                    className="block text-center py-2.5 px-4 rounded-full bg-[#FAF8F5] hover:bg-[#25aca9] text-[#122026] hover:text-white border border-[#E7E2DA] hover:border-[#25aca9] text-xs font-medium tracking-wide transition-colors"
                   >
                     Propose Collaboration
                   </Link>

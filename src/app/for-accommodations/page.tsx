@@ -18,7 +18,7 @@ export default function ForAccommodationsPage() {
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/list-property"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#16252C] hover:bg-black text-white text-xs font-medium tracking-wide shadow-sm transition-all"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#25aca9] hover:bg-[#1e9693] text-white text-xs font-medium tracking-wide shadow-sm transition-all"
             >
               <span>List Your Property</span>
               <ArrowRight className="w-3.5 h-3.5" />

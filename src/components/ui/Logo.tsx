@@ -26,7 +26,7 @@ export const Logo: React.FC<LogoProps> = ({
   // Original aspect ratio 300:61
   const width = Math.round(height * (300 / 61));
   const isLight = variant === "light";
-  const imageSrc = isLight ? "/logo-white.png" : "/logo.png";
+  const imageSrc = isLight ? "/logo-white.png" : "/images/logo.png";
 
   const content = (
     <div className={`inline-flex items-center gap-2.5 select-none ${className}`}>

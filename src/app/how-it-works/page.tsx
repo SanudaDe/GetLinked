@@ -66,7 +66,7 @@ export default function HowItWorksPage() {
         <div className="pt-8 border-t border-[#E7E2DA] flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
             href="/apply"
-            className="px-8 py-3.5 rounded-full bg-[#16252C] hover:bg-black text-white text-xs font-medium tracking-wide transition-all shadow-sm"
+            className="px-8 py-3.5 rounded-full bg-[#25aca9] hover:bg-[#1e9693] text-white text-xs font-medium tracking-wide transition-all shadow-sm"
           >
             Apply as a Creator
           </Link>

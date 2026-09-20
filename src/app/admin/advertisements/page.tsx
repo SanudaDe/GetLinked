@@ -15,10 +15,11 @@ import {
   ToggleLeft,
   ToggleRight,
   CheckCircle2,
+  Trash2,
 } from "lucide-react";
 
 export default function AdminAdvertisementsPage() {
-  const { ads, addAdvertisement, toggleAdStatus } = useStore();
+  const { ads, addAdvertisement, toggleAdStatus, deleteAdvertisement } = useStore();
   const [showAddModal, setShowAddModal] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -120,22 +121,38 @@ export default function AdminAdvertisementsPage() {
 
                 <div className="flex items-center justify-between pt-1">
                   <span className="text-xs text-ink-700 font-medium">Display Campaign:</span>
-                  <button
-                    onClick={() => toggleAdStatus(ad.id)}
-                    className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-sand-300 hover:bg-sand-200 transition-colors"
-                  >
-                    {ad.is_active ? (
-                      <>
-                        <ToggleRight className="w-5 h-5 text-emerald-600" />
-                        <span className="text-emerald-900">Active</span>
-                      </>
-                    ) : (
-                      <>
-                        <ToggleLeft className="w-5 h-5 text-ink-400" />
-                        <span className="text-ink-500">Paused</span>
-                      </>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => toggleAdStatus(ad.id)}
+                      className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-sand-300 hover:bg-sand-200 transition-colors"
+                    >
+                      {ad.is_active ? (
+                        <>
+                          <ToggleRight className="w-5 h-5 text-emerald-600" />
+                          <span className="text-emerald-900">Active</span>
+                        </>
+                      ) : (
+                        <>
+                          <ToggleLeft className="w-5 h-5 text-ink-400" />
+                          <span className="text-ink-500">Paused</span>
+                        </>
+                      )}
+                    </button>
+
+                    {deleteAdvertisement && (
+                      <button
+                        onClick={() => {
+                          if (confirm(`Delete advertisement "${ad.title}"?`)) {
+                            deleteAdvertisement(ad.id);
+                          }
+                        }}
+                        className="p-1.5 text-ink-400 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition-colors"
+                        title="Delete Advertisement"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     )}
-                  </button>
+                  </div>
                 </div>
               </div>
             </div>

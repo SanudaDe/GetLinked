@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import {
   InfluencerApplication,
   InfluencerProfile,
@@ -25,6 +25,7 @@ import {
   initialAuditLogs,
 } from "./mockStore";
 import { cleanWhatsAppNumber } from "@/utils/whatsapp";
+import { supabaseService } from "@/services/supabaseService";
 
 interface StoreContextType {
   applications: InfluencerApplication[];
@@ -36,20 +37,28 @@ interface StoreContextType {
   ads: Advertisement[];
   auditLogs: AdminAuditLog[];
   adminUser: { email: string; name: string; role: string } | null;
+  isConnectedToSupabase: boolean;
+  isLoadingSupabase: boolean;
   loginAdmin: (password: string) => boolean;
   logoutAdmin: () => void;
+  refreshData: () => Promise<void>;
+
   // Creator actions
   submitCreatorApplication: (
     data: Omit<InfluencerApplication, "id" | "reference_code" | "status" | "created_at" | "updated_at">
   ) => { success: boolean; reference_code: string; message?: string };
-  approveCreator: (id: string, notes?: string) => void;
-  rejectCreator: (id: string, notes?: string) => void;
+  approveCreator: (id: string, notes?: string) => Promise<void> | void;
+  rejectCreator: (id: string, notes?: string) => Promise<void> | void;
+  deleteApplication?: (id: string) => Promise<void>;
+
   // Accommodation actions
   submitAccommodationApplication: (
     data: Omit<AccommodationApplication, "id" | "reference_code" | "status" | "created_at" | "updated_at">
   ) => { success: boolean; reference_code: string; message?: string };
-  approveAccommodation: (id: string, notes?: string) => void;
-  rejectAccommodation: (id: string, notes?: string) => void;
+  approveAccommodation: (id: string, notes?: string) => Promise<void> | void;
+  rejectAccommodation: (id: string, notes?: string) => Promise<void> | void;
+  deleteAccommodation?: (id: string) => Promise<void>;
+
   // Request actions
   submitCreatorRequest: (data: {
     creator_id: string;
@@ -61,18 +70,24 @@ interface StoreContextType {
     requester_whatsapp: string;
     message?: string;
   }) => { success: boolean; message: string };
-  updateRequestStatus: (id: string, status: RequestStatus) => void;
+  updateRequestStatus: (id: string, status: RequestStatus) => Promise<void> | void;
+  deleteRequest?: (id: string) => Promise<void>;
+
   // Match actions
   createProactiveMatch: (
     creatorId: string,
     accommodationId: string,
     adminNotes?: string
   ) => { success: boolean; matchId: string };
-  updateMatchStatus: (id: string, status: MatchStatus, notes?: string) => void;
+  updateMatchStatus: (id: string, status: MatchStatus, notes?: string) => Promise<void> | void;
+  deleteMatch?: (id: string) => Promise<void>;
+
   // Settings & Ads actions
-  updateSettings: (newSettings: Partial<PlatformSettings>) => void;
-  addAdvertisement: (ad: Omit<Advertisement, "id">) => void;
-  toggleAdStatus: (id: string) => void;
+  updateSettings: (newSettings: Partial<PlatformSettings>) => Promise<void> | void;
+  addAdvertisement: (ad: Omit<Advertisement, "id">) => Promise<void> | void;
+  toggleAdStatus: (id: string) => Promise<void> | void;
+  deleteAdvertisement?: (id: string) => Promise<void>;
+
   // Status lookup
   lookupStatus: (
     whatsapp: string,
@@ -84,6 +99,7 @@ interface StoreContextType {
     status?: ApplicationStatus;
     submittedAt?: string;
   };
+
   // Reset demo data
   resetDemoData: () => void;
 }
@@ -94,6 +110,9 @@ const STORAGE_KEY = "getlinked_store_v1";
 
 export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isInitialized, setIsInitialized] = useState(false);
+  const [isConnectedToSupabase, setIsConnectedToSupabase] = useState(false);
+  const [isLoadingSupabase, setIsLoadingSupabase] = useState(true);
+
   const [applications, setApplications] = useState<InfluencerApplication[]>(initialApplications);
   const [profiles, setProfiles] = useState<InfluencerProfile[]>(initialProfiles);
   const [accommodations, setAccommodations] = useState<AccommodationApplication[]>(initialAccommodations);
@@ -104,34 +123,78 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [auditLogs, setAuditLogs] = useState<AdminAuditLog[]>(initialAuditLogs);
   const [adminUser, setAdminUser] = useState<{ email: string; name: string; role: string } | null>(null);
 
-  // Load from localStorage if present
-  useEffect(() => {
+  // Load data from Supabase, with graceful fallback to localStorage / mockStore
+  const loadData = useCallback(async () => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed.applications) setApplications(parsed.applications);
-        if (parsed.profiles) setProfiles(parsed.profiles);
-        if (parsed.accommodations) setAccommodations(parsed.accommodations);
-        if (parsed.requests) setRequests(parsed.requests);
-        if (parsed.matches) setMatches(parsed.matches);
-        if (parsed.settings) setSettings(parsed.settings);
-        if (parsed.ads) setAds(parsed.ads);
-        if (parsed.auditLogs) setAuditLogs(parsed.auditLogs);
+      setIsLoadingSupabase(true);
+      const data = await supabaseService.fetchInitialData();
+
+      // Check if Supabase returned valid data
+      const hasApps = data.applications && data.applications.length > 0;
+      const hasProfs = data.profiles && data.profiles.length > 0;
+      const hasAccs = data.accommodations && data.accommodations.length > 0;
+      const hasSettings = !!data.settings;
+
+      if (hasApps || hasProfs || hasAccs || hasSettings) {
+        setIsConnectedToSupabase(true);
+        if (data.applications) setApplications(data.applications);
+        if (data.profiles) setProfiles(data.profiles);
+        if (data.accommodations) setAccommodations(data.accommodations);
+        if (data.requests) setRequests(data.requests);
+        if (data.matches) setMatches(data.matches);
+        if (data.settings) setSettings(data.settings);
+        if (data.ads) setAds(data.ads);
+        if (data.auditLogs) setAuditLogs(data.auditLogs);
+      } else {
+        // Fall back to localStorage if available
+        const saved = typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed.applications?.length) setApplications(parsed.applications);
+          if (parsed.profiles?.length) setProfiles(parsed.profiles);
+          if (parsed.accommodations?.length) setAccommodations(parsed.accommodations);
+          if (parsed.requests?.length) setRequests(parsed.requests);
+          if (parsed.matches?.length) setMatches(parsed.matches);
+          if (parsed.settings) setSettings(parsed.settings);
+          if (parsed.ads?.length) setAds(parsed.ads);
+          if (parsed.auditLogs?.length) setAuditLogs(parsed.auditLogs);
+        }
       }
-      // Check admin session
-      const savedAdmin = localStorage.getItem("getlinked_admin_session");
-      if (savedAdmin) {
-        setAdminUser(JSON.parse(savedAdmin));
-      }
-    } catch {
-      // ignore
+    } catch (err) {
+      console.warn("Could not sync with Supabase on load, using local cache:", err);
     } finally {
+      setIsLoadingSupabase(false);
       setIsInitialized(true);
     }
   }, []);
 
-  // Sync to localStorage
+  // Initial load
+  useEffect(() => {
+    loadData();
+
+    // Check admin session
+    if (typeof window !== "undefined") {
+      const savedAdmin = localStorage.getItem("getlinked_admin_session");
+      if (savedAdmin) {
+        try {
+          setAdminUser(JSON.parse(savedAdmin));
+        } catch {
+          // ignore
+        }
+      }
+    }
+
+    // Subscribe to live Supabase changes
+    const unsubscribe = supabaseService.subscribeToChanges(() => {
+      loadData();
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [loadData]);
+
+  // Sync to localStorage as offline cache
   useEffect(() => {
     if (!isInitialized) return;
     try {
@@ -164,7 +227,6 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   ]);
 
   const loginAdmin = (password: string): boolean => {
-    // Standard mock admin credentials for prototype demonstration
     if (password === "admin123" || password === "getlinked2026") {
       const admin = {
         email: "admin@getlinked.today",
@@ -172,7 +234,9 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         role: "SUPER_ADMIN",
       };
       setAdminUser(admin);
-      localStorage.setItem("getlinked_admin_session", JSON.stringify(admin));
+      if (typeof window !== "undefined") {
+        localStorage.setItem("getlinked_admin_session", JSON.stringify(admin));
+      }
       return true;
     }
     return false;
@@ -180,7 +244,9 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const logoutAdmin = () => {
     setAdminUser(null);
-    localStorage.removeItem("getlinked_admin_session");
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("getlinked_admin_session");
+    }
   };
 
   const addAuditLog = (
@@ -203,13 +269,14 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       timestamp: new Date().toISOString(),
     };
     setAuditLogs((prev) => [log, ...prev]);
+    // Supabase persist
+    supabaseService.insertAuditLog(log).catch(() => {});
   };
 
   const submitCreatorApplication = (
     data: Omit<InfluencerApplication, "id" | "reference_code" | "status" | "created_at" | "updated_at">
   ) => {
     const cleanedPhone = cleanWhatsAppNumber(data.whatsapp);
-    // Duplicate detection check
     const duplicateByPhone = applications.find(
       (a) => cleanWhatsAppNumber(a.whatsapp) === cleanedPhone
     );
@@ -250,6 +317,11 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     setApplications((prev) => [newApp, ...prev]);
 
+    // Supabase persist
+    supabaseService.insertApplication(newApp).catch((err) => {
+      console.warn("Supabase insertApplication error:", err);
+    });
+
     return {
       success: true,
       reference_code: refCode,
@@ -257,7 +329,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     };
   };
 
-  const approveCreator = (id: string, notes?: string) => {
+  const approveCreator = async (id: string, notes?: string) => {
     const target = applications.find((a) => a.id === id);
     if (!target) return;
 
@@ -274,8 +346,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     // Create or activate profile in directory
     const existingProf = profiles.find((p) => p.application_id === id);
+    let targetProfile: InfluencerProfile;
+
     if (!existingProf) {
-      const newProf: InfluencerProfile = {
+      targetProfile = {
         id: `prof-${Date.now()}`,
         application_id: id,
         display_name: target.full_name,
@@ -289,10 +363,11 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         is_active: true,
         created_at: new Date().toISOString(),
       };
-      setProfiles((prev) => [newProf, ...prev]);
+      setProfiles((prev) => [targetProfile, ...prev]);
     } else {
+      targetProfile = { ...existingProf, is_active: true };
       setProfiles((prev) =>
-        prev.map((p) => (p.application_id === id ? { ...p, is_active: true } : p))
+        prev.map((p) => (p.application_id === id ? targetProfile : p))
       );
     }
 
@@ -304,9 +379,21 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       "APPROVED",
       `Approved ${target.full_name} (${target.reference_code}). Creator is now matchable and visible in directory.`
     );
+
+    // Supabase persist
+    await Promise.all([
+      supabaseService.updateApplication(id, {
+        status: "APPROVED",
+        admin_notes: updatedApp.admin_notes,
+        reviewed_at: updatedApp.reviewed_at,
+        reviewed_by: updatedApp.reviewed_by,
+        updated_at: updatedApp.updated_at,
+      }),
+      supabaseService.upsertProfile(targetProfile),
+    ]);
   };
 
-  const rejectCreator = (id: string, notes?: string) => {
+  const rejectCreator = async (id: string, notes?: string) => {
     const target = applications.find((a) => a.id === id);
     if (!target) return;
 
@@ -320,8 +407,6 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     };
 
     setApplications((prev) => prev.map((a) => (a.id === id ? updatedApp : a)));
-
-    // Deactivate or remove from active profiles
     setProfiles((prev) => prev.filter((p) => p.application_id !== id));
 
     addAuditLog(
@@ -332,6 +417,27 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       "REJECTED",
       `Rejected application ${target.full_name} (${target.reference_code}). Reason: ${notes || "General criteria"}`
     );
+
+    // Supabase persist
+    await Promise.all([
+      supabaseService.updateApplication(id, {
+        status: "REJECTED",
+        admin_notes: updatedApp.admin_notes,
+        reviewed_at: updatedApp.reviewed_at,
+        reviewed_by: updatedApp.reviewed_by,
+        updated_at: updatedApp.updated_at,
+      }),
+      supabaseService.deleteProfileByApplicationId(id),
+    ]);
+  };
+
+  const deleteApplication = async (id: string) => {
+    setApplications((prev) => prev.filter((a) => a.id !== id));
+    setProfiles((prev) => prev.filter((p) => p.application_id !== id));
+    await Promise.all([
+      supabaseService.deleteApplication(id),
+      supabaseService.deleteProfileByApplicationId(id),
+    ]);
   };
 
   const submitAccommodationApplication = (
@@ -349,6 +455,11 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     setAccommodations((prev) => [newApp, ...prev]);
 
+    // Supabase persist
+    supabaseService.insertAccommodation(newApp).catch((err) => {
+      console.warn("Supabase insertAccommodation error:", err);
+    });
+
     return {
       success: true,
       reference_code: refCode,
@@ -356,11 +467,11 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     };
   };
 
-  const approveAccommodation = (id: string, notes?: string) => {
+  const approveAccommodation = async (id: string, notes?: string) => {
     const target = accommodations.find((a) => a.id === id);
     if (!target) return;
 
-    const updated = {
+    const updated: AccommodationApplication = {
       ...target,
       status: "APPROVED" as ApplicationStatus,
       admin_notes: notes || target.admin_notes,
@@ -379,13 +490,21 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       "APPROVED",
       `Approved property ${target.accommodation_name} (${target.reference_code}). Property is now eligible for matching.`
     );
+
+    await supabaseService.updateAccommodation(id, {
+      status: "APPROVED",
+      admin_notes: updated.admin_notes,
+      reviewed_at: updated.reviewed_at,
+      reviewed_by: updated.reviewed_by,
+      updated_at: updated.updated_at,
+    });
   };
 
-  const rejectAccommodation = (id: string, notes?: string) => {
+  const rejectAccommodation = async (id: string, notes?: string) => {
     const target = accommodations.find((a) => a.id === id);
     if (!target) return;
 
-    const updated = {
+    const updated: AccommodationApplication = {
       ...target,
       status: "REJECTED" as ApplicationStatus,
       admin_notes: notes || "Did not meet host requirements",
@@ -404,6 +523,19 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       "REJECTED",
       `Rejected property ${target.accommodation_name} (${target.reference_code}). Reason: ${notes || "Standard criteria"}`
     );
+
+    await supabaseService.updateAccommodation(id, {
+      status: "REJECTED",
+      admin_notes: updated.admin_notes,
+      reviewed_at: updated.reviewed_at,
+      reviewed_by: updated.reviewed_by,
+      updated_at: updated.updated_at,
+    });
+  };
+
+  const deleteAccommodation = async (id: string) => {
+    setAccommodations((prev) => prev.filter((a) => a.id !== id));
+    await supabaseService.deleteAccommodation(id);
   };
 
   const submitCreatorRequest = (data: {
@@ -433,25 +565,44 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     setRequests((prev) => [newReq, ...prev]);
 
+    // Supabase persist
+    supabaseService.insertRequest(newReq).catch((err) => {
+      console.warn("Supabase insertRequest error:", err);
+    });
+
     return {
       success: true,
       message: "Request received! Our concierge team will review this collaboration and initiate WhatsApp introductions.",
     };
   };
 
-  const updateRequestStatus = (id: string, status: RequestStatus) => {
+  const updateRequestStatus = async (id: string, status: RequestStatus) => {
+    const reviewed_at = new Date().toISOString();
+    const reviewed_by = adminUser?.email || "admin@getlinked.today";
+
     setRequests((prev) =>
       prev.map((r) =>
         r.id === id
           ? {
               ...r,
               status,
-              reviewed_at: new Date().toISOString(),
-              reviewed_by: adminUser?.email || "admin@getlinked.today",
+              reviewed_at,
+              reviewed_by,
             }
           : r
       )
     );
+
+    await supabaseService.updateRequest(id, {
+      status,
+      reviewed_at,
+      reviewed_by,
+    });
+  };
+
+  const deleteRequest = async (id: string) => {
+    setRequests((prev) => prev.filter((r) => r.id !== id));
+    await supabaseService.deleteRequest(id);
   };
 
   const createProactiveMatch = (
@@ -498,10 +649,15 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       `Admin created match between ${profile.display_name} and ${acc.accommodation_name} in ${acc.city}.`
     );
 
+    // Supabase persist
+    supabaseService.insertMatch(newMatch).catch((err) => {
+      console.warn("Supabase insertMatch error:", err);
+    });
+
     return { success: true, matchId };
   };
 
-  const updateMatchStatus = (id: string, status: MatchStatus, notes?: string) => {
+  const updateMatchStatus = async (id: string, status: MatchStatus, notes?: string) => {
     const target = matches.find((m) => m.id === id);
     if (!target) return;
 
@@ -523,35 +679,66 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       status,
       `Match status changed from ${target.status} to ${status}.`
     );
+
+    await supabaseService.updateMatch(id, {
+      status,
+      admin_notes: updated.admin_notes,
+      introduced_at: updated.introduced_at,
+    });
   };
 
-  const updateSettings = (newSettings: Partial<PlatformSettings>) => {
+  const deleteMatch = async (id: string) => {
+    setMatches((prev) => prev.filter((m) => m.id !== id));
+    await supabaseService.deleteMatch(id);
+  };
+
+  const updateSettings = async (newSettings: Partial<PlatformSettings>) => {
+    let updatedObj: PlatformSettings;
     setSettings((prev) => {
-      const updated = { ...prev, ...newSettings, updated_at: new Date().toISOString() };
+      updatedObj = { ...prev, ...newSettings, updated_at: new Date().toISOString() };
       addAuditLog(
         "SETTINGS_UPDATED",
         "PlatformSettings",
         "global",
         prev.platform_phase,
-        updated.platform_phase,
-        `Updated settings: Phase=${updated.platform_phase}, BillingMode=${updated.billing_mode}, PoolLimit=${updated.creator_pool_limit}`
+        updatedObj.platform_phase,
+        `Updated settings: Phase=${updatedObj.platform_phase}, BillingMode=${updatedObj.billing_mode}, PoolLimit=${updatedObj.creator_pool_limit}`
       );
-      return updated;
+      return updatedObj;
+    });
+
+    // Supabase persist
+    await supabaseService.upsertSettings({
+      ...settings,
+      ...newSettings,
+      id: "global",
+      updated_at: new Date().toISOString(),
     });
   };
 
-  const addAdvertisement = (ad: Omit<Advertisement, "id">) => {
+  const addAdvertisement = async (ad: Omit<Advertisement, "id">) => {
     const newAd: Advertisement = {
       ...ad,
       id: `ad-${Date.now()}`,
     };
     setAds((prev) => [newAd, ...prev]);
+    await supabaseService.insertAdvertisement(newAd);
   };
 
-  const toggleAdStatus = (id: string) => {
+  const toggleAdStatus = async (id: string) => {
+    const target = ads.find((a) => a.id === id);
+    if (!target) return;
+
+    const updated = !target.is_active;
     setAds((prev) =>
-      prev.map((ad) => (ad.id === id ? { ...ad, is_active: !ad.is_active } : ad))
+      prev.map((ad) => (ad.id === id ? { ...ad, is_active: updated } : ad))
     );
+    await supabaseService.updateAdvertisement(id, { is_active: updated });
+  };
+
+  const deleteAdvertisement = async (id: string) => {
+    setAds((prev) => prev.filter((a) => a.id !== id));
+    await supabaseService.deleteAdvertisement(id);
   };
 
   const lookupStatus = (whatsapp: string, refCode: string) => {
@@ -604,7 +791,9 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setSettings(initialPlatformSettings);
     setAds(initialAds);
     setAuditLogs(initialAuditLogs);
-    localStorage.removeItem(STORAGE_KEY);
+    if (typeof window !== "undefined") {
+      localStorage.removeItem(STORAGE_KEY);
+    }
   };
 
   return (
@@ -619,21 +808,29 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         ads,
         auditLogs,
         adminUser,
+        isConnectedToSupabase,
+        isLoadingSupabase,
+        refreshData: loadData,
         loginAdmin,
         logoutAdmin,
         submitCreatorApplication,
         approveCreator,
         rejectCreator,
+        deleteApplication,
         submitAccommodationApplication,
         approveAccommodation,
         rejectAccommodation,
+        deleteAccommodation,
         submitCreatorRequest,
         updateRequestStatus,
+        deleteRequest,
         createProactiveMatch,
         updateMatchStatus,
+        deleteMatch,
         updateSettings,
         addAdvertisement,
         toggleAdStatus,
+        deleteAdvertisement,
         lookupStatus,
         resetDemoData,
       }}

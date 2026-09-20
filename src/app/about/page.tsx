@@ -60,7 +60,7 @@ export default function AboutPage() {
         <div className="flex items-center justify-center gap-4 pt-4">
           <Link
             href="/creators"
-            className="px-8 py-3.5 rounded-full bg-[#16252C] hover:bg-black text-white text-xs font-medium tracking-wide shadow-sm transition-all"
+            className="px-8 py-3.5 rounded-full bg-[#25aca9] hover:bg-[#1e9693] text-white text-xs font-medium tracking-wide shadow-sm transition-all"
           >
             Find Creators
           </Link>

@@ -9,9 +9,9 @@ export const metadata: Metadata = {
   description:
     "Connecting verified social media creators with handpicked hotels, villas, and guesthouses across Sri Lanka through human review and curated introductions.",
   icons: {
-    icon: "/logo.png",
-    shortcut: "/logo.png",
-    apple: "/logo.png",
+    icon: "/images/logo.png",
+    shortcut: "/images/logo.png",
+    apple: "/images/logo.png",
   },
   openGraph: {
     title: "Get Linked — Sri Lanka Creator & Stay Marketplace",
@@ -21,9 +21,9 @@ export const metadata: Metadata = {
     siteName: "Get Linked Sri Lanka",
     images: [
       {
-        url: "/logo.png",
-        width: 254,
-        height: 150,
+        url: "/images/logo.png",
+        width: 300,
+        height: 61,
         alt: "GetLinked Logo",
       },
     ],
@@ -39,7 +39,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className="min-h-screen flex flex-col bg-[#FAF8F5] text-[#122026] antialiased selection:bg-[#16252C] selection:text-white">
+      <body className="min-h-screen flex flex-col bg-[#FAF8F5] text-[#122026] antialiased selection:bg-[#25aca9] selection:text-white">
         <StoreProvider>
           <AppShell>{children}</AppShell>
         </StoreProvider>

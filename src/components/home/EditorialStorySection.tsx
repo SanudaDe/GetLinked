@@ -46,13 +46,6 @@ export const EditorialStorySection: React.FC = () => {
               {/* Subtle inner shadow / warmth */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
             </div>
-
-            {/* Handwritten Script Note: "More than just a stay" */}
-            <div className="absolute -bottom-6 right-4 sm:-bottom-8 sm:right-8 bg-[#FAF8F5]/90 backdrop-blur-md px-6 py-3 rounded-xl border border-[#E7E2DA] shadow-sm transform rotate-2">
-              <span className="font-script text-2xl sm:text-3xl text-[#7D7266] tracking-wide block">
-                More than just a stay
-              </span>
-            </div>
           </div>
         </div>
       </div>

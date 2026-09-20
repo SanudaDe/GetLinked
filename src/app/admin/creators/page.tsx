@@ -25,6 +25,7 @@ import {
   MapPin,
   Eye,
   Lock,
+  Trash2,
 } from "lucide-react";
 
 export default function AdminCreatorsPage() {
@@ -32,7 +33,7 @@ export default function AdminCreatorsPage() {
   const initialTab = (searchParams.get("tab") as ApplicationStatus) || "PENDING";
   const initialId = searchParams.get("id");
 
-  const { applications, approveCreator, rejectCreator } = useStore();
+  const { applications, approveCreator, rejectCreator, deleteApplication } = useStore();
 
   const [activeTab, setActiveTab] = useState<ApplicationStatus>(initialTab);
   const [searchQuery, setSearchQuery] = useState("");
@@ -241,6 +242,19 @@ export default function AdminCreatorsPage() {
                           <span>Reject</span>
                         </button>
                       </>
+                    )}
+                    {deleteApplication && (
+                      <button
+                        onClick={() => {
+                          if (confirm(`Permanently delete creator application for ${app.full_name} (${app.reference_code})?`)) {
+                            deleteApplication(app.id);
+                          }
+                        }}
+                        className="p-2 text-ink-400 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition-colors"
+                        title="Delete Application"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     )}
                   </div>
                 </div>

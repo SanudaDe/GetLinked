@@ -71,7 +71,7 @@ export const Navbar: React.FC = () => {
 
             <button
               onClick={() => setWaitlistOpen(true)}
-              className="px-5 py-2 rounded-full bg-[#16252C] hover:bg-black text-white text-xs font-medium tracking-wide shadow-sm hover:shadow transition-all duration-200"
+              className="px-5 py-2 rounded-full bg-[#25aca9] hover:bg-[#1e9693] text-white text-xs font-medium tracking-wide shadow-sm hover:shadow transition-all duration-200"
             >
               Join waitlist
             </button>
@@ -81,7 +81,7 @@ export const Navbar: React.FC = () => {
           <div className="flex md:hidden items-center gap-3">
             <button
               onClick={() => setWaitlistOpen(true)}
-              className="px-3.5 py-1.5 rounded-full bg-[#16252C] text-white text-[11px] font-medium tracking-wide"
+              className="px-3.5 py-1.5 rounded-full bg-[#25aca9] text-white text-[11px] font-medium tracking-wide"
             >
               Join waitlist
             </button>
@@ -147,7 +147,7 @@ export const Navbar: React.FC = () => {
                   setIsOpen(false);
                   setWaitlistOpen(true);
                 }}
-                className="w-full py-3 rounded-full bg-[#16252C] text-white text-xs font-medium uppercase tracking-widest text-center shadow-sm"
+                className="w-full py-3 rounded-full bg-[#25aca9] hover:bg-[#1e9693] text-white text-xs font-medium uppercase tracking-widest text-center shadow-sm"
               >
                 Join waitlist
               </button>

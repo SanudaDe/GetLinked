@@ -66,7 +66,7 @@ export const WaitlistModal: React.FC<WaitlistModalProps> = ({
                 onClick={() => setRole("creator")}
                 className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-full text-xs font-medium transition-all ${
                   role === "creator"
-                    ? "bg-[#16252C] text-white shadow-sm"
+                    ? "bg-[#25aca9] text-white shadow-sm"
                     : "text-[#5E686F] hover:text-[#122026]"
                 }`}
               >
@@ -78,7 +78,7 @@ export const WaitlistModal: React.FC<WaitlistModalProps> = ({
                 onClick={() => setRole("stay")}
                 className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-full text-xs font-medium transition-all ${
                   role === "stay"
-                    ? "bg-[#16252C] text-white shadow-sm"
+                    ? "bg-[#25aca9] text-white shadow-sm"
                     : "text-[#5E686F] hover:text-[#122026]"
                 }`}
               >
@@ -99,13 +99,13 @@ export const WaitlistModal: React.FC<WaitlistModalProps> = ({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
-                  className="w-full px-4 py-3 rounded-xl bg-white border border-[#E7E2DA] focus:border-[#16252C] focus:outline-none text-sm text-[#122026] placeholder:text-[#8A949C]"
+                  className="w-full px-4 py-3 rounded-xl bg-white border border-[#E7E2DA] focus:border-[#25aca9] focus:outline-none text-sm text-[#122026] placeholder:text-[#8A949C]"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full py-3.5 px-6 rounded-full bg-[#16252C] hover:bg-black text-white text-xs font-medium uppercase tracking-widest flex items-center justify-center gap-2 shadow-sm transition-all"
+                className="w-full py-3.5 px-6 rounded-full bg-[#25aca9] hover:bg-[#1e9693] text-white text-xs font-medium uppercase tracking-widest flex items-center justify-center gap-2 shadow-sm transition-all"
               >
                 <span>Request Early Access</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -136,7 +136,7 @@ export const WaitlistModal: React.FC<WaitlistModalProps> = ({
         ) : (
           <div className="text-center py-8 space-y-4">
             <div className="w-12 h-12 rounded-full bg-[#F3EFE8] text-[#122026] flex items-center justify-center mx-auto border border-[#E7E2DA]">
-              <CheckCircle2 className="w-6 h-6 text-[#16252C]" />
+              <CheckCircle2 className="w-6 h-6 text-[#25aca9]" />
             </div>
             <h3 className="font-serif text-2xl text-[#122026]">You&apos;re on the list</h3>
             <p className="text-xs sm:text-sm text-[#5E686F] max-w-xs mx-auto leading-relaxed">
@@ -145,7 +145,7 @@ export const WaitlistModal: React.FC<WaitlistModalProps> = ({
             <div className="pt-4">
               <button
                 onClick={onClose}
-                className="px-6 py-2.5 rounded-full bg-[#16252C] text-white text-xs uppercase tracking-wider font-medium hover:bg-black"
+                className="px-6 py-2.5 rounded-full bg-[#25aca9] text-white text-xs uppercase tracking-wider font-medium hover:bg-[#1e9693]"
               >
                 Close
               </button>

@@ -17,11 +17,12 @@ import {
   ArrowRight,
   Eye,
   Clock,
+  Trash2,
 } from "lucide-react";
 
 export default function AdminRequestsPage() {
   const router = useRouter();
-  const { requests, updateRequestStatus, createProactiveMatch } = useStore();
+  const { requests, updateRequestStatus, createProactiveMatch, deleteRequest } = useStore();
   const [selectedReq, setSelectedReq] = useState<CreatorRequest | null>(null);
 
   const counts = {
@@ -178,6 +179,20 @@ export default function AdminRequestsPage() {
                           Decline
                         </button>
                       </>
+                    )}
+
+                    {deleteRequest && (
+                      <button
+                        onClick={() => {
+                          if (confirm(`Permanently delete request from ${req.requester_name} for ${req.creator_name}?`)) {
+                            deleteRequest(req.id);
+                          }
+                        }}
+                        className="p-1.5 text-ink-400 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition-colors"
+                        title="Delete Request"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     )}
                   </div>
                 </div>

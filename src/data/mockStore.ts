@@ -329,6 +329,11 @@ export const initialAccommodations: AccommodationApplication[] = [
     offer_type: "Free accommodation + meals",
     minimum_followers: 50000,
     requirements: "Looking for high-end aesthetic photo and video content showcasing our restored Dutch colonial courtyard, plunge pool, and private chef dining.",
+    image_url: "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1200&q=80"
+    ],
     status: "APPROVED",
     created_at: "2026-09-08T09:00:00Z",
     updated_at: "2026-09-09T14:00:00Z",
@@ -349,6 +354,10 @@ export const initialAccommodations: AccommodationApplication[] = [
     offer_type: "Free accommodation only",
     minimum_followers: 30000,
     requirements: "Seeking active surf/fitness creators to capture morning beach surf sessions, rooftop sunset yoga, and healthy smoothie bowl cafe vibe.",
+    image_url: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=80"
+    ],
     status: "APPROVED",
     created_at: "2026-09-10T11:30:00Z",
     updated_at: "2026-09-11T16:00:00Z",
@@ -369,6 +378,10 @@ export const initialAccommodations: AccommodationApplication[] = [
     offer_type: "Free accommodation + meals",
     minimum_followers: 40000,
     requirements: "Cozy mountain boutique retreat with view of tea gardens and train viaduct. Want moody morning aesthetic reels and drone clips.",
+    image_url: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80"
+    ],
     status: "APPROVED",
     created_at: "2026-09-12T13:10:00Z",
     updated_at: "2026-09-13T10:40:00Z",
@@ -389,6 +402,10 @@ export const initialAccommodations: AccommodationApplication[] = [
     offer_type: "Paid collaboration",
     minimum_followers: 80000,
     requirements: "Looking for family or travel creators highlighting wildlife conservation, organic farm-to-table dining, and views of Sigiriya Rock Fortress.",
+    image_url: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=80"
+    ],
     status: "APPROVED",
     created_at: "2026-09-14T08:45:00Z",
     updated_at: "2026-09-15T15:20:00Z",
@@ -409,6 +426,10 @@ export const initialAccommodations: AccommodationApplication[] = [
     offer_type: "Flexible / open to negotiate",
     minimum_followers: 50000,
     requirements: "Urban lifestyle and gastronomy content highlighting rooftop infinity pool, cocktail lounge, and luxury weekend staycation packages.",
+    image_url: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80"
+    ],
     status: "PENDING",
     created_at: "2026-09-16T12:00:00Z",
     updated_at: "2026-09-16T12:00:00Z",
@@ -426,6 +447,10 @@ export const initialAccommodations: AccommodationApplication[] = [
     offer_type: "Free accommodation only",
     minimum_followers: 10000,
     requirements: "Beachfront cabanas. Want TikTok/Reels showing sunset beach direct access and seafood barbecues.",
+    image_url: "https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=1200&q=80"
+    ],
     status: "PENDING",
     created_at: "2026-09-17T07:30:00Z",
     updated_at: "2026-09-17T07:30:00Z",

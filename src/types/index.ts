@@ -93,6 +93,8 @@ export interface AccommodationApplication {
   offer_type: OfferType;
   minimum_followers: number; // e.g. 5000, 10000, 50000
   requirements: string;
+  image_url?: string; // Primary cover photo URL
+  images?: string[];  // Additional property gallery photos
   status: ApplicationStatus;
   is_duplicate?: boolean;
   admin_notes?: string;
@@ -116,6 +118,7 @@ export interface AccommodationListing {
   minimum_followers: number;
   requirements: string;
   image_url?: string;
+  images?: string[];
   is_active: boolean;
   created_at: string;
 }

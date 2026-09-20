@@ -25,7 +25,7 @@ export default function ForCreatorsPage() {
           <div className="pt-4">
             <Link
               href="/apply"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#16252C] hover:bg-black text-white text-xs font-medium tracking-wide shadow-sm transition-all"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#25aca9] hover:bg-[#1e9693] text-white text-xs font-medium tracking-wide shadow-sm transition-all"
             >
               <span>Apply as a Creator</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -48,7 +48,7 @@ export default function ForCreatorsPage() {
             {requirements.map((req, idx) => (
               <li key={idx} className="flex items-center gap-3 text-xs sm:text-sm text-[#122026]">
                 <div className="w-4 h-4 rounded-full bg-[#F4EFEA] flex items-center justify-center shrink-0">
-                  <Check className="w-3 h-3 text-[#16252C]" />
+                  <Check className="w-3 h-3 text-[#25aca9]" />
                 </div>
                 <span>{req}</span>
               </li>

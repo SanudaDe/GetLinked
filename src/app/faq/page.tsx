@@ -106,7 +106,7 @@ export default function FaqPage() {
             placeholder="Search questions..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 rounded-full border border-[#E7E2DA] bg-white text-xs text-[#122026] focus:outline-none focus:border-[#16252C]"
+            className="w-full pl-10 pr-4 py-2.5 rounded-full border border-[#E7E2DA] bg-white text-xs text-[#122026] focus:outline-none focus:border-[#25aca9]"
           />
         </div>
 
@@ -127,7 +127,7 @@ export default function FaqPage() {
               }}
               className={`px-4 py-1.5 rounded-full transition-colors ${
                 activeTab === tab.id
-                  ? "bg-[#16252C] text-white"
+                  ? "bg-[#25aca9] text-white"
                   : "bg-white text-[#5E686F] border border-[#E7E2DA] hover:text-[#122026]"
               }`}
             >

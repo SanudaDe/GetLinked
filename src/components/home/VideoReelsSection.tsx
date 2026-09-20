@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { Volume2, VolumeX, Play, Pause, Maximize2, X, Sparkles, Film } from "lucide-react";
+import { Volume2, VolumeX, Play, Pause, Maximize2, X, Sparkles } from "lucide-react";
 
 interface ReelItem {
   id: string;
@@ -74,11 +74,6 @@ export const VideoReelsSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-14 sm:mb-18 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#F3EFE8] border border-[#E7E2DA] text-[#8A949C] text-[11px] font-semibold uppercase tracking-[0.25em]">
-            <Film className="w-3.5 h-3.5 text-[#16252C]" />
-            <span>STORIES IN MOTION</span>
-          </div>
-
           <h2 className="font-serif text-3xl sm:text-5xl font-normal text-[#122026] tracking-tight leading-tight">
             Real stays through the creator&apos;s lens.
           </h2>
@@ -177,7 +172,7 @@ export const VideoReelsSection: React.FC = () => {
 
                 <button
                   onClick={() => setModalVideo(reel)}
-                  className="text-xs font-semibold uppercase tracking-[0.2em] text-[#16252C] hover:text-[#C4A67B] transition-colors py-1 pl-2"
+                  className="text-xs font-semibold uppercase tracking-[0.2em] text-[#25aca9] hover:text-[#1e9693] transition-colors py-1 pl-2"
                 >
                   WATCH FULL →
                 </button>

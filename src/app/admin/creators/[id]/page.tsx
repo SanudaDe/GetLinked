@@ -23,6 +23,7 @@ import {
   MessageSquare,
   Globe,
   Clock,
+  Trash2,
 } from "lucide-react";
 
 export default function AdminCreatorDetailPage({
@@ -33,7 +34,7 @@ export default function AdminCreatorDetailPage({
   const resolvedParams = use(params);
   const { id } = resolvedParams;
   const router = useRouter();
-  const { applications, approveCreator, rejectCreator } = useStore();
+  const { applications, approveCreator, rejectCreator, deleteApplication } = useStore();
 
   const app = applications.find(
     (a) => a.id === id || a.reference_code === id
@@ -363,6 +364,21 @@ export default function AdminCreatorDetailPage({
                 <XCircle className="w-4 h-4" />
                 <span>Reject Application</span>
               </button>
+
+              {deleteApplication && (
+                <button
+                  onClick={async () => {
+                    if (confirm(`Permanently delete creator record for ${app.full_name} (${app.reference_code}) from database?`)) {
+                      await deleteApplication(app.id);
+                      router.push("/admin/creators");
+                    }
+                  }}
+                  className="w-full py-2.5 px-4 rounded-xl text-ink-500 hover:text-rose-700 hover:bg-rose-50 text-xs font-semibold transition-all flex items-center justify-center gap-1.5"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>Delete Record</span>
+                </button>
+              )}
             </div>
 
             <div className="pt-4 border-t border-sand-200 text-[11px] text-ink-500 space-y-1">

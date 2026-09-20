@@ -21,6 +21,12 @@ import {
   FileText,
   Clock,
   Sparkles,
+  Trash2,
+  Camera,
+  Eye,
+  Image as ImageIcon,
+  ExternalLink,
+  X,
 } from "lucide-react";
 
 export default function AdminAccommodationDetailPage({
@@ -31,7 +37,7 @@ export default function AdminAccommodationDetailPage({
   const resolvedParams = use(params);
   const { id } = resolvedParams;
   const router = useRouter();
-  const { accommodations, approveAccommodation, rejectAccommodation } = useStore();
+  const { accommodations, approveAccommodation, rejectAccommodation, deleteAccommodation } = useStore();
 
   const stay = accommodations.find(
     (a) => a.id === id || a.reference_code === id
@@ -39,6 +45,7 @@ export default function AdminAccommodationDetailPage({
 
   const [notes, setNotes] = useState(stay?.admin_notes || "");
   const [actionDone, setActionDone] = useState<string | null>(null);
+  const [activePhoto, setActivePhoto] = useState<string | null>(null);
 
   if (!stay) {
     return (
@@ -141,6 +148,101 @@ export default function AdminAccommodationDetailPage({
                 </Badge>
               </div>
             </div>
+
+            {/* Property Photos & Gallery Inspection (NEW) */}
+            {(() => {
+              const allPhotos = Array.from(
+                new Set([
+                  ...(stay.image_url ? [stay.image_url] : []),
+                  ...(stay.images || []),
+                ])
+              );
+
+              if (allPhotos.length === 0) {
+                return (
+                  <div className="p-5 rounded-xl bg-sand-100/60 border border-sand-300 text-center space-y-2">
+                    <Camera className="w-6 h-6 text-sand-400 mx-auto" />
+                    <p className="text-xs text-ink-600 font-medium">No photos uploaded by property host yet.</p>
+                  </div>
+                );
+              }
+
+              const cover = allPhotos[0];
+
+              return (
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-teal-950">
+                      <Camera className="w-4 h-4 text-teal-800" />
+                      <span>Property Visuals ({allPhotos.length} {allPhotos.length === 1 ? "photo" : "photos"})</span>
+                    </div>
+                    <span className="text-[11px] text-ink-500">Click photo to enlarge</span>
+                  </div>
+
+                  {/* Main Cover Banner */}
+                  <div
+                    onClick={() => setActivePhoto(cover)}
+                    className="relative h-64 sm:h-80 w-full rounded-2xl overflow-hidden bg-teal-950 cursor-pointer group shadow-sm border border-sand-300"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={cover}
+                      alt={stay.accommodation_name}
+                      className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
+                    
+                    <div className="absolute top-3 left-3">
+                      <span className="bg-gold-500 text-ink-950 text-xs font-bold px-2.5 py-1 rounded-md shadow-sm uppercase tracking-wider">
+                        ★ Cover Photo
+                      </span>
+                    </div>
+
+                    <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between text-white">
+                      <div>
+                        <span className="text-xs text-gold-400 font-medium block">
+                          {stay.property_type} in {stay.city}
+                        </span>
+                        <span className="font-serif text-lg font-bold">
+                          {stay.accommodation_name}
+                        </span>
+                      </div>
+                      <div className="bg-black/50 hover:bg-black/70 backdrop-blur-xs text-white p-2 rounded-lg transition-colors flex items-center gap-1 text-xs">
+                        <Eye className="w-3.5 h-3.5" />
+                        <span>Enlarge</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Gallery Strip if > 1 photo */}
+                  {allPhotos.length > 1 && (
+                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 pt-1">
+                      {allPhotos.map((photo, pIdx) => (
+                        <div
+                          key={pIdx}
+                          onClick={() => setActivePhoto(photo)}
+                          className={`relative aspect-video rounded-xl overflow-hidden bg-sand-200 border-2 cursor-pointer group transition-all ${
+                            pIdx === 0 ? "border-gold-500" : "border-sand-300 hover:border-teal-700"
+                          }`}
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={photo}
+                            alt={`${stay.accommodation_name} photo ${pIdx + 1}`}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                          {pIdx === 0 && (
+                            <span className="absolute top-1 left-1 bg-gold-500 text-ink-950 text-[9px] font-bold px-1 rounded">
+                              Cover
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
 
             {/* Metrics & Collaboration Requirements */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -249,6 +351,21 @@ export default function AdminAccommodationDetailPage({
                 <XCircle className="w-4 h-4" />
                 <span>Reject Listing</span>
               </button>
+
+              {deleteAccommodation && (
+                <button
+                  onClick={async () => {
+                    if (confirm(`Permanently delete accommodation listing for ${stay.accommodation_name} (${stay.reference_code}) from database?`)) {
+                      await deleteAccommodation(stay.id);
+                      router.push("/admin/accommodations");
+                    }
+                  }}
+                  className="w-full py-2.5 px-4 rounded-xl text-ink-500 hover:text-rose-700 hover:bg-rose-50 text-xs font-semibold transition-all flex items-center justify-center gap-1.5"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>Delete Listing</span>
+                </button>
+              )}
             </div>
 
             <div className="pt-4 border-t border-sand-200 text-[11px] text-ink-500 space-y-1">
@@ -266,6 +383,37 @@ export default function AdminAccommodationDetailPage({
           </div>
         </div>
       </div>
+
+      {/* Full-screen Lightbox Modal */}
+      {activePhoto && (
+        <div
+          className="fixed inset-0 z-50 bg-black/85 backdrop-blur-xs flex items-center justify-center p-4 sm:p-8 animate-in fade-in-50"
+          onClick={() => setActivePhoto(null)}
+        >
+          <div
+            className="relative max-w-4xl max-h-[90vh] w-full rounded-2xl overflow-hidden bg-teal-950 border border-sand-400/40 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="absolute top-3 right-3 z-10">
+              <button
+                type="button"
+                onClick={() => setActivePhoto(null)}
+                className="p-2 rounded-full bg-black/60 hover:bg-black/80 text-white transition-colors"
+                title="Close Lightbox"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={activePhoto}
+              alt="Full size property preview"
+              className="w-full max-h-[85vh] object-contain mx-auto"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

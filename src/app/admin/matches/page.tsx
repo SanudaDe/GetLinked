@@ -23,13 +23,14 @@ import {
   Calendar,
   ExternalLink,
   MapPin,
+  Trash2,
 } from "lucide-react";
 
 export default function AdminMatchesPage() {
   const searchParams = useSearchParams();
   const highlightedMatchId = searchParams.get("matchId");
 
-  const { matches, accommodations, applications, updateMatchStatus } = useStore();
+  const { matches, accommodations, applications, updateMatchStatus, deleteMatch } = useStore();
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(
     highlightedMatchId ? matches.find((m) => m.id === highlightedMatchId) || null : null
   );
@@ -222,6 +223,21 @@ export default function AdminMatchesPage() {
                             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                             <span>Introductions Sent</span>
                           </div>
+                        )}
+
+                        {deleteMatch && (
+                          <button
+                            onClick={() => {
+                              if (confirm(`Permanently remove match between ${match.creator_name} and ${match.accommodation_name}?`)) {
+                                deleteMatch(match.id);
+                              }
+                            }}
+                            className="text-[11px] text-rose-700 hover:text-rose-900 hover:bg-rose-50 py-1 rounded transition-colors flex items-center justify-center gap-1 mt-1"
+                            title="Delete Match"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                            <span>Delete Match</span>
+                          </button>
                         )}
                       </div>
                     </div>

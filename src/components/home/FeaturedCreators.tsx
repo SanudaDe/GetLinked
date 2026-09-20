@@ -148,7 +148,7 @@ export const FeaturedCreators: React.FC = () => {
                 <div className="px-6 pb-6 pt-2">
                   <button
                     onClick={() => setSelectedCreator(creator)}
-                    className="w-full py-2.5 px-4 rounded-full bg-[#FAF8F5] hover:bg-[#16252C] text-[#122026] hover:text-white border border-[#E7E2DA] text-xs font-medium tracking-wide transition-colors"
+                    className="w-full py-2.5 px-4 rounded-full bg-[#FAF8F5] hover:bg-[#25aca9] text-[#122026] hover:text-white border border-[#E7E2DA] hover:border-[#25aca9] text-xs font-medium tracking-wide transition-colors"
                   >
                     Request an Introduction
                   </button>
@@ -265,14 +265,14 @@ export const FeaturedCreators: React.FC = () => {
 
                 <button
                   type="submit"
-                  className="w-full py-3 rounded-full bg-[#16252C] hover:bg-black text-white text-xs font-medium uppercase tracking-wider transition-colors"
+                  className="w-full py-3 rounded-full bg-[#25aca9] hover:bg-[#1e9693] text-white text-xs font-medium uppercase tracking-wider transition-colors"
                 >
                   Send Introduction Request
                 </button>
               </form>
             ) : (
               <div className="text-center py-6 space-y-3">
-                <CheckCircle2 className="w-10 h-10 text-[#16252C] mx-auto" />
+                <CheckCircle2 className="w-10 h-10 text-[#25aca9] mx-auto" />
                 <h4 className="font-serif text-xl text-[#122026]">Request received</h4>
                 <p className="text-xs text-[#5E686F] leading-relaxed">
                   Our team reviews each request by hand and will reach out to you directly on WhatsApp.

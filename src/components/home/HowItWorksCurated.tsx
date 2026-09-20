@@ -48,7 +48,7 @@ export const HowItWorksCurated: React.FC = () => {
                 height="34"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="#16252C"
+                stroke="#25aca9"
                 strokeWidth="1.25"
                 strokeLinecap="round"
                 strokeLinejoin="round"

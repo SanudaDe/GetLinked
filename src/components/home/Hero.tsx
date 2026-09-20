@@ -1,37 +1,16 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React from "react";
 import Link from "next/link";
-import { ArrowRight, Volume2, VolumeX, Play, Pause } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export const Hero: React.FC = () => {
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(true);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  const togglePlay = () => {
-    if (!videoRef.current) return;
-    if (videoRef.current.paused) {
-      videoRef.current.play();
-      setIsPlaying(true);
-    } else {
-      videoRef.current.pause();
-      setIsPlaying(false);
-    }
-  };
-
-  const toggleMute = () => {
-    if (!videoRef.current) return;
-    videoRef.current.muted = !videoRef.current.muted;
-    setIsMuted(videoRef.current.muted);
-  };
 
   return (
     <section className="relative min-h-[92vh] sm:min-h-screen flex flex-col justify-between overflow-hidden bg-[#122026]">
       {/* Background Video (Web BG Video.mp4) */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <video
-          ref={videoRef}
           autoPlay
           loop
           muted
@@ -76,7 +55,7 @@ export const Hero: React.FC = () => {
           <div className="flex items-center gap-4 mt-8 flex-wrap">
             <Link
               href="/creators"
-              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#16252C] hover:bg-black text-white text-xs font-medium tracking-wider shadow-md hover:shadow-lg transition-all duration-200 group"
+              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#25aca9] hover:bg-[#1e9693] text-white text-xs font-medium tracking-wider shadow-md hover:shadow-lg transition-all duration-200 group"
             >
               <span>Find Creators</span>
               <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
@@ -98,36 +77,8 @@ export const Hero: React.FC = () => {
         </div>
       </div>
 
-      {/* Bottom Anchors & Ambient Video Controls */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-8 pt-4 flex items-end justify-between text-xs text-[#122026]">
-        {/* Left: Video Playback Controls */}
-        <div className="flex items-center gap-3">
-          <button
-            onClick={togglePlay}
-            aria-label={isPlaying ? "Pause background video" : "Play background video"}
-            className="p-2 rounded-full bg-white/40 hover:bg-white/60 backdrop-blur-md border border-black/10 text-[#122026] transition-all cursor-pointer"
-          >
-            {isPlaying ? (
-              <Pause className="w-3.5 h-3.5 fill-current" />
-            ) : (
-              <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
-            )}
-          </button>
-
-          <button
-            onClick={toggleMute}
-            aria-label={isMuted ? "Unmute background video" : "Mute background video"}
-            className="p-2 rounded-full bg-white/40 hover:bg-white/60 backdrop-blur-md border border-black/10 text-[#122026] transition-all cursor-pointer"
-          >
-            {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
-          </button>
-
-          <span className="hidden sm:inline-block font-mono text-[11px] text-[#122026]/80 tracking-wider ml-1">
-            CINEMATIC REEL • 1080P
-          </span>
-        </div>
-
-        {/* Right: Slogan from design */}
+      {/* Bottom Slogan */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-8 pt-4 flex items-end justify-end text-xs text-[#122026]">
         <div className="text-right">
           <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.25em] text-[#122026]">
             A BRIGHTER WAY TO TRAVEL TOGETHER

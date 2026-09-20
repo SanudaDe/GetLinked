@@ -13,10 +13,20 @@ import {
   FileClock,
   Coins,
   Layers,
+  Database,
+  RefreshCw,
+  ExternalLink,
 } from "lucide-react";
 
 export default function AdminSettingsPage() {
-  const { settings, updateSettings, applications } = useStore();
+  const {
+    settings,
+    updateSettings,
+    applications,
+    isConnectedToSupabase,
+    isLoadingSupabase,
+    refreshData,
+  } = useStore();
 
   const [phase, setPhase] = useState<PlatformPhase>(settings.platform_phase);
   const [billingMode, setBillingMode] = useState<BillingMode>(settings.billing_mode);
@@ -226,6 +236,82 @@ export default function AdminSettingsPage() {
                 <option value={90}>90 Days post-review (Recommended)</option>
                 <option value={180}>180 Days post-review</option>
               </select>
+            </div>
+          </div>
+
+          {/* Setting 5: Supabase Cloud PostgreSQL Database */}
+          <div className="space-y-4 border-b border-sand-200 pb-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Database className="w-5 h-5 text-teal-800" />
+                <h2 className="font-serif text-lg font-bold text-teal-950">
+                  5. Supabase PostgreSQL Cloud Database
+                </h2>
+              </div>
+              {isConnectedToSupabase ? (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  Live Connected
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-900 border border-amber-300">
+                  Awaiting Schema Execution
+                </span>
+              )}
+            </div>
+
+            <p className="text-xs text-ink-600 leading-relaxed">
+              All platform applications, directory profiles, stays, concierge requests, matches, ads, and audit logs are synchronized live with your Supabase PostgreSQL cluster.
+            </p>
+
+            <div className="p-4 bg-sand-100 rounded-xl border border-sand-300 space-y-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div>
+                  <span className="text-ink-500 block">Supabase Endpoint:</span>
+                  <span className="font-mono text-[11px] text-teal-950 font-semibold truncate block">
+                    https://omuepglydxtqdazqqhby.supabase.co
+                  </span>
+                </div>
+                <div>
+                  <span className="text-ink-500 block">SQL Schema Location:</span>
+                  <span className="font-mono text-[11px] text-teal-950 font-semibold truncate block">
+                    supabase/schema.sql
+                  </span>
+                </div>
+              </div>
+
+              <div className="pt-2 border-t border-sand-200/80 flex flex-wrap items-center gap-3">
+                <a
+                  href="https://supabase.com/dashboard/project/omuepglydxtqdazqqhby/sql/new"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3.5 py-2 rounded-lg bg-teal-900 hover:bg-teal-800 text-sand-50 text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-sm"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>Open Supabase SQL Editor</span>
+                </a>
+
+                <button
+                  type="button"
+                  onClick={() => refreshData()}
+                  disabled={isLoadingSupabase}
+                  className="px-3.5 py-2 rounded-lg bg-sand-200 hover:bg-sand-300 text-teal-950 text-xs font-semibold flex items-center gap-1.5 transition-colors border border-sand-300 disabled:opacity-50"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${isLoadingSupabase ? "animate-spin" : ""}`} />
+                  <span>Test Connection & Sync</span>
+                </button>
+              </div>
+
+              {!isConnectedToSupabase && (
+                <div className="p-3 bg-amber-50 rounded-lg border border-amber-200 text-amber-900 text-[11px] space-y-1">
+                  <strong>One-Time Setup:</strong>
+                  <p>
+                    Open the Supabase SQL editor link above, paste the contents of{" "}
+                    <code className="font-mono bg-amber-100 px-1 py-0.5 rounded">supabase/schema.sql</code>,
+                    and click <strong>Run</strong>. Tables, indexes, and initial data will be created instantly.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
 

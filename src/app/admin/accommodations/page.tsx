@@ -21,13 +21,16 @@ import {
   Users,
   Eye,
   Gift,
+  Trash2,
+  Camera,
+  Image as ImageIcon,
 } from "lucide-react";
 
 export default function AdminAccommodationsPage() {
   const searchParams = useSearchParams();
   const initialTab = (searchParams.get("tab") as ApplicationStatus) || "PENDING";
 
-  const { accommodations, approveAccommodation, rejectAccommodation } = useStore();
+  const { accommodations, approveAccommodation, rejectAccommodation, deleteAccommodation } = useStore();
 
   const [activeTab, setActiveTab] = useState<ApplicationStatus>(initialTab);
   const [searchQuery, setSearchQuery] = useState("");
@@ -146,61 +149,91 @@ export default function AdminAccommodationsPage() {
             </div>
           ) : (
             <div className="divide-y divide-sand-200">
-              {filtered.map((acc) => (
-                <div
-                  key={acc.id}
-                  className="p-5 hover:bg-sand-100/60 transition-colors flex flex-col lg:flex-row lg:items-center justify-between gap-4"
-                >
-                  <div className="space-y-1.5 flex-grow">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-serif text-lg font-bold text-teal-950">
-                        {acc.accommodation_name}
-                      </span>
-                      <span className="font-mono text-xs text-teal-800 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
-                        {acc.reference_code}
-                      </span>
-                      <span className="text-xs text-ink-600">
-                        ({acc.property_type})
-                      </span>
-                      <Badge
-                        variant={
-                          acc.status === "APPROVED"
-                            ? "approved"
-                            : acc.status === "REJECTED"
-                            ? "rejected"
-                            : "pending"
-                        }
-                        size="sm"
-                      >
-                        {acc.status}
-                      </Badge>
-                    </div>
+              {filtered.map((acc) => {
+                const coverImage = acc.image_url || (acc.images && acc.images.length > 0 ? acc.images[0] : null);
+                const photoCount = acc.images?.length || (acc.image_url ? 1 : 0);
 
-                    <div className="flex items-center gap-4 text-xs text-ink-700 flex-wrap">
-                      <span className="flex items-center gap-1">
-                        <MapPin className="w-3 h-3 text-teal-800" />
-                        {acc.city}
-                      </span>
-                      <span>•</span>
-                      <span>Contact: {acc.contact_person}</span>
-                      <span>•</span>
-                      <span className="flex items-center gap-1 text-gold-700 font-semibold">
-                        <Gift className="w-3 h-3" />
-                        {acc.offer_type}
-                      </span>
-                      <span>•</span>
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-3 h-3 text-teal-700" />
-                        {formatDateRange(acc.coverage_start, acc.coverage_end)}
-                      </span>
-                      <span>•</span>
-                      <span>Min: {formatFollowerCount(acc.minimum_followers)}+</span>
-                    </div>
+                return (
+                  <div
+                    key={acc.id}
+                    className="p-5 hover:bg-sand-100/60 transition-colors flex flex-col lg:flex-row lg:items-center justify-between gap-4"
+                  >
+                    <div className="flex items-start gap-4 flex-grow">
+                      {/* Property Thumbnail */}
+                      <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden bg-sand-200 border border-sand-300 shrink-0">
+                        {coverImage ? (
+                          <>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={coverImage}
+                              alt={acc.accommodation_name}
+                              className="w-full h-full object-cover"
+                            />
+                            {photoCount > 1 && (
+                              <span className="absolute bottom-1 right-1 bg-black/70 text-white text-[10px] px-1.5 py-0.5 rounded font-mono font-medium">
+                                +{photoCount - 1}
+                              </span>
+                            )}
+                          </>
+                        ) : (
+                          <div className="w-full h-full flex flex-col items-center justify-center text-ink-400 bg-sand-200/80">
+                            <Building2 className="w-6 h-6" />
+                            <span className="text-[10px] text-ink-500 mt-1">No Photo</span>
+                          </div>
+                        )}
+                      </div>
 
-                    <p className="text-xs text-ink-600 line-clamp-1 max-w-2xl">
-                      {acc.requirements}
-                    </p>
-                  </div>
+                      <div className="space-y-1.5 flex-grow">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-serif text-lg font-bold text-teal-950">
+                            {acc.accommodation_name}
+                          </span>
+                          <span className="font-mono text-xs text-teal-800 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
+                            {acc.reference_code}
+                          </span>
+                          <span className="text-xs text-ink-600">
+                            ({acc.property_type})
+                          </span>
+                          <Badge
+                            variant={
+                              acc.status === "APPROVED"
+                                ? "approved"
+                                : acc.status === "REJECTED"
+                                ? "rejected"
+                                : "pending"
+                            }
+                            size="sm"
+                          >
+                            {acc.status}
+                          </Badge>
+                        </div>
+
+                        <div className="flex items-center gap-4 text-xs text-ink-700 flex-wrap">
+                          <span className="flex items-center gap-1">
+                            <MapPin className="w-3 h-3 text-teal-800" />
+                            {acc.city}
+                          </span>
+                          <span>•</span>
+                          <span>Contact: {acc.contact_person}</span>
+                          <span>•</span>
+                          <span className="flex items-center gap-1 text-gold-700 font-semibold">
+                            <Gift className="w-3 h-3" />
+                            {acc.offer_type}
+                          </span>
+                          <span>•</span>
+                          <span className="flex items-center gap-1">
+                            <Calendar className="w-3 h-3 text-teal-700" />
+                            {formatDateRange(acc.coverage_start, acc.coverage_end)}
+                          </span>
+                          <span>•</span>
+                          <span>Min: {formatFollowerCount(acc.minimum_followers)}+</span>
+                        </div>
+
+                        <p className="text-xs text-ink-600 line-clamp-1 max-w-2xl">
+                          {acc.requirements}
+                        </p>
+                      </div>
+                    </div>
 
                   {/* Actions */}
                   <div className="flex items-center gap-2 shrink-0">
@@ -229,10 +262,25 @@ export default function AdminAccommodationsPage() {
                         </button>
                       </>
                     )}
+
+                    {deleteAccommodation && (
+                      <button
+                        onClick={() => {
+                          if (confirm(`Permanently delete accommodation listing for ${acc.accommodation_name} (${acc.reference_code})?`)) {
+                            deleteAccommodation(acc.id);
+                          }
+                        }}
+                        className="p-2 text-ink-400 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition-colors"
+                        title="Delete Accommodation"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
                   </div>
                 </div>
-              ))}
-            </div>
+              );
+            })}
+          </div>
           )}
         </div>
       </div>
