@@ -63,7 +63,7 @@ export const Hero: React.FC = () => {
 
             <Link
               href="/list-property"
-              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-white/50 hover:bg-white/70 text-[#122026] text-xs font-medium tracking-wider border border-black/15 backdrop-blur-md shadow-xs hover:shadow-sm transition-all duration-200 group"
+              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#122026] hover:bg-[#1d333e] text-white text-xs font-medium tracking-wider border border-[#122026] shadow-sm hover:shadow-md transition-all duration-200 group"
             >
               <span>List Your Stay</span>
               <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />

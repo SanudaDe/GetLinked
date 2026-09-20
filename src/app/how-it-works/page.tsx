@@ -72,7 +72,7 @@ export default function HowItWorksPage() {
           </Link>
           <Link
             href="/list-property"
-            className="px-8 py-3.5 rounded-full bg-white hover:bg-[#F4EFEA] text-[#122026] text-xs font-medium tracking-wide border border-[#E7E2DA] transition-all"
+            className="px-8 py-3.5 rounded-full bg-[#122026] hover:bg-[#1d333e] text-white text-xs font-medium tracking-wide border border-[#122026] shadow-sm transition-all"
           >
             List Your Stay
           </Link>
