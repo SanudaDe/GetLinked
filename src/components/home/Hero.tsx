@@ -7,7 +7,7 @@ import { ArrowRight } from "lucide-react";
 export const Hero: React.FC = () => {
 
   return (
-    <section className="relative min-h-[92vh] sm:min-h-screen flex flex-col justify-between overflow-hidden bg-[#336467]">
+    <section className="relative min-h-[92vh] sm:min-h-screen flex flex-col justify-between overflow-hidden bg-[#E0DDAE]">
       {/* Background Video (Web BG Video.mp4) */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <video
@@ -23,9 +23,8 @@ export const Hero: React.FC = () => {
           <source src="/videos/Web BG Video.mp4" type="video/mp4" />
         </video>
 
-        {/* Editorial Lighting Overlays for Text Legibility & Film Mood */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#E0DDAE]/95 via-[#E0DDAE]/65 to-transparent sm:max-w-3xl pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 pointer-events-none" />
+        {/* Horizontal Linear Shader: Smooth Left-to-Right Editorial Wash */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#E0DDAE] via-[#E0DDAE]/90 via-45% to-transparent pointer-events-none" />
       </div>
 
       {/* Top Spacer for Fixed Transparent Navbar */}
@@ -36,18 +35,18 @@ export const Hero: React.FC = () => {
         <div className="max-w-2xl">
           {/* Kicker / Tag */}
           <div className="flex items-center gap-3 mb-5">
-            <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.25em] text-[#D7400B]">
-              SRI LANKA. REAL CONNECTIONS.
+            <span className="text-xs sm:text-[13px] font-bold uppercase tracking-[0.28em] text-[#D7400B] drop-shadow-xs">
+              REAL CREATORS. VERIFIED STAYS.
             </span>
           </div>
 
           {/* Editorial Display Headline */}
-          <h1 className="font-serif italic text-4xl sm:text-6xl lg:text-[66px] font-normal tracking-tight text-[#336467] leading-[1.12]">
+          <h1 className="font-serif italic text-4xl sm:text-6xl lg:text-[66px] font-medium tracking-tight text-[#1A3739] leading-[1.12]">
             An island tells its story best through the people who stay.
           </h1>
 
           {/* Subtitle */}
-          <p className="mt-5 text-sm sm:text-base text-[#336467]/85 max-w-xl font-normal leading-relaxed">
+          <p className="mt-5 text-base sm:text-lg text-[#1A3739] max-w-xl font-medium leading-relaxed">
             We bring Sri Lanka&apos;s finest stays together with the voices worth trusting with them.
           </p>
 
@@ -55,7 +54,7 @@ export const Hero: React.FC = () => {
           <div className="flex items-center gap-4 mt-8 flex-wrap">
             <Link
               href="/creators"
-              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#D7400B] hover:bg-[#BD3607] text-white text-xs font-medium tracking-wider shadow-md hover:shadow-lg transition-all duration-200 group"
+              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#D7400B] hover:bg-[#BD3607] text-white text-xs sm:text-sm font-semibold tracking-wider shadow-md hover:shadow-lg transition-all duration-200 group"
             >
               <span>Find Creators</span>
               <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
@@ -63,7 +62,7 @@ export const Hero: React.FC = () => {
 
             <Link
               href="/list-property"
-              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#336467] hover:bg-[#254F52] text-white text-xs font-medium tracking-wider border border-[#336467] shadow-sm hover:shadow-md transition-all duration-200 group"
+              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#1A3739] hover:bg-[#152E30] text-white text-xs sm:text-sm font-semibold tracking-wider border border-[#1A3739] shadow-sm hover:shadow-md transition-all duration-200 group"
             >
               <span>List Your Stay</span>
               <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
@@ -71,16 +70,16 @@ export const Hero: React.FC = () => {
           </div>
 
           {/* Trust Line */}
-          <p className="mt-8 text-xs sm:text-sm text-[#336467]/80 tracking-wide font-normal">
+          <p className="mt-8 text-xs sm:text-sm text-[#1A3739]/90 tracking-wide font-medium">
             Every introduction made by hand. Nothing rushed, nothing automated.
           </p>
         </div>
       </div>
 
       {/* Bottom Slogan */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-8 pt-4 flex items-end justify-end text-xs text-[#336467]">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-8 pt-4 flex items-end justify-end text-xs text-[#1A3739]">
         <div className="text-right">
-          <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.25em] text-[#336467]">
+          <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#1A3739]">
             A BRIGHTER WAY TO TRAVEL TOGETHER
           </span>
         </div>
