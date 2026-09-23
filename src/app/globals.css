@@ -14,8 +14,8 @@
 }
 
 body {
-  color: #122026;
-  background-color: #FAF8F5;
+  color: #336467;
+  background-color: #E0DDAE;
   font-family: var(--font-plus-jakarta);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -43,14 +43,14 @@ body {
   height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #FAF8F5;
+  background: #E0DDAE;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D9D2C7;
+  background: #C8C488;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #B8ADA0;
+  background: #336467;
 }
 
 /* Safe touch target minimums */

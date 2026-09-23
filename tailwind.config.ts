@@ -9,77 +9,92 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // GetLinked Brand Teal Signature Color Palette
-        // Signature Teal & Deep Marine Pine
+        // Main 3-Color Brand Palette
+        sinopia: {
+          DEFAULT: "#D7400B",
+          hover: "#BD3607",
+          dark: "#A52E04",
+          light: "#F7E6DF",
+        },
+        vanilla: {
+          DEFAULT: "#E0DDAE",
+          surface: "#ECE9C4",
+          card: "#F4F2D8",
+          dark: "#D0CD96",
+          border: "#C8C488",
+        },
+        caribbean: {
+          DEFAULT: "#336467",
+          hover: "#254F52",
+          dark: "#1A3739",
+          muted: "#467679",
+          light: "#E5ECEC",
+        },
+        // Component-level tokens mapped to Main Palette
         teal: {
-          950: "#042022", // Deep Midnight Teal (headers, dark sidebars, dark banners)
-          900: "#0A3B3E", // Deep Brand Teal (navbars, main headers, footers)
-          800: "#10595C", // Deep Forest Teal
-          700: "#15777B", // Rich Dark Teal
-          600: "#1A9499", // Primary Vibrant Teal (buttons, active tabs)
-          500: "#25ACA9", // GetLinked Signature Brand Teal (exact logo match)
-          400: "#42C4C1", // Soft Bright Teal Accent
-          300: "#73D8D5", // Muted Teal Highlight
-          200: "#ADEAE8", // Light Mint-Teal
-          100: "#DDF6F5", // Ice-Teal Tag / Pill Background
-          50: "#F0FAF9",  // Ultra Light Teal Surface
+          950: "#1A3739",
+          900: "#254F52",
+          800: "#2C5A5D",
+          700: "#336467",
+          600: "#3B7478",
+          500: "#D7400B", // Primary brand button / action
+          400: "#E05524",
+          300: "#F08D69",
+          200: "#F7B8A0",
+          100: "#FCE8DF",
+          50: "#FFF6F2",
         },
-        // Signature Orange & Amber Accent
         gold: {
-          600: "#E65A00", // Dark Orange (hover)
-          500: "#FF7700", // Iconic Bright Orange (ratings, deals, badges)
-          400: "#FF8C33", // Bright Orange Accent
-          300: "#FFA866",
-          100: "#FFF0E6", // Soft Orange Badge Background
-          50: "#FFF8F5",  // Ultra Soft Orange
+          600: "#BD3607",
+          500: "#D7400B", // Sinopia accent
+          400: "#E05524",
+          300: "#F08D69",
+          100: "#FCE8DF",
+          50: "#FFF6F2",
         },
-        // Clean Travel Portal Surfaces & Borders
         sand: {
-          500: "#9AA7B8",
-          400: "#CFD7E3",
-          300: "#E4E8EE", // Standard Card & Input Borders
-          200: "#ECEFF4", // Inactive Tab / Neutral Fill
-          100: "#F0F3F7", // Subtle Surface Grey
-          50: "#F5F7FA",  // Canvas Background (crisp off-white / light grey)
+          500: "#8F8B5A",
+          400: "#B8B37C",
+          300: "#C8C488",
+          200: "#D5D19C",
+          100: "#DCD8A7",
+          50: "#E0DDAE", // Vanilla Canvas Background
         },
-        // Deep Teal Typography Ink
         ink: {
-          950: "#041C1E", // Deepest Midnight Teal-Ink
-          900: "#092E32", // Primary Headline Deep Teal-Ink
-          800: "#134246",
-          700: "#22565C",
-          600: "#386C72", // Secondary Body Text
-          500: "#5B8D93",
-          400: "#83A9AF", // Muted / Placeholder Text
-          200: "#D0E4E7",
-          100: "#EDF6F7",
+          950: "#152E30",
+          900: "#1E4143",
+          800: "#275356",
+          700: "#336467", // Caribbean Primary Text
+          600: "#417478",
+          500: "#508589",
+          400: "#709FA2",
+          200: "#C0D7D9",
+          100: "#E4EEF0",
         },
-        // Explicit Brand Tokens
         trip: {
-          blue: "#25ACA9",
-          "blue-hover": "#1D9693",
-          navy: "#0A3B3E",
-          orange: "#FF7700",
-          "orange-hover": "#E65A00",
-          ice: "#DDF6F5",
-          canvas: "#F5F7FA",
-          border: "#E4E8EE",
+          blue: "#D7400B",
+          "blue-hover": "#BD3607",
+          navy: "#336467",
+          orange: "#D7400B",
+          "orange-hover": "#BD3607",
+          ice: "#E0DDAE",
+          canvas: "#E0DDAE",
+          border: "#C8C488",
         },
-        // Luxury Boutique Editorial Palette
         editorial: {
-          canvas: "#FAF8F5",
-          sand: "#F4EFEA",
-          "sand-dark": "#E9E3D8",
-          ink: "#122026",
-          "ink-light": "#25333A",
-          muted: "#5E686F",
-          subtle: "#8A949C",
-          border: "#E7E2DA",
-          "border-dark": "#D5CEBF",
-          gold: "#C4A67B",
-          pill: "#25aca9",
-          "pill-hover": "#1e9693",
-          script: "#7D7266",
+          canvas: "#E0DDAE",
+          sand: "#E0DDAE",
+          "sand-dark": "#D0CD96",
+          ink: "#336467",
+          "ink-light": "#254F52",
+          muted: "#467679",
+          subtle: "#628C8F",
+          border: "#C8C488",
+          "border-dark": "#B8B37C",
+          gold: "#D7400B",
+          pill: "#D7400B",
+          "pill-hover": "#BD3607",
+          script: "#336467",
         },
       },
       fontFamily: {

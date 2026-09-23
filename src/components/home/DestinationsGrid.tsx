@@ -39,15 +39,15 @@ export const DestinationsGrid: React.FC = () => {
   ];
 
   return (
-    <section className="py-20 sm:py-28 bg-[#FAF8F5] text-[#122026] border-t border-[#E7E2DA]/60">
+    <section className="py-20 sm:py-28 bg-[#E0DDAE] text-[#336467] border-t border-[#C8C488]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="max-w-2xl mb-12 sm:mb-16 space-y-3">
-          <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.25em] text-[#8A949C] block">
+          <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.25em] text-[#D7400B] block">
             Where To Begin
           </span>
 
-          <h2 className="font-serif italic text-3xl sm:text-5xl font-normal text-[#122026] tracking-tight leading-[1.15]">
+          <h2 className="font-serif italic text-3xl sm:text-5xl font-normal text-[#336467] tracking-tight leading-[1.15]">
             Six places, each holding its own quiet.
           </h2>
         </div>
@@ -58,7 +58,7 @@ export const DestinationsGrid: React.FC = () => {
             <Link
               key={dest.city}
               href={`/creators?city=${encodeURIComponent(dest.city)}`}
-              className="group relative h-80 sm:h-96 rounded-2xl overflow-hidden shadow-warm hover:shadow-warm-lg transition-all duration-500 flex flex-col justify-end p-6 sm:p-7 bg-[#ECE6DC]"
+              className="group relative h-80 sm:h-96 rounded-2xl overflow-hidden shadow-warm hover:shadow-warm-lg transition-all duration-500 flex flex-col justify-end p-6 sm:p-7 bg-[#D0CD96]"
             >
               {/* Image */}
               {/* eslint-disable-next-line @next/next/no-img-element */}

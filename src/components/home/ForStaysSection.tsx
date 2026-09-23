@@ -6,28 +6,28 @@ import { ArrowRight } from "lucide-react";
 
 export const ForStaysSection: React.FC = () => {
   return (
-    <section className="py-20 sm:py-28 bg-[#FAF8F5] text-[#122026] overflow-hidden border-t border-[#E7E2DA]/60">
+    <section className="py-20 sm:py-28 bg-[#E0DDAE] text-[#336467] overflow-hidden border-t border-[#C8C488]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Left Column: Editorial Copy */}
           <div className="lg:col-span-6 space-y-6">
             <div>
-              <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.25em] text-[#8A949C]">
+              <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.25em] text-[#D7400B]">
                 FOR STAYS
               </span>
-              <h2 className="font-serif text-3xl sm:text-5xl lg:text-5xl font-normal text-[#122026] leading-[1.15] mt-3 tracking-tight">
+              <h2 className="font-serif text-3xl sm:text-5xl lg:text-5xl font-normal text-[#336467] leading-[1.15] mt-3 tracking-tight">
                 Find creators who fit your world.
               </h2>
             </div>
 
-            <p className="text-sm sm:text-base text-[#5E686F] leading-relaxed max-w-lg">
+            <p className="text-sm sm:text-base text-[#336467]/85 leading-relaxed max-w-lg">
               Browse verified creators by travel dates, audience, niche and style. Connect with people who truly align with your property.
             </p>
 
             <div className="pt-2">
               <Link
                 href="/creators"
-                className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#122026] hover:text-[#C4A67B] transition-colors group"
+                className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#336467] hover:text-[#D7400B] transition-colors group"
               >
                 <span>EXPLORE CREATORS</span>
                 <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
@@ -37,7 +37,7 @@ export const ForStaysSection: React.FC = () => {
 
           {/* Right Column: Villa Terrace Lounge with Corner Text Overlay */}
           <div className="lg:col-span-6 relative">
-            <div className="relative rounded-2xl overflow-hidden shadow-warm-lg aspect-[4/3] sm:aspect-[16/11] bg-[#ECE6DC] group">
+            <div className="relative rounded-2xl overflow-hidden shadow-warm-lg aspect-[4/3] sm:aspect-[16/11] bg-[#D0CD96] group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1600&q=85"

@@ -76,22 +76,22 @@ export const FeaturedCreators: React.FC = () => {
   const featured = profiles.slice(0, 4);
 
   return (
-    <section className="py-20 sm:py-28 bg-[#FAF8F5] text-[#122026] border-t border-[#E7E2DA]/60">
+    <section className="py-20 sm:py-28 bg-[#E0DDAE] text-[#336467] border-t border-[#C8C488]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 sm:mb-16">
           <div className="space-y-3 max-w-2xl">
-            <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.25em] text-[#8A949C] block">
+            <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.25em] text-[#D7400B] block">
               Currently Travelling
             </span>
-            <h2 className="font-serif italic text-3xl sm:text-5xl font-normal text-[#122026] tracking-tight leading-[1.15]">
+            <h2 className="font-serif italic text-3xl sm:text-5xl font-normal text-[#336467] tracking-tight leading-[1.15]">
               A few of the voices heading to Sri Lanka this season.
             </h2>
           </div>
 
           <Link
             href="/creators"
-            className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#122026] hover:text-[#C4A67B] transition-colors shrink-0 group"
+            className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#336467] hover:text-[#D7400B] transition-colors shrink-0 group"
           >
             <span>See who else is travelling</span>
             <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
@@ -109,11 +109,11 @@ export const FeaturedCreators: React.FC = () => {
             return (
               <div
                 key={creator.id}
-                className="bg-white rounded-2xl border border-[#E7E2DA] overflow-hidden shadow-warm hover:shadow-warm-lg transition-all duration-300 flex flex-col justify-between group"
+                className="bg-[#ECE9C4] rounded-2xl border border-[#C8C488] overflow-hidden shadow-warm hover:shadow-warm-lg transition-all duration-300 flex flex-col justify-between group"
               >
                 <div>
                   {/* Photo Frame */}
-                  <div className="relative h-64 w-full bg-[#ECE6DC] overflow-hidden">
+                  <div className="relative h-64 w-full bg-[#D0CD96] overflow-hidden">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={creator.avatar_url || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"}
@@ -125,20 +125,20 @@ export const FeaturedCreators: React.FC = () => {
 
                   {/* Editorial Card Content */}
                   <div className="p-6 space-y-3">
-                    <h3 className="font-serif text-xl font-normal text-[#122026]">
+                    <h3 className="font-serif text-xl font-normal text-[#336467]">
                       {creator.display_name}
                     </h3>
 
-                    <p className="text-xs text-[#8A949C] tracking-wide">
+                    <p className="text-xs text-[#336467]/75 tracking-wide">
                       {creator.city} — {sensory.dates}
                     </p>
 
-                    <p className="text-xs sm:text-sm text-[#5E686F] leading-relaxed">
+                    <p className="text-xs sm:text-sm text-[#336467]/85 leading-relaxed">
                       {sensory.line}
                     </p>
 
                     {/* Follower Count: Small, secondary, never bolded as a badge */}
-                    <p className="text-[11px] text-[#8A949C] pt-1">
+                    <p className="text-[11px] text-[#336467]/70 pt-1">
                       {(creator.follower_count / 1000).toFixed(1)}k followers
                     </p>
                   </div>
@@ -148,7 +148,7 @@ export const FeaturedCreators: React.FC = () => {
                 <div className="px-6 pb-6 pt-2">
                   <button
                     onClick={() => setSelectedCreator(creator)}
-                    className="w-full py-2.5 px-4 rounded-full bg-[#FAF8F5] hover:bg-[#25aca9] text-[#122026] hover:text-white border border-[#E7E2DA] hover:border-[#25aca9] text-xs font-medium tracking-wide transition-colors"
+                    className="w-full py-2.5 px-4 rounded-full bg-[#E0DDAE] hover:bg-[#D7400B] text-[#336467] hover:text-white border border-[#C8C488] hover:border-[#D7400B] text-xs font-semibold tracking-wide transition-all cursor-pointer"
                   >
                     Request an Introduction
                   </button>
@@ -162,7 +162,7 @@ export const FeaturedCreators: React.FC = () => {
         <div className="mt-10 text-center md:hidden">
           <Link
             href="/creators"
-            className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#122026] hover:text-[#C4A67B]"
+            className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#336467] hover:text-[#D7400B]"
           >
             <span>See who else is travelling →</span>
           </Link>
@@ -177,10 +177,10 @@ export const FeaturedCreators: React.FC = () => {
             onClick={() => setSelectedCreator(null)}
           />
 
-          <div className="relative bg-[#FAF8F5] rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-[#E7E2DA] z-10 animate-in fade-in zoom-in-95 duration-200">
+          <div className="relative bg-[#E0DDAE] rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-[#C8C488] z-10 animate-in fade-in zoom-in-95 duration-200">
             <button
               onClick={() => setSelectedCreator(null)}
-              className="absolute top-5 right-5 p-2 text-[#8A949C] hover:text-[#122026] rounded-full"
+              className="absolute top-5 right-5 p-2 text-[#336467]/70 hover:text-[#336467] rounded-full cursor-pointer"
               aria-label="Close modal"
             >
               <X className="w-5 h-5" />
@@ -189,20 +189,20 @@ export const FeaturedCreators: React.FC = () => {
             {!submittedMessage ? (
               <form onSubmit={handleRequestSubmit} className="space-y-4">
                 <div>
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#8A949C]">
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#D7400B]">
                     Direct Introduction
                   </span>
-                  <h3 className="font-serif text-2xl text-[#122026] mt-1">
+                  <h3 className="font-serif text-2xl text-[#336467] mt-1">
                     Connect with {selectedCreator.display_name}
                   </h3>
-                  <p className="text-xs text-[#5E686F] mt-1">
+                  <p className="text-xs text-[#336467]/80 mt-1">
                     In {selectedCreator.city} during upcoming season. Every introduction is reviewed by hand.
                   </p>
                 </div>
 
                 <div className="space-y-3 pt-2">
                   <div>
-                    <label className="block text-[11px] uppercase tracking-wider font-semibold text-[#5E686F] mb-1">
+                    <label className="block text-[11px] uppercase tracking-wider font-semibold text-[#336467] mb-1">
                       Your Property Name
                     </label>
                     <input
@@ -213,12 +213,12 @@ export const FeaturedCreators: React.FC = () => {
                         setFormData({ ...formData, accommodationName: e.target.value })
                       }
                       placeholder="e.g. Fort Heritage Villa"
-                      className="w-full px-4 py-2.5 rounded-xl bg-white border border-[#E7E2DA] text-xs text-[#122026]"
+                      className="w-full px-4 py-2.5 rounded-xl bg-white border border-[#C8C488] text-xs text-[#336467] focus:border-[#D7400B] focus:outline-none"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[11px] uppercase tracking-wider font-semibold text-[#5E686F] mb-1">
+                    <label className="block text-[11px] uppercase tracking-wider font-semibold text-[#336467] mb-1">
                       Host Name
                     </label>
                     <input
@@ -229,12 +229,12 @@ export const FeaturedCreators: React.FC = () => {
                         setFormData({ ...formData, requesterName: e.target.value })
                       }
                       placeholder="Your name"
-                      className="w-full px-4 py-2.5 rounded-xl bg-white border border-[#E7E2DA] text-xs text-[#122026]"
+                      className="w-full px-4 py-2.5 rounded-xl bg-white border border-[#C8C488] text-xs text-[#336467] focus:border-[#D7400B] focus:outline-none"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[11px] uppercase tracking-wider font-semibold text-[#5E686F] mb-1">
+                    <label className="block text-[11px] uppercase tracking-wider font-semibold text-[#336467] mb-1">
                       WhatsApp Number
                     </label>
                     <input
@@ -245,12 +245,12 @@ export const FeaturedCreators: React.FC = () => {
                         setFormData({ ...formData, requesterWhatsApp: e.target.value })
                       }
                       placeholder="+94 77 123 4567"
-                      className="w-full px-4 py-2.5 rounded-xl bg-white border border-[#E7E2DA] text-xs text-[#122026]"
+                      className="w-full px-4 py-2.5 rounded-xl bg-white border border-[#C8C488] text-xs text-[#336467] focus:border-[#D7400B] focus:outline-none"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[11px] uppercase tracking-wider font-semibold text-[#5E686F] mb-1">
+                    <label className="block text-[11px] uppercase tracking-wider font-semibold text-[#336467] mb-1">
                       Collaboration Note
                     </label>
                     <textarea
@@ -258,23 +258,23 @@ export const FeaturedCreators: React.FC = () => {
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder="A few lines about your property and proposed dates..."
-                      className="w-full px-4 py-2.5 rounded-xl bg-white border border-[#E7E2DA] text-xs text-[#122026]"
+                      className="w-full px-4 py-2.5 rounded-xl bg-white border border-[#C8C488] text-xs text-[#336467] focus:border-[#D7400B] focus:outline-none"
                     />
                   </div>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full py-3 rounded-full bg-[#25aca9] hover:bg-[#1e9693] text-white text-xs font-medium uppercase tracking-wider transition-colors"
+                  className="w-full py-3 rounded-full bg-[#D7400B] hover:bg-[#BD3607] text-white text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer"
                 >
                   Send Introduction Request
                 </button>
               </form>
             ) : (
               <div className="text-center py-6 space-y-3">
-                <CheckCircle2 className="w-10 h-10 text-[#25aca9] mx-auto" />
-                <h4 className="font-serif text-xl text-[#122026]">Request received</h4>
-                <p className="text-xs text-[#5E686F] leading-relaxed">
+                <CheckCircle2 className="w-10 h-10 text-[#D7400B] mx-auto" />
+                <h4 className="font-serif text-xl text-[#336467]">Request received</h4>
+                <p className="text-xs text-[#336467]/80 leading-relaxed">
                   Our team reviews each request by hand and will reach out to you directly on WhatsApp.
                 </p>
               </div>

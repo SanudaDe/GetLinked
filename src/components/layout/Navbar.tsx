@@ -37,18 +37,18 @@ export const Navbar: React.FC = () => {
       <header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           isScrolled || !isHomePage
-            ? "bg-[#FAF8F5]/95 backdrop-blur-md border-b border-[#E7E2DA] py-3.5 shadow-xs"
-            : "bg-gradient-to-b from-black/20 via-transparent to-transparent py-5"
+            ? "bg-[#E0DDAE]/95 backdrop-blur-md border-b border-[#C8C488] py-4 sm:py-4.5 shadow-xs"
+            : "bg-[#E0DDAE]/90 backdrop-blur-md border-b border-[#C8C488]/50 py-4.5 sm:py-5"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           {/* Left Navigation Links */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-8 lg:gap-10">
             {navLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
-                className="text-[13px] font-sans font-medium tracking-wide text-[#122026] hover:text-black transition-colors relative py-1"
+                className="text-[15px] lg:text-base font-sans font-medium text-[#336467] hover:text-[#D7400B] transition-colors relative py-1"
               >
                 {link.label}
               </Link>
@@ -57,21 +57,21 @@ export const Navbar: React.FC = () => {
 
           {/* Center Brand Wordmark / Logo */}
           <div className="flex-1 md:flex-initial text-left md:text-center flex justify-start md:justify-center items-center">
-            <Logo href="/" height={34} variant="dark" priority />
+            <Logo href="/" height={44} variant="dark" priority />
           </div>
 
           {/* Right Navigation & CTAs */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-7 lg:gap-8">
             <Link
               href="/admin/login"
-              className="text-[13px] font-sans font-medium tracking-wide text-[#122026] hover:text-black transition-colors"
+              className="text-[15px] lg:text-base font-sans font-medium text-[#336467] hover:text-[#D7400B] transition-colors"
             >
               Log in
             </Link>
 
             <button
               onClick={() => setWaitlistOpen(true)}
-              className="px-5 py-2 rounded-full bg-[#25aca9] hover:bg-[#1e9693] text-white text-xs font-medium tracking-wide shadow-sm hover:shadow transition-all duration-200"
+              className="px-6 py-2.5 rounded-full bg-[#D7400B] hover:bg-[#BD3607] text-white text-[13px] sm:text-sm font-semibold tracking-wide shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
             >
               Join waitlist
             </button>
@@ -81,60 +81,60 @@ export const Navbar: React.FC = () => {
           <div className="flex md:hidden items-center gap-3">
             <button
               onClick={() => setWaitlistOpen(true)}
-              className="px-3.5 py-1.5 rounded-full bg-[#25aca9] text-white text-[11px] font-medium tracking-wide"
+              className="px-4 py-2 rounded-full bg-[#D7400B] text-white text-xs font-semibold tracking-wide cursor-pointer"
             >
               Join waitlist
             </button>
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 text-[#122026] rounded-lg hover:bg-black/5 transition-colors"
+              className="p-2 text-[#336467] rounded-lg hover:bg-black/5 transition-colors cursor-pointer"
               aria-label="Toggle Navigation Menu"
             >
-              {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation Drawer */}
         {isOpen && (
-          <div className="md:hidden bg-[#FAF8F5] border-b border-[#E7E2DA] px-6 py-6 space-y-4 shadow-lg animate-in slide-in-from-top duration-200">
+          <div className="md:hidden bg-[#E0DDAE] border-b border-[#C8C488] px-6 py-6 space-y-4 shadow-lg animate-in slide-in-from-top duration-200">
             <div className="space-y-3">
               {navLinks.map((link) => (
                 <Link
                   key={link.label}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className="block text-base font-serif text-[#122026] py-1 hover:text-[#C4A67B]"
+                  className="block text-lg font-serif text-[#336467] py-1.5 hover:text-[#D7400B]"
                 >
                   {link.label}
                 </Link>
               ))}
-              <div className="pt-2 border-t border-[#E7E2DA] space-y-2">
+              <div className="pt-2 border-t border-[#C8C488] space-y-2">
                 <Link
                   href="/apply"
                   onClick={() => setIsOpen(false)}
-                  className="block text-xs uppercase tracking-wider text-[#5E686F] py-1 hover:text-[#122026]"
+                  className="block text-sm uppercase tracking-wider text-[#467679] py-1.5 hover:text-[#336467]"
                 >
                   Apply as Creator
                 </Link>
                 <Link
                   href="/list-property"
                   onClick={() => setIsOpen(false)}
-                  className="block text-xs uppercase tracking-wider text-[#5E686F] py-1 hover:text-[#122026]"
+                  className="block text-sm uppercase tracking-wider text-[#467679] py-1.5 hover:text-[#336467]"
                 >
                   List Property
                 </Link>
                 <Link
                   href="/status"
                   onClick={() => setIsOpen(false)}
-                  className="block text-xs uppercase tracking-wider text-[#5E686F] py-1 hover:text-[#122026]"
+                  className="block text-sm uppercase tracking-wider text-[#467679] py-1.5 hover:text-[#336467]"
                 >
                   Check Application Status
                 </Link>
                 <Link
                   href="/admin/login"
                   onClick={() => setIsOpen(false)}
-                  className="block text-xs uppercase tracking-wider text-[#122026] font-semibold py-1"
+                  className="block text-sm uppercase tracking-wider text-[#336467] font-semibold py-1.5"
                 >
                   Admin / Log in →
                 </Link>
@@ -147,7 +147,7 @@ export const Navbar: React.FC = () => {
                   setIsOpen(false);
                   setWaitlistOpen(true);
                 }}
-                className="w-full py-3 rounded-full bg-[#25aca9] hover:bg-[#1e9693] text-white text-xs font-medium uppercase tracking-widest text-center shadow-sm"
+                className="w-full py-3.5 rounded-full bg-[#D7400B] hover:bg-[#BD3607] text-white text-sm font-semibold uppercase tracking-widest text-center shadow-sm cursor-pointer"
               >
                 Join waitlist
               </button>

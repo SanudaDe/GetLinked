@@ -22,7 +22,7 @@ export const HowItWorksCurated: React.FC = () => {
   ];
 
   return (
-    <section id="how-it-works" className="py-20 sm:py-32 bg-[#FAF8F5] text-[#122026] overflow-hidden border-t border-[#E7E2DA]/60">
+    <section id="how-it-works" className="py-20 sm:py-32 bg-[#E0DDAE] text-[#336467] overflow-hidden border-t border-[#C8C488]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Top-Right Circular Seal Stamp (Matching Reference Image) */}
         <div className="hidden lg:block absolute top-0 right-8 w-36 h-36 select-none opacity-80 hover:opacity-100 transition-opacity">
@@ -34,7 +34,7 @@ export const HowItWorksCurated: React.FC = () => {
                 d="M 80, 80 m -62, 0 a 62,62 0 1,1 124,0 a 62,62 0 1,1 -124,0"
                 fill="none"
               />
-              <text className="text-[10px] font-mono tracking-[0.26em] fill-[#5E686F] uppercase">
+              <text className="text-[10px] font-mono tracking-[0.26em] fill-[#336467] uppercase">
                 <textPath href="#circlePath" startOffset="0%">
                   PLACES • POSSIBILITIES • GET LINKED •
                 </textPath>
@@ -48,7 +48,7 @@ export const HowItWorksCurated: React.FC = () => {
                 height="34"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="#25aca9"
+                stroke="#D7400B"
                 strokeWidth="1.25"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -70,38 +70,38 @@ export const HowItWorksCurated: React.FC = () => {
 
         {/* Section Header (Centered) */}
         <div className="text-center max-w-2xl mx-auto mb-16 sm:mb-24 space-y-4">
-          <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.25em] text-[#8A949C]">
+          <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.25em] text-[#D7400B]">
             HOW IT WORKS
           </span>
 
-          <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal text-[#122026] tracking-tight leading-[1.1]">
+          <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal text-[#336467] tracking-tight leading-[1.1]">
             Curated, not crowded.
           </h2>
 
-          <p className="text-sm sm:text-base text-[#5E686F] leading-relaxed max-w-xl mx-auto pt-1">
+          <p className="text-sm sm:text-base text-[#336467]/85 leading-relaxed max-w-xl mx-auto pt-1">
             Every creator and stay on Get Linked is reviewed before joining the platform. We keep it personal, relevant and genuine — so the right connections can happen.
           </p>
         </div>
 
         {/* 3 Steps Columns */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 sm:gap-12 lg:gap-16 relative">
-          {steps.map((step, idx) => (
+          {steps.map((step) => (
             <div
               key={step.number}
-              className="relative space-y-3 pt-6 border-t border-[#E7E2DA] md:border-t-0 md:pt-0"
+              className="relative space-y-3 pt-6 border-t border-[#C8C488] md:border-t-0 md:pt-0"
             >
               {/* Subtle Step Number */}
-              <span className="font-mono text-xs sm:text-sm text-[#8A949C] tracking-widest font-normal block">
+              <span className="font-mono text-xs sm:text-sm text-[#D7400B] tracking-widest font-semibold block">
                 {step.number}
               </span>
 
               {/* Step Title */}
-              <h3 className="font-serif text-2xl sm:text-3xl font-normal text-[#122026] tracking-tight">
+              <h3 className="font-serif text-2xl sm:text-3xl font-normal text-[#336467] tracking-tight">
                 {step.title}
               </h3>
 
               {/* Step Description */}
-              <p className="text-xs sm:text-sm text-[#5E686F] leading-relaxed max-w-xs">
+              <p className="text-xs sm:text-sm text-[#336467]/80 leading-relaxed max-w-xs">
                 {step.description}
               </p>
             </div>

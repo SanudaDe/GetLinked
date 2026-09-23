@@ -9,7 +9,7 @@ export const SriLankaAwaitsBanner: React.FC = () => {
 
   return (
     <>
-      <section className="relative min-h-[70vh] sm:min-h-[80vh] flex items-center justify-center overflow-hidden bg-[#122026] text-white">
+      <section className="relative min-h-[70vh] sm:min-h-[80vh] flex items-center justify-center overflow-hidden bg-[#336467] text-white">
         {/* Full-Bleed Aerial Coastal Photography */}
         <div className="absolute inset-0 z-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}

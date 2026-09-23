@@ -86,27 +86,27 @@ export default function FaqPage() {
   });
 
   return (
-    <div className="py-24 sm:py-32 bg-[#FAF8F5] text-[#122026] min-h-screen">
+    <div className="py-24 sm:py-32 bg-[#E0DDAE] text-[#336467] min-h-screen">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Functional Plain Header */}
         <div className="text-center space-y-3">
-          <h1 className="font-serif italic text-4xl sm:text-5xl font-normal text-[#122026]">
+          <h1 className="font-serif italic text-4xl sm:text-5xl font-normal text-[#336467]">
             Frequently Asked Questions
           </h1>
-          <p className="text-sm text-[#5E686F] max-w-lg mx-auto">
+          <p className="text-sm text-[#336467]/85 max-w-lg mx-auto">
             Direct answers regarding creator verification, property listings, and how introductions work.
           </p>
         </div>
 
         {/* Search Input */}
         <div className="relative max-w-md mx-auto">
-          <Search className="w-4 h-4 text-[#8A949C] absolute left-3.5 top-3" />
+          <Search className="w-4 h-4 text-[#336467]/60 absolute left-3.5 top-3" />
           <input
             type="text"
             placeholder="Search questions..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 rounded-full border border-[#E7E2DA] bg-white text-xs text-[#122026] focus:outline-none focus:border-[#25aca9]"
+            className="w-full pl-10 pr-4 py-2.5 rounded-full border border-[#C8C488] bg-white text-xs text-[#336467] focus:outline-none focus:border-[#D7400B]"
           />
         </div>
 
@@ -125,10 +125,10 @@ export default function FaqPage() {
                 setActiveTab(tab.id);
                 setOpenIndex(null);
               }}
-              className={`px-4 py-1.5 rounded-full transition-colors ${
+              className={`px-4 py-1.5 rounded-full transition-colors cursor-pointer ${
                 activeTab === tab.id
-                  ? "bg-[#25aca9] text-white"
-                  : "bg-white text-[#5E686F] border border-[#E7E2DA] hover:text-[#122026]"
+                  ? "bg-[#D7400B] text-white font-semibold"
+                  : "bg-[#ECE9C4] text-[#336467] border border-[#C8C488] hover:bg-[#D0CD96]"
               }`}
             >
               {tab.label}
@@ -143,23 +143,23 @@ export default function FaqPage() {
             return (
               <div
                 key={idx}
-                className="bg-white rounded-xl border border-[#E7E2DA] overflow-hidden transition-all"
+                className="bg-[#ECE9C4] rounded-xl border border-[#C8C488] overflow-hidden transition-all shadow-xs"
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : idx)}
-                  className="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-[#FAF8F5]/50 transition-colors"
+                  className="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-[#D0CD96]/40 transition-colors cursor-pointer"
                 >
-                  <span className="font-serif text-base sm:text-lg font-normal text-[#122026]">
+                  <span className="font-serif text-base sm:text-lg font-normal text-[#336467]">
                     {faq.question}
                   </span>
                   <ChevronDown
-                    className={`w-4 h-4 text-[#8A949C] shrink-0 transition-transform duration-200 ${
-                      isOpen ? "rotate-180 text-[#122026]" : ""
+                    className={`w-4 h-4 text-[#336467]/70 shrink-0 transition-transform duration-200 ${
+                      isOpen ? "rotate-180 text-[#D7400B]" : ""
                     }`}
                   />
                 </button>
                 {isOpen && (
-                  <div className="px-5 pb-5 text-xs sm:text-sm text-[#5E686F] leading-relaxed border-t border-[#F4EFEA] pt-3">
+                  <div className="px-5 pb-5 text-xs sm:text-sm text-[#336467]/85 leading-relaxed border-t border-[#C8C488]/60 pt-3">
                     {faq.answer}
                   </div>
                 )}

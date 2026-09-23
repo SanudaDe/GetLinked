@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface LogoProps {
-  variant?: "dark" | "light" | "original";
+  variant?: "dark" | "light" | "original" | "stacked";
   className?: string;
   height?: number;
   showSubtext?: boolean;
@@ -17,16 +17,31 @@ interface LogoProps {
 export const Logo: React.FC<LogoProps> = ({
   variant = "dark",
   className = "",
-  height = 34,
+  height = 42,
   showSubtext = false,
   subtext = "Sri Lanka",
   href,
   priority = false,
 }) => {
-  // Original aspect ratio 300:61
-  const width = Math.round(height * (300 / 61));
   const isLight = variant === "light";
-  const imageSrc = isLight ? "/logo-white.png" : "/images/logo.png";
+  const isStacked = variant === "stacked";
+  const isOriginal = variant === "original";
+
+  let imageSrc = "/logo-horizontal.png";
+  let aspectRatio = 496 / 100;
+
+  if (isOriginal) {
+    imageSrc = "/logo-original.jpg";
+    aspectRatio = 1024 / 576;
+  } else if (isStacked) {
+    imageSrc = "/logo.png";
+    aspectRatio = 442 / 296;
+  } else if (isLight) {
+    imageSrc = "/logo-white.png";
+    aspectRatio = 496 / 100;
+  }
+
+  const width = Math.round(height * aspectRatio);
 
   const content = (
     <div className={`inline-flex items-center gap-2.5 select-none ${className}`}>
@@ -46,8 +61,8 @@ export const Logo: React.FC<LogoProps> = ({
         <span
           className={`text-[9px] uppercase tracking-[0.22em] font-medium px-2 py-0.5 rounded-full border ${
             isLight
-              ? "text-[#FAF8F5]/80 border-white/20 bg-white/10"
-              : "text-[#8A949C] border-[#E7E2DA] bg-[#F4EFEA]"
+              ? "text-[#E0DDAE]/90 border-[#E0DDAE]/30 bg-[#E0DDAE]/10"
+              : "text-[#336467] border-[#336467]/20 bg-[#E0DDAE]"
           }`}
         >
           {subtext}

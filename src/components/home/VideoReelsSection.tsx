@@ -70,15 +70,15 @@ export const VideoReelsSection: React.FC = () => {
   };
 
   return (
-    <section className="py-20 sm:py-28 bg-[#FAF8F5] text-[#122026] overflow-hidden border-t border-[#E7E2DA]/60">
+    <section className="py-20 sm:py-28 bg-[#E0DDAE] text-[#336467] overflow-hidden border-t border-[#C8C488]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-14 sm:mb-18 space-y-3">
-          <h2 className="font-serif text-3xl sm:text-5xl font-normal text-[#122026] tracking-tight leading-tight">
+          <h2 className="font-serif text-3xl sm:text-5xl font-normal text-[#336467] tracking-tight leading-tight">
             Real stays through the creator&apos;s lens.
           </h2>
 
-          <p className="text-sm sm:text-base text-[#5E686F] leading-relaxed">
+          <p className="text-sm sm:text-base text-[#336467]/85 leading-relaxed">
             Watch recent visual collaborations captured by verified creators at distinctive boutique villas across Sri Lanka.
           </p>
         </div>
@@ -88,10 +88,10 @@ export const VideoReelsSection: React.FC = () => {
           {reels.map((reel) => (
             <div
               key={reel.id}
-              className="bg-white rounded-2xl overflow-hidden border border-[#E7E2DA] shadow-warm hover:shadow-warm-lg transition-all duration-300 group flex flex-col justify-between"
+              className="bg-[#ECE9C4] rounded-2xl overflow-hidden border border-[#C8C488] shadow-warm hover:shadow-warm-lg transition-all duration-300 group flex flex-col justify-between"
             >
               {/* Video Player Frame */}
-              <div className="relative aspect-[16/9] bg-[#122026] overflow-hidden">
+              <div className="relative aspect-[16/9] bg-[#1A3739] overflow-hidden">
                 <video
                   ref={(el) => {
                     videoRefs.current[reel.id] = el;
@@ -119,7 +119,7 @@ export const VideoReelsSection: React.FC = () => {
                 {/* Top Right Fullscreen Trigger */}
                 <button
                   onClick={() => setModalVideo(reel)}
-                  className="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/40 hover:bg-black/70 text-white backdrop-blur-md border border-white/20 transition-all"
+                  className="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/40 hover:bg-black/70 text-white backdrop-blur-md border border-white/20 transition-all cursor-pointer"
                   aria-label="Open Fullscreen Video Modal"
                 >
                   <Maximize2 className="w-4 h-4" />
@@ -130,7 +130,7 @@ export const VideoReelsSection: React.FC = () => {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => togglePlay(reel.id)}
-                      className="p-2 rounded-full bg-white/90 hover:bg-white text-[#122026] shadow-sm transition-transform hover:scale-105"
+                      className="p-2 rounded-full bg-white/90 hover:bg-white text-[#336467] shadow-sm transition-transform hover:scale-105 cursor-pointer"
                       aria-label={isPlaying[reel.id] ? "Pause video" : "Play video"}
                     >
                       {isPlaying[reel.id] ? (
@@ -142,7 +142,7 @@ export const VideoReelsSection: React.FC = () => {
 
                     <button
                       onClick={() => toggleMute(reel.id)}
-                      className="p-2 rounded-full bg-black/40 hover:bg-black/60 text-white backdrop-blur-md border border-white/20 transition-all"
+                      className="p-2 rounded-full bg-black/40 hover:bg-black/60 text-white backdrop-blur-md border border-white/20 transition-all cursor-pointer"
                       aria-label={isMuted[reel.id] ? "Unmute audio" : "Mute audio"}
                     >
                       {isMuted[reel.id] ? (
@@ -160,19 +160,19 @@ export const VideoReelsSection: React.FC = () => {
               </div>
 
               {/* Video Info Footer */}
-              <div className="p-5 sm:p-6 bg-[#FAF8F5] border-t border-[#E7E2DA] flex items-center justify-between">
+              <div className="p-5 sm:p-6 bg-[#E0DDAE] border-t border-[#C8C488] flex items-center justify-between">
                 <div>
-                  <h3 className="font-serif text-lg sm:text-xl font-normal text-[#122026]">
+                  <h3 className="font-serif text-lg sm:text-xl font-normal text-[#336467]">
                     {reel.title}
                   </h3>
-                  <p className="text-xs text-[#5E686F] mt-0.5">
-                    {reel.location} • <span className="text-[#122026] font-medium">{reel.creator}</span> ({reel.handle})
+                  <p className="text-xs text-[#336467]/75 mt-0.5">
+                    {reel.location} • <span className="text-[#336467] font-semibold">{reel.creator}</span> ({reel.handle})
                   </p>
                 </div>
 
                 <button
                   onClick={() => setModalVideo(reel)}
-                  className="text-xs font-semibold uppercase tracking-[0.2em] text-[#25aca9] hover:text-[#1e9693] transition-colors py-1 pl-2"
+                  className="text-xs font-semibold uppercase tracking-[0.2em] text-[#D7400B] hover:text-[#BD3607] transition-colors py-1 pl-2 cursor-pointer"
                 >
                   WATCH FULL →
                 </button>
@@ -190,7 +190,7 @@ export const VideoReelsSection: React.FC = () => {
             onClick={() => setModalVideo(null)}
           />
 
-          <div className="relative bg-[#122026] rounded-2xl overflow-hidden max-w-4xl w-full shadow-2xl border border-white/10 z-10 animate-in fade-in zoom-in-95 duration-200">
+          <div className="relative bg-[#336467] rounded-2xl overflow-hidden max-w-4xl w-full shadow-2xl border border-white/10 z-10 animate-in fade-in zoom-in-95 duration-200">
             <div className="flex items-center justify-between p-4 bg-black/40 border-b border-white/10 text-white">
               <div>
                 <h4 className="font-serif text-lg">{modalVideo.title}</h4>
