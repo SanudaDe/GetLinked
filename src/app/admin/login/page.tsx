@@ -24,11 +24,11 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-teal-950 flex items-center justify-center p-4">
-      <div className="bg-sand-50 rounded-2xl border border-sand-300 p-8 max-w-md w-full shadow-elevated space-y-6">
+    <div className="min-h-screen bg-[#E0DDAE] text-[#336467] flex items-center justify-center p-4">
+      <div className="bg-[#ECE9C4] rounded-2xl border border-[#C8C488] p-8 max-w-md w-full shadow-warm space-y-6">
         <div className="text-center space-y-3">
           <Logo variant="dark" height={38} className="mx-auto" showSubtext subtext="Staff Portal" />
-          <p className="text-xs text-ink-600">
+          <p className="text-xs text-[#336467]/80">
             Authorized admin access for verification and matchmaking.
           </p>
         </div>
@@ -41,11 +41,11 @@ export default function AdminLoginPage() {
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-1">
+            <label className="block text-xs font-semibold text-[#336467] uppercase tracking-wider mb-1">
               Admin Password
             </label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-ink-400 absolute left-3 top-3.5" />
+              <Lock className="w-4 h-4 text-[#336467]/50 absolute left-3 top-3.5" />
               <input
                 type="password"
                 required
@@ -55,26 +55,26 @@ export default function AdminLoginPage() {
                   setPassword(e.target.value);
                   setError(false);
                 }}
-                className="w-full pl-9 pr-4 py-2.5 rounded-lg border border-sand-400 bg-sand-50 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
+                className="w-full pl-9 pr-4 py-2.5 rounded-lg border border-[#C8C488] bg-white text-sm text-[#336467] focus:outline-none focus:ring-2 focus:ring-[#336467]"
               />
             </div>
-            <span className="text-[11px] text-ink-500 mt-1 block">
-              Demo access: use <code className="font-mono text-teal-900">admin123</code> or <code className="font-mono text-teal-900">getlinked2026</code>
+            <span className="text-[11px] text-[#336467]/70 mt-1 block">
+              Demo access: use <code className="font-mono text-[#D7400B] font-bold">admin123</code>
             </span>
           </div>
 
           <button
             type="submit"
-            className="w-full py-3 rounded-lg bg-teal-900 hover:bg-teal-800 text-sand-50 text-xs font-semibold uppercase tracking-wider shadow-warm transition-all"
+            className="w-full py-3 rounded-full bg-[#D7400B] hover:bg-[#BD3607] text-white text-xs font-semibold uppercase tracking-wider shadow-warm transition-all cursor-pointer"
           >
-            Sign In to Staff Workspace
+            Sign In with Password
           </button>
         </form>
 
         <div className="text-center pt-2">
           <Link
             href="/"
-            className="text-xs text-teal-900 hover:text-gold-600 font-medium"
+            className="text-xs text-[#336467] hover:text-[#D7400B] font-medium transition-colors"
           >
             ← Back to Get Linked Public Site
           </Link>

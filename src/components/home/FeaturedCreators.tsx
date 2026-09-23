@@ -84,7 +84,7 @@ export const FeaturedCreators: React.FC = () => {
             <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.25em] text-[#D7400B] block">
               Currently Travelling
             </span>
-            <h2 className="font-serif italic text-3xl sm:text-5xl font-normal text-[#336467] tracking-tight leading-[1.15]">
+            <h2 className="font-serif text-3xl sm:text-5xl font-normal text-[#336467] tracking-tight leading-[1.15]">
               A few of the voices heading to Sri Lanka this season.
             </h2>
           </div>

@@ -90,7 +90,7 @@ export default function FaqPage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Functional Plain Header */}
         <div className="text-center space-y-3">
-          <h1 className="font-serif italic text-4xl sm:text-5xl font-normal text-[#336467]">
+          <h1 className="font-serif text-4xl sm:text-5xl font-normal text-[#336467]">
             Frequently Asked Questions
           </h1>
           <p className="text-sm text-[#336467]/85 max-w-lg mx-auto">

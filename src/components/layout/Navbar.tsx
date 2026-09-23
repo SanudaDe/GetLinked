@@ -63,7 +63,7 @@ export const Navbar: React.FC = () => {
           {/* Right Navigation & CTAs */}
           <div className="hidden md:flex items-center gap-7 lg:gap-8">
             <Link
-              href="/admin/login"
+              href="/login"
               className="text-[15px] lg:text-base font-sans font-medium text-[#336467] hover:text-[#D7400B] transition-colors"
             >
               Log in
@@ -132,11 +132,11 @@ export const Navbar: React.FC = () => {
                   Check Application Status
                 </Link>
                 <Link
-                  href="/admin/login"
+                  href="/login"
                   onClick={() => setIsOpen(false)}
                   className="block text-sm uppercase tracking-wider text-[#336467] font-semibold py-1.5"
                 >
-                  Admin / Log in →
+                  Log in (Creators & Stays) →
                 </Link>
               </div>
             </div>

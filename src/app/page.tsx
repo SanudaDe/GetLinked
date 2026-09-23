@@ -16,11 +16,11 @@ export default function HomePage() {
       {/* 2. Editorial Story: People. Places. Possibilities */}
       <EditorialStorySection />
 
-      {/* 3. Destinations: Six places, each holding its own quiet */}
-      <DestinationsGrid />
-
-      {/* 4. Creators: A few of the voices heading to Sri Lanka this season */}
+      {/* 3. Influencers / Creators First: A few of the voices heading to Sri Lanka this season */}
       <FeaturedCreators />
+
+      {/* 4. Destinations: Six places, each holding its own quiet */}
+      <DestinationsGrid />
 
       {/* 5. Stays: Stays chosen with the same care as the work they inspire */}
       <FeaturedAccommodations />

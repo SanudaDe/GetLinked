@@ -9,32 +9,32 @@ export const DestinationsGrid: React.FC = () => {
     {
       city: "Galle",
       line: "Colonial ramparts, coastal villas, salt air at dusk.",
-      imageUrl: "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80",
+      imageUrl: "/images/galle.jpg",
     },
     {
       city: "Ella",
       line: "Mist over tea hills, a train winding through cloud.",
-      imageUrl: "https://images.unsplash.com/photo-1588598198321-9735fd52455b?auto=format&fit=crop&w=800&q=80",
+      imageUrl: "/images/ella.jpg",
     },
     {
       city: "Weligama",
       line: "Long boards, longer mornings, the sea setting the pace.",
-      imageUrl: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80",
+      imageUrl: "/images/weligama.jpg",
     },
     {
       city: "Colombo",
       line: "Rooftop light, old spice markets, a city in motion.",
-      imageUrl: "https://images.unsplash.com/photo-1586861635167-e5223aadc9fe?auto=format&fit=crop&w=800&q=80",
+      imageUrl: "/images/colombo.jpg",
     },
     {
       city: "Sigiriya",
       line: "A fifth-century rock rising from the jungle canopy.",
-      imageUrl: "https://images.unsplash.com/photo-1609137144822-261f855d6482?auto=format&fit=crop&w=800&q=80",
+      imageUrl: "/images/sigiriya.jpg",
     },
     {
       city: "Kandy",
       line: "Temple bells, lake mist, gardens older than memory.",
-      imageUrl: "https://images.unsplash.com/photo-1546708973-b339540b5162?auto=format&fit=crop&w=800&q=80",
+      imageUrl: "/images/kandy.jpg",
     },
   ];
 
@@ -47,7 +47,7 @@ export const DestinationsGrid: React.FC = () => {
             Where To Begin
           </span>
 
-          <h2 className="font-serif italic text-3xl sm:text-5xl font-normal text-[#336467] tracking-tight leading-[1.15]">
+          <h2 className="font-serif text-3xl sm:text-5xl font-normal text-[#336467] tracking-tight leading-[1.15]">
             Six places, each holding its own quiet.
           </h2>
         </div>

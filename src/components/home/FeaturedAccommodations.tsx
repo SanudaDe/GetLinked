@@ -47,7 +47,7 @@ export const FeaturedAccommodations: React.FC = () => {
             <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.25em] text-[#D7400B] block">
               Places Worth The Story
             </span>
-            <h2 className="font-serif italic text-3xl sm:text-5xl font-normal text-[#336467] tracking-tight leading-[1.15]">
+            <h2 className="font-serif text-3xl sm:text-5xl font-normal text-[#336467] tracking-tight leading-[1.15]">
               Stays chosen with the same care as the work they inspire.
             </h2>
           </div>

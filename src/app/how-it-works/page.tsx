@@ -31,7 +31,7 @@ export default function HowItWorksPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
         {/* Page Header */}
         <div className="space-y-4 text-center max-w-2xl mx-auto">
-          <h1 className="font-serif italic text-4xl sm:text-6xl font-normal text-[#336467] tracking-tight leading-tight">
+          <h1 className="font-serif text-4xl sm:text-6xl font-normal text-[#336467] tracking-tight leading-tight">
             How an introduction is made.
           </h1>
           <p className="text-sm sm:text-base text-[#336467]/85 leading-relaxed pt-2">

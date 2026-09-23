@@ -40,8 +40,8 @@ export const Hero: React.FC = () => {
             </span>
           </div>
 
-          {/* Editorial Display Headline */}
-          <h1 className="font-serif italic text-4xl sm:text-6xl lg:text-[66px] font-medium tracking-tight text-[#1A3739] leading-[1.12]">
+          {/* Editorial Display Headline (Upright serif matching Weligama card typography) */}
+          <h1 className="font-serif text-4xl sm:text-6xl lg:text-[68px] font-normal tracking-tight text-[#1A3739] leading-[1.14]">
             An island tells its story best through the people who stay.
           </h1>
 

@@ -8,7 +8,7 @@ export default function ForAccommodationsPage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         {/* Editorial Header */}
         <div className="space-y-5 text-center">
-          <h1 className="font-serif italic text-4xl sm:text-6xl font-normal text-[#336467] tracking-tight leading-tight">
+          <h1 className="font-serif text-4xl sm:text-6xl font-normal text-[#336467] tracking-tight leading-tight">
             For stays worth discovering.
           </h1>
           <p className="text-sm sm:text-base text-[#336467]/85 leading-relaxed max-w-xl mx-auto">
