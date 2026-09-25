@@ -26,6 +26,15 @@ import {
 } from "./mockStore";
 import { cleanWhatsAppNumber } from "@/utils/whatsapp";
 import { supabaseService } from "@/services/supabaseService";
+import { supabase } from "@/lib/supabaseClient";
+
+export interface AuthUser {
+  id: string;
+  email: string;
+  name: string;
+  avatar_url?: string;
+  role?: "creator" | "stay" | "admin";
+}
 
 interface StoreContextType {
   applications: InfluencerApplication[];
@@ -37,10 +46,13 @@ interface StoreContextType {
   ads: Advertisement[];
   auditLogs: AdminAuditLog[];
   adminUser: { email: string; name: string; role: string } | null;
+  authUser: AuthUser | null;
+  isAuthLoading: boolean;
   isConnectedToSupabase: boolean;
   isLoadingSupabase: boolean;
   loginAdmin: (password: string) => boolean;
   logoutAdmin: () => void;
+  signOutUser: () => Promise<void>;
   refreshData: () => Promise<void>;
 
   // Creator actions
@@ -122,6 +134,69 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [ads, setAds] = useState<Advertisement[]>(initialAds);
   const [auditLogs, setAuditLogs] = useState<AdminAuditLog[]>(initialAuditLogs);
   const [adminUser, setAdminUser] = useState<{ email: string; name: string; role: string } | null>(null);
+  const [authUser, setAuthUser] = useState<AuthUser | null>(null);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
+
+  // Listen to Supabase Auth State for Google / User login
+  useEffect(() => {
+    let mounted = true;
+
+    const checkAuth = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!mounted) return;
+        if (session?.user) {
+          const u = session.user;
+          const meta = u.user_metadata || {};
+          setAuthUser({
+            id: u.id,
+            email: u.email || "",
+            name: meta.full_name || meta.name || u.email?.split("@")[0] || "Influencer",
+            avatar_url: meta.avatar_url || meta.picture || undefined,
+          });
+        } else {
+          setAuthUser(null);
+        }
+      } catch (err) {
+        console.warn("Auth check failed:", err);
+      } finally {
+        if (mounted) setIsAuthLoading(false);
+      }
+    };
+
+    checkAuth();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!mounted) return;
+      if (session?.user) {
+        const u = session.user;
+        const meta = u.user_metadata || {};
+        setAuthUser({
+          id: u.id,
+          email: u.email || "",
+          name: meta.full_name || meta.name || u.email?.split("@")[0] || "Influencer",
+          avatar_url: meta.avatar_url || meta.picture || undefined,
+        });
+      } else {
+        setAuthUser(null);
+      }
+      setIsAuthLoading(false);
+    });
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  const signOutUser = async () => {
+    try {
+      await supabase.auth.signOut();
+    } catch (err) {
+      console.warn("Sign out exception:", err);
+    }
+    setAuthUser(null);
+  };
 
   // Load data from Supabase, with graceful fallback to localStorage / mockStore
   const loadData = useCallback(async () => {
@@ -359,13 +434,18 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         visit_end: target.visit_end,
         follower_count: target.follower_count,
         social_url: target.social_url,
+        avatar_url: target.avatar_url,
         trip_brief: target.trip_brief,
         is_active: true,
         created_at: new Date().toISOString(),
       };
       setProfiles((prev) => [targetProfile, ...prev]);
     } else {
-      targetProfile = { ...existingProf, is_active: true };
+      targetProfile = {
+        ...existingProf,
+        is_active: true,
+        avatar_url: target.avatar_url || existingProf.avatar_url,
+      };
       setProfiles((prev) =>
         prev.map((p) => (p.application_id === id ? targetProfile : p))
       );
@@ -808,6 +888,9 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         ads,
         auditLogs,
         adminUser,
+        authUser,
+        isAuthLoading,
+        signOutUser,
         isConnectedToSupabase,
         isLoadingSupabase,
         refreshData: loadData,

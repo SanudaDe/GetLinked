@@ -135,21 +135,34 @@ export default function AdminCreatorDetailPage({
           {/* Main Info Card */}
           <div className="bg-white rounded-2xl border border-sand-300 p-6 sm:p-8 space-y-6 shadow-warm">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-sand-200 pb-5">
-              <div>
-                <span className="text-[11px] font-mono font-bold text-gold-700 uppercase tracking-wider block">
-                  {app.reference_code}
-                </span>
-                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-teal-950 mt-1">
-                  {app.full_name}
-                </h2>
-                <div className="flex items-center gap-3 text-xs text-ink-600 mt-1">
-                  <span>{app.age} years old</span>
-                  <span>•</span>
-                  <span>Origin: {app.country}</span>
-                  <span>•</span>
-                  <span className="font-mono text-teal-950 font-semibold">
-                    WhatsApp: {app.whatsapp}
+              <div className="flex items-center gap-4">
+                {app.avatar_url ? (
+                  <img
+                    src={app.avatar_url}
+                    alt={app.full_name}
+                    className="w-16 h-16 rounded-full object-cover border-2 border-teal-900 shadow-sm shrink-0"
+                  />
+                ) : (
+                  <div className="w-16 h-16 rounded-full bg-sand-200 border-2 border-sand-300 flex items-center justify-center text-teal-950 font-bold font-serif text-2xl shrink-0">
+                    {app.full_name.charAt(0)}
+                  </div>
+                )}
+                <div>
+                  <span className="text-[11px] font-mono font-bold text-gold-700 uppercase tracking-wider block">
+                    {app.reference_code}
                   </span>
+                  <h2 className="font-serif text-2xl sm:text-3xl font-bold text-teal-950 mt-1">
+                    {app.full_name}
+                  </h2>
+                  <div className="flex items-center gap-3 text-xs text-ink-600 mt-1">
+                    <span>{app.age} years old</span>
+                    <span>•</span>
+                    <span>Origin: {app.country}</span>
+                    <span>•</span>
+                    <span className="font-mono text-teal-950 font-semibold">
+                      WhatsApp: {app.whatsapp}
+                    </span>
+                  </div>
                 </div>
               </div>
 

@@ -6,8 +6,11 @@ import { usePathname } from "next/navigation";
 import { Menu, X, ArrowRight, User, ShieldCheck } from "lucide-react";
 import { WaitlistModal } from "@/components/home/WaitlistModal";
 import { Logo } from "@/components/ui/Logo";
+import { useStore } from "@/data/store";
+import { formatStorageUrl } from "@/utils/formatters";
 
 export const Navbar: React.FC = () => {
+  const { authUser, signOutUser } = useStore();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [waitlistOpen, setWaitlistOpen] = useState(false);
@@ -61,13 +64,51 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Right Navigation & CTAs */}
-          <div className="hidden md:flex items-center gap-7 lg:gap-8">
-            <Link
-              href="/login"
-              className="text-[15px] lg:text-base font-sans font-medium text-[#336467] hover:text-[#D7400B] transition-colors"
-            >
-              Log in
-            </Link>
+          <div className="hidden md:flex items-center gap-5 lg:gap-6">
+            {authUser ? (
+              <div className="flex items-center gap-3">
+                <Link
+                  href="/status"
+                  className="flex items-center gap-2.5 p-1.5 pr-3.5 rounded-full hover:bg-black/5 border border-[#C8C488] transition-all bg-[#ECE9C4]/70 shadow-xs group"
+                  title="View My Application Status"
+                >
+                  {authUser.avatar_url ? (
+                    <img
+                      src={formatStorageUrl(authUser.avatar_url)}
+                      alt={authUser.name}
+                      className="w-8 h-8 rounded-full object-cover border border-[#336467]/30 shadow-xs"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 rounded-full bg-[#336467] text-white flex items-center justify-center text-xs font-bold font-serif">
+                      {authUser.name.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  <div className="text-left">
+                    <span className="text-xs font-bold text-[#336467] block leading-tight truncate max-w-[120px] group-hover:text-[#D7400B] transition-colors">
+                      {authUser.name}
+                    </span>
+                    <span className="text-[10px] text-[#336467]/75 block leading-tight font-medium">
+                      My Status
+                    </span>
+                  </div>
+                </Link>
+
+                <button
+                  onClick={signOutUser}
+                  className="text-xs font-semibold text-[#336467]/75 hover:text-rose-700 transition-colors py-1.5 px-2.5 rounded-lg hover:bg-rose-50/60"
+                  title="Sign out"
+                >
+                  Log out
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="text-[15px] lg:text-base font-sans font-medium text-[#336467] hover:text-[#D7400B] transition-colors"
+              >
+                Log in
+              </Link>
+            )}
 
             <button
               onClick={() => setWaitlistOpen(true)}
@@ -98,6 +139,42 @@ export const Navbar: React.FC = () => {
         {/* Mobile Navigation Drawer */}
         {isOpen && (
           <div className="md:hidden bg-[#E0DDAE] border-b border-[#C8C488] px-6 py-6 space-y-4 shadow-lg animate-in slide-in-from-top duration-200">
+            {/* Authenticated User Banner on Mobile */}
+            {authUser && (
+              <div className="flex items-center justify-between p-3.5 rounded-xl bg-[#ECE9C4] border border-[#C8C488] shadow-xs">
+                <div className="flex items-center gap-3 min-w-0">
+                  {authUser.avatar_url ? (
+                    <img
+                      src={formatStorageUrl(authUser.avatar_url)}
+                      alt={authUser.name}
+                      className="w-10 h-10 rounded-full object-cover border border-[#336467]/30 shrink-0"
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-[#336467] text-white flex items-center justify-center font-bold font-serif shrink-0">
+                      {authUser.name.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  <div className="min-w-0">
+                    <strong className="text-xs font-bold text-[#336467] block truncate">
+                      {authUser.name}
+                    </strong>
+                    <span className="text-[11px] text-[#336467]/75 block truncate">
+                      {authUser.email}
+                    </span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    signOutUser();
+                    setIsOpen(false);
+                  }}
+                  className="text-xs font-semibold text-rose-700 bg-rose-50 px-2.5 py-1.5 rounded-lg border border-rose-200 shrink-0 ml-2"
+                >
+                  Log out
+                </button>
+              </div>
+            )}
+
             <div className="space-y-3">
               {navLinks.map((link) => (
                 <Link
@@ -131,13 +208,15 @@ export const Navbar: React.FC = () => {
                 >
                   Check Application Status
                 </Link>
-                <Link
-                  href="/login"
-                  onClick={() => setIsOpen(false)}
-                  className="block text-sm uppercase tracking-wider text-[#336467] font-semibold py-1.5"
-                >
-                  Log in (Creators & Stays) →
-                </Link>
+                {!authUser && (
+                  <Link
+                    href="/login"
+                    onClick={() => setIsOpen(false)}
+                    className="block text-sm uppercase tracking-wider text-[#336467] font-semibold py-1.5"
+                  >
+                    Log in (Creators & Stays) →
+                  </Link>
+                )}
               </div>
             </div>
 

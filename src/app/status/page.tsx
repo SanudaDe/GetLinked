@@ -1,12 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { useStore } from "@/data/store";
 import { Badge } from "@/components/ui/Badge";
-import { Search, ShieldCheck, Clock, CheckCircle2, XCircle, AlertCircle } from "lucide-react";
+import { Search, ShieldCheck, Clock, CheckCircle2, XCircle, AlertCircle, UserCheck } from "lucide-react";
+import { formatStorageUrl } from "@/utils/formatters";
 
 export default function StatusLookupPage() {
-  const { lookupStatus } = useStore();
+  const { lookupStatus, authUser, signOutUser } = useStore();
 
   const [whatsapp, setWhatsapp] = useState("");
   const [refCode, setRefCode] = useState("");
@@ -31,7 +33,7 @@ export default function StatusLookupPage() {
   return (
     <div className="py-16 bg-sand-50 min-h-screen">
       <div className="max-w-xl mx-auto px-4 sm:px-6">
-        <div className="text-center space-y-3 mb-10">
+        <div className="text-center space-y-3 mb-8">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-900/10 text-teal-900 text-xs font-semibold uppercase tracking-wider">
             <Clock className="w-3.5 h-3.5 text-gold-500" />
             Application Tracker
@@ -43,6 +45,54 @@ export default function StatusLookupPage() {
             Enter the WhatsApp number used during application and your secure reference code (e.g. <span className="font-mono text-teal-900">GL-C-7741</span> or <span className="font-mono text-teal-900">GL-A-4102</span>).
           </p>
         </div>
+
+        {/* Logged-in Influencer Account Card */}
+        {authUser && (
+          <div className="bg-[#ECE9C4] rounded-2xl border border-[#C8C488] p-5 sm:p-6 mb-8 shadow-warm flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in">
+            <div className="flex items-center gap-4 text-left w-full sm:w-auto">
+              {authUser.avatar_url ? (
+                <img
+                  src={formatStorageUrl(authUser.avatar_url)}
+                  alt={authUser.name}
+                  className="w-14 h-14 rounded-full object-cover border-2 border-[#336467] shadow-sm shrink-0"
+                />
+              ) : (
+                <div className="w-14 h-14 rounded-full bg-[#336467] text-white flex items-center justify-center font-serif font-bold text-xl shrink-0">
+                  {authUser.name.charAt(0).toUpperCase()}
+                </div>
+              )}
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] uppercase font-bold tracking-wider text-[#D7400B]">
+                    Authenticated
+                  </span>
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" />
+                </div>
+                <h3 className="font-serif text-lg font-bold text-[#336467] truncate">
+                  {authUser.name}
+                </h3>
+                <p className="text-xs text-[#336467]/80 font-mono truncate">
+                  {authUser.email}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 w-full sm:w-auto justify-end shrink-0">
+              <Link
+                href="/apply"
+                className="px-4 py-2 rounded-xl bg-[#336467] hover:bg-[#254d50] text-white text-xs font-semibold transition-colors"
+              >
+                Apply as Creator
+              </Link>
+              <button
+                onClick={signOutUser}
+                className="px-3.5 py-2 rounded-xl bg-white/70 hover:bg-rose-50 text-rose-700 text-xs font-semibold border border-[#C8C488] transition-colors"
+              >
+                Log out
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Search Card */}
         <form

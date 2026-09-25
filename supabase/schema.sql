@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS influencer_applications (
   document_filename TEXT,
   document_size TEXT,
   social_url TEXT NOT NULL,
+  avatar_url TEXT,
   follower_count INTEGER NOT NULL,
   niche TEXT NOT NULL,
   city TEXT NOT NULL,

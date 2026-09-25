@@ -22,6 +22,20 @@ export function formatDateRange(start: string, end: string): string {
   }
 }
 
+/**
+ * Resolves a storage image reference or URL into a fully-qualified public URL.
+ * Handles full URLs (https://...), relative Supabase paths (avatars/..., properties/..., or filename.jpg).
+ */
+export function formatStorageUrl(pathOrUrl?: string, defaultFolder: "avatars" | "properties" = "avatars"): string {
+  if (!pathOrUrl) return "";
+  if (pathOrUrl.startsWith("http://") || pathOrUrl.startsWith("https://") || pathOrUrl.startsWith("data:")) {
+    return pathOrUrl;
+  }
+  const cleanPath = pathOrUrl.startsWith("/") ? pathOrUrl.slice(1) : pathOrUrl;
+  const folder = cleanPath.includes("/") ? "" : `${defaultFolder}/`;
+  return `https://omuepglydxtqdazqqhby.supabase.co/storage/v1/object/public/images/${folder}${cleanPath}`;
+}
+
 export const SRI_LANKA_CITIES = [
   "All Sri Lanka",
   "Colombo",

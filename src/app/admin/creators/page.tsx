@@ -164,56 +164,69 @@ export default function AdminCreatorsPage() {
                   key={app.id}
                   className="p-5 hover:bg-sand-100/60 transition-colors flex flex-col lg:flex-row lg:items-center justify-between gap-4"
                 >
-                  <div className="space-y-1.5 flex-grow">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-serif text-lg font-bold text-teal-950">
-                        {app.full_name}
-                      </span>
-                      <span className="font-mono text-xs text-teal-800 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
-                        {app.reference_code}
-                      </span>
-                      <span className="text-xs text-ink-600 font-medium">
-                        ({app.age} y/o • {app.country})
-                      </span>
-                      {app.is_duplicate && (
-                        <Badge variant="duplicate" size="sm">
-                          <AlertTriangle className="w-3 h-3" />
-                          <span>Possible Duplicate</span>
+                  <div className="flex items-start gap-3.5 flex-grow">
+                    {app.avatar_url ? (
+                      <img
+                        src={app.avatar_url}
+                        alt={app.full_name}
+                        className="w-12 h-12 rounded-full object-cover border border-sand-300 shadow-xs shrink-0 mt-0.5"
+                      />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-sand-200 border border-sand-300 flex items-center justify-center text-teal-950 font-bold font-serif shrink-0 mt-0.5">
+                        {app.full_name.charAt(0)}
+                      </div>
+                    )}
+                    <div className="space-y-1.5 flex-grow">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-serif text-lg font-bold text-teal-950">
+                          {app.full_name}
+                        </span>
+                        <span className="font-mono text-xs text-teal-800 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
+                          {app.reference_code}
+                        </span>
+                        <span className="text-xs text-ink-600 font-medium">
+                          ({app.age} y/o • {app.country})
+                        </span>
+                        {app.is_duplicate && (
+                          <Badge variant="duplicate" size="sm">
+                            <AlertTriangle className="w-3 h-3" />
+                            <span>Possible Duplicate</span>
+                          </Badge>
+                        )}
+                        <Badge
+                          variant={
+                            app.status === "APPROVED"
+                              ? "approved"
+                              : app.status === "REJECTED"
+                              ? "rejected"
+                              : "pending"
+                          }
+                          size="sm"
+                        >
+                          {app.status}
                         </Badge>
-                      )}
-                      <Badge
-                        variant={
-                          app.status === "APPROVED"
-                            ? "approved"
-                            : app.status === "REJECTED"
-                            ? "rejected"
-                            : "pending"
-                        }
-                        size="sm"
-                      >
-                        {app.status}
-                      </Badge>
-                    </div>
+                      </div>
 
-                    <div className="flex items-center gap-4 text-xs text-ink-700 flex-wrap">
-                      <span className="font-semibold text-teal-900">{app.niche}</span>
-                      <span>•</span>
-                      <span>{formatFollowerCount(app.follower_count)} followers</span>
-                      <span>•</span>
-                      <span className="flex items-center gap-1">
-                        <MapPin className="w-3 h-3 text-teal-800" />
-                        {app.city}
-                      </span>
-                      <span>•</span>
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-3 h-3 text-gold-600" />
-                        {formatDateRange(app.visit_start, app.visit_end)}
-                      </span>
-                    </div>
+                      <div className="flex items-center gap-4 text-xs text-ink-700 flex-wrap">
+                        <span className="font-semibold text-teal-900">{app.niche}</span>
+                        <span>•</span>
+                        <span>{formatFollowerCount(app.follower_count)} followers</span>
+                        <span>•</span>
+                        <span className="flex items-center gap-1">
+                          <MapPin className="w-3 h-3 text-teal-800" />
+                          {app.city}
+                        </span>
+                        <span>•</span>
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-3 h-3 text-gold-600" />
+                          {formatDateRange(app.visit_start, app.visit_end)}
+                        </span>
+                      </div>
 
-                    <p className="text-xs text-ink-600 line-clamp-1 max-w-2xl">
-                      {app.trip_brief}
-                    </p>
+                      <p className="text-xs text-ink-600 line-clamp-1 max-w-2xl">
+                        {app.trip_brief}
+                      </p>
+                    </div>
                   </div>
 
                   {/* Actions */}

@@ -4,7 +4,7 @@ import React, { useState, useMemo, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useStore } from "@/data/store";
-import { formatFollowerCount, formatDateRange, SRI_LANKA_CITIES, CREATOR_NICHES } from "@/utils/formatters";
+import { formatFollowerCount, formatDateRange, formatStorageUrl, SRI_LANKA_CITIES, CREATOR_NICHES } from "@/utils/formatters";
 import { checkDateOverlap, calculateOverlapDays } from "@/utils/dateOverlap";
 import { InfluencerProfile, NicheType } from "@/types";
 import { Modal } from "@/components/ui/Modal";
@@ -365,7 +365,7 @@ function CreatorDirectoryContent() {
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={
-                          creator.avatar_url ||
+                          formatStorageUrl(creator.avatar_url) ||
                           "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80"
                         }
                         alt={creator.display_name}

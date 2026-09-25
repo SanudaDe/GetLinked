@@ -4,7 +4,7 @@ import React, { useState, use } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { useStore } from "@/data/store";
-import { formatFollowerCount, formatDateRange } from "@/utils/formatters";
+import { formatFollowerCount, formatDateRange, formatStorageUrl } from "@/utils/formatters";
 import { calculateOverlapDays } from "@/utils/dateOverlap";
 import {
   MapPin,
@@ -130,7 +130,7 @@ export default function CreatorProfilePage({
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={
-                    creator.avatar_url ||
+                    formatStorageUrl(creator.avatar_url) ||
                     "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80"
                   }
                   alt={creator.display_name}

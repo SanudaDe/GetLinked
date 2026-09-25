@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight, X, CheckCircle2 } from "lucide-react";
 import { useStore } from "@/data/store";
 import { InfluencerProfile } from "@/types";
+import { formatStorageUrl } from "@/utils/formatters";
 
 interface CreatorSensoryItem {
   profile: InfluencerProfile;
@@ -116,7 +117,7 @@ export const FeaturedCreators: React.FC = () => {
                   <div className="relative h-64 w-full bg-[#D0CD96] overflow-hidden">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={creator.avatar_url || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"}
+                      src={formatStorageUrl(creator.avatar_url) || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"}
                       alt={creator.display_name}
                       className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-700 ease-out"
                     />

@@ -47,6 +47,7 @@ export interface InfluencerApplication {
   document_filename?: string;
   document_size?: string;
   social_url: string;
+  avatar_url?: string; // Creator public profile photo
   follower_count: number; // >= 5,000
   niche: NicheType;
   city: string; // Sri Lankan city

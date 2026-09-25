@@ -106,6 +106,16 @@ export const supabaseService = {
     try {
       const { error } = await supabase.from("influencer_applications").insert(app);
       if (error) {
+        // If column avatar_url does not exist yet in legacy table schema, retry without it
+        if (error.message?.includes("avatar_url")) {
+          const { avatar_url, ...rest } = app;
+          const { error: retryError } = await supabase.from("influencer_applications").insert(rest);
+          if (retryError) {
+            console.error("Supabase insertApplication retry error:", retryError);
+            return false;
+          }
+          return true;
+        }
         console.error("Supabase insertApplication error:", error);
         return false;
       }
@@ -464,12 +474,18 @@ export const supabaseService = {
   // ---------------------------------------------------------------------------
   // 10. SUPABASE STORAGE (Bucket: images)
   // ---------------------------------------------------------------------------
-  async uploadPropertyImage(file: File): Promise<{ url: string | null; error?: string }> {
+  /**
+   * Generic upload helper for images and assets into Supabase 'images' bucket.
+   */
+  async uploadImage(
+    file: File,
+    folder: "properties" | "avatars" | "documents" = "properties"
+  ): Promise<{ url: string | null; error?: string }> {
     try {
       const fileExt = file.name.split(".").pop()?.toLowerCase() || "jpg";
-      const cleanFileName = `properties/${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
+      const cleanFileName = `${folder}/${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
 
-      const { data, error } = await supabase.storage
+      const { error } = await supabase.storage
         .from("images")
         .upload(cleanFileName, file, {
           cacheControl: "3600",
@@ -477,7 +493,7 @@ export const supabaseService = {
         });
 
       if (error) {
-        console.warn("Supabase Storage upload error:", error);
+        console.warn(`Supabase Storage upload error in ${folder}:`, error);
         return { url: null, error: error.message };
       }
 
@@ -487,8 +503,20 @@ export const supabaseService = {
 
       return { url: publicData.publicUrl };
     } catch (err: any) {
-      console.warn("Supabase Storage upload exception:", err);
+      console.warn(`Supabase Storage upload exception in ${folder}:`, err);
       return { url: null, error: err?.message || "Storage upload failed" };
     }
+  },
+
+  async uploadPropertyImage(file: File): Promise<{ url: string | null; error?: string }> {
+    return this.uploadImage(file, "properties");
+  },
+
+  async uploadAvatar(file: File): Promise<{ url: string | null; error?: string }> {
+    return this.uploadImage(file, "avatars");
+  },
+
+  async uploadDocument(file: File): Promise<{ url: string | null; error?: string }> {
+    return this.uploadImage(file, "documents");
   },
 };

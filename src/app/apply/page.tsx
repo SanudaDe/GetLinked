@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useStore } from "@/data/store";
 import { SRI_LANKA_CITIES, CREATOR_NICHES } from "@/utils/formatters";
@@ -17,14 +17,21 @@ import {
   Lock,
   AlertCircle,
   FileCheck,
+  Camera,
+  UploadCloud,
+  X,
+  Loader2,
 } from "lucide-react";
+import { supabaseService } from "@/services/supabaseService";
 
 export default function ApplyPage() {
-  const { submitCreatorApplication } = useStore();
+  const { submitCreatorApplication, authUser } = useStore();
 
   const [step, setStep] = useState<number>(1);
   const [submittedCode, setSubmittedCode] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const [isUploadingDoc, setIsUploadingDoc] = useState(false);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -35,6 +42,7 @@ export default function ApplyPage() {
     country: "United Kingdom",
     // Step 2: Social
     socialUrl: "",
+    avatarUrl: "",
     followerCount: 15000,
     niche: "Travel" as NicheType,
     // Step 3: Travel
@@ -47,9 +55,21 @@ export default function ApplyPage() {
     documentReference: "",
     documentFileName: "",
     documentSize: "",
+    documentUrl: "",
     // Step 5: Consent
     consentGiven: false,
   });
+
+  // Automatically pre-fill name and avatar from authenticated Google / Supabase user
+  useEffect(() => {
+    if (authUser) {
+      setFormData((prev) => ({
+        ...prev,
+        fullName: prev.fullName || authUser.name || "",
+        avatarUrl: prev.avatarUrl || authUser.avatar_url || "",
+      }));
+    }
+  }, [authUser]);
 
   // Step
   const validateStep = (currentStep: number): boolean => {
@@ -133,21 +153,61 @@ export default function ApplyPage() {
     setStep((prev) => Math.max(1, prev - 1));
   };
 
-  const handleMockUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      // Validate file size (< 10MB)
-      if (file.size > 10 * 1024 * 1024) {
-        setErrorMsg("File size must be under 10MB.");
-        return;
-      }
-      setFormData({
-        ...formData,
-        documentFileName: file.name,
-        documentSize: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
-      });
-      setErrorMsg(null);
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setErrorMsg("Please upload a valid image file (JPG, PNG, WebP).");
+      return;
     }
+    if (file.size > 5 * 1024 * 1024) {
+      setErrorMsg("Profile photo must be under 5MB.");
+      return;
+    }
+
+    setIsUploadingAvatar(true);
+    setErrorMsg(null);
+
+    const res = await supabaseService.uploadAvatar(file);
+    if (res.url) {
+      setFormData((prev) => ({ ...prev, avatarUrl: res.url! }));
+    } else {
+      // Fallback preview
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        setFormData((prev) => ({ ...prev, avatarUrl: evt.target?.result as string }));
+      };
+      reader.readAsDataURL(file);
+      if (res.error) {
+        console.warn("Avatar upload notice:", res.error);
+      }
+    }
+    setIsUploadingAvatar(false);
+    e.target.value = "";
+  };
+
+  const handleDocumentUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      setErrorMsg("File size must be under 10MB.");
+      return;
+    }
+
+    setIsUploadingDoc(true);
+    setErrorMsg(null);
+
+    const res = await supabaseService.uploadDocument(file);
+    setFormData((prev) => ({
+      ...prev,
+      documentFileName: file.name,
+      documentSize: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
+      documentUrl: res.url || "",
+    }));
+    setIsUploadingDoc(false);
+    e.target.value = "";
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -164,9 +224,11 @@ export default function ApplyPage() {
       country: formData.country,
       document_type: formData.documentType,
       document_reference: formData.documentReference,
+      document_url: formData.documentUrl || undefined,
       document_filename: formData.documentFileName,
       document_size: formData.documentSize,
       social_url: formData.socialUrl,
+      avatar_url: formData.avatarUrl || undefined,
       follower_count: formData.followerCount,
       niche: formData.niche,
       city: formData.city,
@@ -456,6 +518,70 @@ export default function ApplyPage() {
                   </select>
                 </div>
               </div>
+
+              {/* Creator Profile / Avatar Photo */}
+              <div className="pt-2 border-t border-sand-200">
+                <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-1">
+                  Creator Profile Photo / Avatar (Recommended)
+                </label>
+                <p className="text-xs text-ink-600 mb-3">
+                  Upload a headshot or creative portrait. This will be featured on your creator card in the discovery directory.
+                </p>
+
+                {formData.avatarUrl ? (
+                  <div className="flex items-center gap-4 p-3.5 bg-sand-100 rounded-xl border border-sand-300">
+                    <img
+                      src={formData.avatarUrl}
+                      alt="Avatar Preview"
+                      className="w-16 h-16 rounded-full object-cover border-2 border-teal-900 shadow-sm shrink-0"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-semibold text-teal-950 flex items-center gap-1.5">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                        Photo uploaded to Supabase Storage
+                      </p>
+                      <p className="text-[11px] text-ink-500 truncate mt-0.5 font-mono">
+                        {formData.avatarUrl}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, avatarUrl: "" })}
+                      className="text-xs text-rose-700 hover:text-rose-900 font-semibold px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 border border-rose-200 transition-colors flex items-center gap-1 shrink-0"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                      <span>Remove</span>
+                    </button>
+                  </div>
+                ) : (
+                  <div className="relative border-2 border-dashed border-sand-400 hover:border-teal-800 rounded-xl p-5 text-center transition-colors bg-sand-100/40 hover:bg-sand-100/70">
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      disabled={isUploadingAvatar}
+                      onChange={handleAvatarUpload}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    />
+                    <div className="flex flex-col items-center justify-center gap-2 pointer-events-none">
+                      <div className="w-10 h-10 rounded-full bg-teal-900/10 text-teal-900 flex items-center justify-center">
+                        {isUploadingAvatar ? (
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                        ) : (
+                          <Camera className="w-5 h-5" />
+                        )}
+                      </div>
+                      <div>
+                        <span className="text-xs font-bold text-teal-950 block">
+                          {isUploadingAvatar ? "Uploading photo to Supabase..." : "Click or drag profile photo here to upload"}
+                        </span>
+                        <span className="text-[11px] text-ink-500 block mt-0.5">
+                          JPG, PNG, or WebP up to 5MB (Saved to Supabase images bucket)
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
@@ -586,26 +712,32 @@ export default function ApplyPage() {
                   <input
                     type="file"
                     accept=".pdf,.png,.jpg,.jpeg"
-                    onChange={handleMockUpload}
+                    disabled={isUploadingDoc}
+                    onChange={handleDocumentUpload}
                     className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
                   />
-                  <div className="space-y-2">
+                  <div className="space-y-2 pointer-events-none">
                     <div className="w-12 h-12 rounded-full bg-teal-900/10 text-teal-900 flex items-center justify-center mx-auto">
-                      <Upload className="w-6 h-6" />
+                      {isUploadingDoc ? (
+                        <Loader2 className="w-6 h-6 animate-spin" />
+                      ) : (
+                        <Upload className="w-6 h-6" />
+                      )}
                     </div>
                     {formData.documentFileName ? (
                       <div>
-                        <span className="text-sm font-bold text-teal-900 block">
+                        <span className="text-sm font-bold text-teal-900 block flex items-center justify-center gap-1.5">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 inline" />
                           {formData.documentFileName}
                         </span>
                         <span className="text-xs text-ink-500">
-                          {formData.documentSize} • Ready to upload securely
+                          {formData.documentSize} • Stored securely
                         </span>
                       </div>
                     ) : (
                       <div>
-                        <span className="text-sm font-semibold text-teal-900 block">
-                          Click or drag ID document to upload
+                        <span className="text-sm font-semibold text-teal-950 block">
+                          {isUploadingDoc ? "Uploading document to vault..." : "Click or drag ID document to upload"}
                         </span>
                         <span className="text-xs text-ink-500">
                           High resolution photo or PDF scan
@@ -639,6 +771,24 @@ export default function ApplyPage() {
 
               {/* Summary Card */}
               <div className="p-4 bg-sand-100 rounded-xl border border-sand-300 space-y-3 text-xs text-ink-800">
+                {formData.avatarUrl && (
+                  <div className="flex items-center gap-3 pb-3 border-b border-sand-200">
+                    <img
+                      src={formData.avatarUrl}
+                      alt={formData.fullName}
+                      className="w-14 h-14 rounded-full object-cover border-2 border-teal-900 shadow-sm"
+                    />
+                    <div>
+                      <span className="font-serif font-bold text-base text-teal-950 block">
+                        {formData.fullName}
+                      </span>
+                      <span className="text-[11px] text-emerald-700 font-semibold flex items-center gap-1">
+                        <CheckCircle2 className="w-3 h-3" /> Profile photo ready
+                      </span>
+                    </div>
+                  </div>
+                )}
+
                 <div className="grid grid-cols-2 gap-2">
                   <div>
                     <span className="text-ink-500 block">Full Name:</span>
