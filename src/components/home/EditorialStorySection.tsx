@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 
 export const EditorialStorySection: React.FC = () => {
   return (
-    <section id="our-story" className="py-20 sm:py-32 bg-[#E0DDAE] text-[#336467] overflow-hidden">
+    <section id="our-story" className="py-20 sm:py-32 bg-[#E0DDAE] text-[#336467] overflow-hidden border-t border-[#C8C488]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Left Column: Editorial Headline & Ethos */}
