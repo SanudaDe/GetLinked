@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { SRI_LANKA_CITIES, CREATOR_NICHES, PROPERTY_TYPES, OFFER_TYPES } from "@/utils/formatters";
 import { useStore } from "@/data/store";
+import { DateRangeCalendarPicker } from "@/components/ui/DateRangeCalendarPicker";
 
 export const HeroSearchWidget: React.FC = () => {
   const router = useRouter();
@@ -94,9 +95,9 @@ export const HeroSearchWidget: React.FC = () => {
   return (
     <div className="w-full max-w-5xl mx-auto -mt-6 sm:-mt-10 relative z-30 px-4 sm:px-0">
       {/* Container with Trip.com elevation and rounded card styling */}
-      <div className="bg-white rounded-2xl sm:rounded-3xl shadow-elevated border border-sand-300 overflow-hidden">
+      <div className="bg-white rounded-2xl sm:rounded-3xl shadow-elevated border border-sand-300">
         {/* Top Tab Bar (Trip.com Style) */}
-        <div className="flex items-center border-b border-sand-300 bg-sand-100/70 overflow-x-auto scrollbar-none">
+        <div className="flex items-center border-b border-sand-300 bg-sand-100/70 overflow-x-auto scrollbar-none rounded-t-2xl sm:rounded-t-3xl">
           <button
             onClick={() => setActiveTab("creators")}
             className={`flex items-center gap-2 px-6 py-4 text-xs sm:text-sm font-bold tracking-wide transition-all border-b-2 whitespace-nowrap ${
@@ -166,38 +167,17 @@ export const HeroSearchWidget: React.FC = () => {
                 </span>
               </div>
 
-              {/* Field 2: Travel Window (Start & End Dates) */}
-              <div className="lg:col-span-4 bg-sand-100/70 p-3 rounded-xl border border-sand-300 hover:border-teal-800 transition-colors focus-within:ring-2 focus-within:ring-teal-900">
-                <div className="flex items-center justify-between">
-                  <label className="block text-[10px] font-bold text-ink-500 uppercase tracking-wider mb-1 flex items-center gap-1">
-                    <Calendar className="w-3 h-3 text-gold-600" />
-                    <span>Travel Window (Arrival - Departure)</span>
-                  </label>
-                  {daysCount && (
-                    <span className="text-[10px] font-bold text-gold-700 bg-gold-100 px-1.5 py-0.2 rounded font-mono">
-                      {daysCount} Days
-                    </span>
-                  )}
-                </div>
-                <div className="grid grid-cols-2 gap-2 mt-0.5">
-                  <input
-                    type="date"
-                    value={creatorStartDate}
-                    onChange={(e) => setCreatorStartDate(e.target.value)}
-                    className="w-full bg-transparent text-xs font-semibold text-teal-950 focus:outline-none cursor-pointer"
-                    title="Arrival Date"
-                  />
-                  <input
-                    type="date"
-                    value={creatorEndDate}
-                    onChange={(e) => setCreatorEndDate(e.target.value)}
-                    className="w-full bg-transparent text-xs font-semibold text-teal-950 focus:outline-none cursor-pointer border-l border-sand-300 pl-2"
-                    title="Departure Date"
-                  />
-                </div>
-                <span className="text-[10px] text-ink-500 block truncate mt-0.5">
-                  Calculates exact date overlap
-                </span>
+              {/* Field 2: Travel Window (Interactive Calendar Picker) */}
+              <div className="lg:col-span-4 bg-sand-100/70 p-2.5 rounded-xl border border-sand-300 hover:border-teal-800 transition-colors focus-within:ring-2 focus-within:ring-teal-900 flex flex-col justify-center">
+                <DateRangeCalendarPicker
+                  startDate={creatorStartDate}
+                  endDate={creatorEndDate}
+                  onChange={(start, end) => {
+                    setCreatorStartDate(start);
+                    setCreatorEndDate(end);
+                  }}
+                  placeholder="Select Stay Dates (Calendar)"
+                />
               </div>
 
               {/* Field 3: Niche */}

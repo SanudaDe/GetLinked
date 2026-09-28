@@ -10,6 +10,7 @@ import { InfluencerProfile, NicheType } from "@/types";
 import { Modal } from "@/components/ui/Modal";
 import { AdBanner } from "@/components/home/AdBanner";
 import { PinContainer } from "@/components/ui/3d-pin";
+import { DateRangeCalendarPicker } from "@/components/ui/DateRangeCalendarPicker";
 
 function getSocialDisplay(url?: string, name?: string) {
   if (!url) return name ? `@${name.toLowerCase().replace(/\s+/g, "")}` : "instagram.com";
@@ -46,6 +47,8 @@ import {
   ShieldCheck,
   Star,
   ArrowUpDown,
+  ChevronDown,
+  X,
 } from "lucide-react";
 
 function CreatorDirectoryContent() {
@@ -184,6 +187,15 @@ function CreatorDirectoryContent() {
     setSortBy("recommended");
   };
 
+  const hasActiveFilters = Boolean(
+    selectedCity !== "All Sri Lanka" ||
+    selectedNiche !== "All Niches" ||
+    minFollowers !== 5000 ||
+    filterStartDate ||
+    filterEndDate ||
+    searchQuery.trim()
+  );
+
   return (
     <div className="py-10 bg-sand-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -215,136 +227,241 @@ function CreatorDirectoryContent() {
           </p>
         </div>
 
-        {/* Trip.com-Style Horizontal Filter Bar */}
-        <div className="bg-sand-50 rounded-2xl border border-sand-300 p-5 shadow-warm mb-8 space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3">
+        {/* Luxury Modern Filter & Search Hub */}
+        <div className="relative z-30 bg-white/95 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-sand-300 shadow-warm-lg p-4 sm:p-6 mb-8 space-y-4 transition-all">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3.5">
             {/* Search Input */}
-            <div className="lg:col-span-3">
-              <label className="block text-[10px] font-bold text-ink-600 uppercase tracking-wider mb-1">
-                Search Keyword / Name
+            <div className="lg:col-span-4">
+              <label className="block text-[10px] font-bold text-ink-600 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                <Search className="w-3 h-3 text-sinopia" />
+                <span>Search Creator or City</span>
               </label>
               <div className="relative">
-                <Search className="w-4 h-4 text-ink-400 absolute left-3 top-3" />
+                <Search className="w-4 h-4 text-ink-400 absolute left-3 top-3 pointer-events-none" />
                 <input
                   type="text"
-                  placeholder="e.g. Elena, Galle, Surf..."
+                  placeholder="e.g. Elena, Galle, Surfing, Luxury..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 rounded-lg border border-sand-400 bg-sand-50 text-xs focus:outline-none focus:ring-2 focus:ring-teal-900"
+                  className="w-full pl-9 pr-8 py-2.5 rounded-xl border border-sand-300 bg-sand-50/60 hover:bg-white focus:bg-white text-xs text-teal-950 placeholder:text-ink-400 font-medium focus:outline-none focus:ring-2 focus:ring-teal-900/20 focus:border-teal-900 transition-all shadow-xs"
                 />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-2.5 top-2.5 p-0.5 rounded-full text-ink-400 hover:text-sinopia hover:bg-sand-200/60 transition-colors"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
               </div>
             </div>
 
             {/* City Dropdown */}
             <div className="lg:col-span-3">
-              <label className="block text-[10px] font-bold text-ink-600 uppercase tracking-wider mb-1">
-                Destination City
+              <label className="block text-[10px] font-bold text-ink-600 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                <MapPin className="w-3 h-3 text-sinopia" />
+                <span>Destination City</span>
               </label>
-              <select
-                value={selectedCity}
-                onChange={(e) => setSelectedCity(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg border border-sand-400 bg-sand-50 text-xs focus:outline-none focus:ring-2 focus:ring-teal-900 cursor-pointer font-medium"
-              >
-                {SRI_LANKA_CITIES.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
+              <div className="relative">
+                <MapPin className="w-4 h-4 text-sinopia absolute left-3 top-3 pointer-events-none" />
+                <select
+                  value={selectedCity}
+                  onChange={(e) => setSelectedCity(e.target.value)}
+                  className="w-full appearance-none pl-9 pr-8 py-2.5 rounded-xl border border-sand-300 bg-sand-50/60 hover:bg-white focus:bg-white text-xs text-teal-950 font-semibold focus:outline-none focus:ring-2 focus:ring-teal-900/20 focus:border-teal-900 cursor-pointer transition-all shadow-xs"
+                >
+                  {SRI_LANKA_CITIES.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="w-4 h-4 text-ink-400 absolute right-3 top-3 pointer-events-none" />
+              </div>
             </div>
 
             {/* Niche Dropdown */}
-            <div className="lg:col-span-2">
-              <label className="block text-[10px] font-bold text-ink-600 uppercase tracking-wider mb-1">
-                Niche
+            <div className="lg:col-span-3">
+              <label className="block text-[10px] font-bold text-ink-600 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                <Sparkles className="w-3 h-3 text-sinopia" />
+                <span>Creative Niche</span>
               </label>
-              <select
-                value={selectedNiche}
-                onChange={(e) => setSelectedNiche(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg border border-sand-400 bg-sand-50 text-xs focus:outline-none focus:ring-2 focus:ring-teal-900 cursor-pointer"
-              >
-                <option value="All Niches">All Niches</option>
-                {CREATOR_NICHES.map((n) => (
-                  <option key={n} value={n}>
-                    {n}
-                  </option>
-                ))}
-              </select>
+              <div className="relative">
+                <Sparkles className="w-4 h-4 text-amber-500 absolute left-3 top-3 pointer-events-none" />
+                <select
+                  value={selectedNiche}
+                  onChange={(e) => setSelectedNiche(e.target.value)}
+                  className="w-full appearance-none pl-9 pr-8 py-2.5 rounded-xl border border-sand-300 bg-sand-50/60 hover:bg-white focus:bg-white text-xs text-teal-950 font-semibold focus:outline-none focus:ring-2 focus:ring-teal-900/20 focus:border-teal-900 cursor-pointer transition-all shadow-xs"
+                >
+                  <option value="All Niches">All Niches</option>
+                  {CREATOR_NICHES.map((n) => (
+                    <option key={n} value={n}>
+                      {n}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="w-4 h-4 text-ink-400 absolute right-3 top-3 pointer-events-none" />
+              </div>
             </div>
 
             {/* Follower Tier */}
             <div className="lg:col-span-2">
-              <label className="block text-[10px] font-bold text-ink-600 uppercase tracking-wider mb-1">
-                Audience Tier
+              <label className="block text-[10px] font-bold text-ink-600 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                <Users className="w-3 h-3 text-sinopia" />
+                <span>Audience Tier</span>
               </label>
-              <select
-                value={minFollowers}
-                onChange={(e) => setMinFollowers(Number(e.target.value))}
-                className="w-full px-3 py-2 rounded-lg border border-sand-400 bg-sand-50 text-xs focus:outline-none focus:ring-2 focus:ring-teal-900 cursor-pointer"
-              >
-                <option value={5000}>5K+ Followers</option>
-                <option value={20000}>20K+ Followers</option>
-                <option value={50000}>50K+ Followers</option>
-                <option value={100000}>100K+ Followers</option>
-              </select>
+              <div className="relative">
+                <Users className="w-4 h-4 text-teal-800 absolute left-3 top-3 pointer-events-none" />
+                <select
+                  value={minFollowers}
+                  onChange={(e) => setMinFollowers(Number(e.target.value))}
+                  className="w-full appearance-none pl-9 pr-8 py-2.5 rounded-xl border border-sand-300 bg-sand-50/60 hover:bg-white focus:bg-white text-xs text-teal-950 font-semibold focus:outline-none focus:ring-2 focus:ring-teal-900/20 focus:border-teal-900 cursor-pointer transition-all shadow-xs"
+                >
+                  <option value={5000}>5K+ Followers</option>
+                  <option value={20000}>20K+ Followers</option>
+                  <option value={50000}>50K+ Followers</option>
+                  <option value={100000}>100K+ Followers</option>
+                </select>
+                <ChevronDown className="w-4 h-4 text-ink-400 absolute right-3 top-3 pointer-events-none" />
+              </div>
+            </div>
+          </div>
+
+          {/* Secondary Controls Bar: Interactive Date Range Calendar & Sort Options */}
+          <div className="pt-3 border-t border-sand-200 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+            {/* Interactive Calendar Picker (No dd/mm/yyyy typing!) */}
+            <div className="flex-1 max-w-xl">
+              <DateRangeCalendarPicker
+                startDate={filterStartDate}
+                endDate={filterEndDate}
+                onChange={(start, end) => {
+                  setFilterStartDate(start);
+                  setFilterEndDate(end);
+                }}
+                placeholder="Click to pick stay dates on calendar"
+              />
             </div>
 
-            {/* Reset Button */}
-            <div className="lg:col-span-2 flex items-end">
+            {/* Right Controls: Sort & Reset */}
+            <div className="flex items-center gap-2.5 justify-between md:justify-end shrink-0">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-ink-500 whitespace-nowrap hidden sm:inline">
+                  Sort by:
+                </span>
+                <div className="relative">
+                  <ArrowUpDown className="w-3.5 h-3.5 text-sinopia absolute left-3 top-3 pointer-events-none" />
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value as "recommended" | "followers" | "dates")}
+                    className="appearance-none pl-8 pr-7 py-2 rounded-xl border border-sand-300 bg-white text-xs font-bold text-teal-950 hover:border-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-900/20 transition-all cursor-pointer shadow-xs"
+                  >
+                    <option value="recommended">⭐ Recommended</option>
+                    <option value="followers">🔥 Highest Followers</option>
+                    <option value="dates">🗓️ Earliest Travel Date</option>
+                  </select>
+                  <ChevronDown className="w-3.5 h-3.5 text-ink-400 absolute right-2.5 top-3 pointer-events-none" />
+                </div>
+              </div>
+
+              {/* Reset Button */}
               <button
+                type="button"
                 onClick={handleResetFilters}
-                className="w-full py-2 px-3 rounded-lg bg-sand-200 hover:bg-sand-300 text-ink-800 text-xs font-semibold border border-sand-400 flex items-center justify-center gap-1.5 transition-colors"
+                disabled={!hasActiveFilters}
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all ${
+                  hasActiveFilters
+                    ? "bg-sand-100 hover:bg-sand-200 text-teal-950 border-sand-400 hover:border-teal-900 shadow-xs cursor-pointer"
+                    : "opacity-40 text-ink-400 border-sand-300 cursor-not-allowed bg-transparent"
+                }`}
+                title="Reset all filters"
               >
-                <RotateCcw className="w-3.5 h-3.5" />
+                <RotateCcw className={`w-3.5 h-3.5 ${hasActiveFilters ? "text-sinopia hover:rotate-180 transition-transform duration-500" : ""}`} />
                 <span>Reset</span>
               </button>
             </div>
           </div>
 
-          {/* Date Overlap Strip */}
-          <div className="pt-3 border-t border-sand-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
-            <div className="flex items-center gap-2">
-              <Calendar className="w-3.5 h-3.5 text-gold-600 shrink-0" />
-              <span className="font-semibold text-teal-950">Overlapping Stay Window:</span>
-              <input
-                type="date"
-                value={filterStartDate}
-                onChange={(e) => setFilterStartDate(e.target.value)}
-                className="px-2 py-1 rounded border border-sand-400 bg-sand-50 text-xs focus:outline-none"
-              />
-              <span className="text-ink-400">to</span>
-              <input
-                type="date"
-                value={filterEndDate}
-                onChange={(e) => setFilterEndDate(e.target.value)}
-                className="px-2 py-1 rounded border border-sand-400 bg-sand-50 text-xs focus:outline-none"
-              />
-            </div>
-
-            {/* Sort Dropdown */}
-            <div className="flex items-center gap-2 ml-auto">
-              <ArrowUpDown className="w-3.5 h-3.5 text-ink-500" />
-              <span className="font-medium text-ink-600">Sort by:</span>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as "recommended" | "followers" | "dates")}
-                className="px-2 py-1 rounded border border-sand-400 bg-sand-50 text-xs font-semibold focus:outline-none"
+          {/* Active Filter Chips Strip */}
+          {hasActiveFilters && (
+            <div className="pt-3 border-t border-sand-200 flex items-center gap-2 flex-wrap text-xs">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-ink-500">
+                Active:
+              </span>
+              {searchQuery && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-sand-100 text-teal-950 text-[11px] font-semibold border border-sand-300">
+                  <span>&ldquo;{searchQuery}&rdquo;</span>
+                  <button onClick={() => setSearchQuery("")} className="hover:text-sinopia ml-0.5">
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
+              {selectedCity !== "All Sri Lanka" && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-sand-100 text-teal-950 text-[11px] font-semibold border border-sand-300">
+                  <MapPin className="w-3 h-3 text-sinopia" />
+                  <span>{selectedCity}</span>
+                  <button onClick={() => setSelectedCity("All Sri Lanka")} className="hover:text-sinopia ml-0.5">
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
+              {selectedNiche !== "All Niches" && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-sand-100 text-teal-950 text-[11px] font-semibold border border-sand-300">
+                  <Sparkles className="w-3 h-3 text-amber-500" />
+                  <span>{selectedNiche}</span>
+                  <button onClick={() => setSelectedNiche("All Niches")} className="hover:text-sinopia ml-0.5">
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
+              {minFollowers > 5000 && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-sand-100 text-teal-950 text-[11px] font-semibold border border-sand-300">
+                  <Users className="w-3 h-3 text-teal-800" />
+                  <span>{minFollowers / 1000}K+ Followers</span>
+                  <button onClick={() => setMinFollowers(5000)} className="hover:text-sinopia ml-0.5">
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
+              {(filterStartDate || filterEndDate) && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-sinopia/10 text-sinopia text-[11px] font-semibold border border-sinopia/30">
+                  <Calendar className="w-3 h-3 text-sinopia" />
+                  <span>{formatDateRange(filterStartDate, filterEndDate)}</span>
+                  <button
+                    onClick={() => {
+                      setFilterStartDate("");
+                      setFilterEndDate("");
+                    }}
+                    className="hover:text-sinopia-dark ml-0.5"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
+              <button
+                type="button"
+                onClick={handleResetFilters}
+                className="text-[11px] font-bold text-sinopia hover:underline ml-auto cursor-pointer"
               >
-                <option value="recommended">⭐ Recommended</option>
-                <option value="followers">🔥 Highest Followers</option>
-                <option value="dates">🗓️ Earliest Travel Date</option>
-              </select>
+                Clear all
+              </button>
             </div>
-          </div>
+          )}
         </div>
 
-        {/* Results Counter & Privacy Assurance */}
-        <div className="flex items-center justify-between text-xs text-ink-600 mb-6">
-          <span>
-            Showing <strong className="text-teal-950 font-bold">{filteredProfiles.length}</strong> verified creators scheduled in Sri Lanka
-          </span>
-          <span className="hidden sm:inline text-emerald-800 font-medium">
-            🔒 WhatsApp numbers & ID documents protected by Get Linked
+        {/* Results Counter & Verification Assurance */}
+        <div className="flex items-center justify-between text-xs text-ink-600 mb-6 flex-wrap gap-2">
+          <div className="flex items-center gap-2">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
+            </span>
+            <span>
+              Showing <strong className="text-teal-950 font-bold">{filteredProfiles.length}</strong> verified creators scheduled in Sri Lanka
+            </span>
+          </div>
+          <span className="hidden sm:inline-flex items-center gap-1.5 text-emerald-800 font-semibold bg-emerald-50 border border-emerald-200/60 px-2.5 py-0.5 rounded-full">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+            <span>ID & passport verification active</span>
           </span>
         </div>
 
@@ -368,7 +485,7 @@ function CreatorDirectoryContent() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-8">
+          <div className="relative z-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-8">
             {filteredProfiles.map((creator) => {
               const stayDays = calculateOverlapDays(
                 creator.visit_start,
