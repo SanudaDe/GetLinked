@@ -17,7 +17,7 @@ export const VideoReelsSection: React.FC = () => {
   const reels: ReelItem[] = [
     {
       id: "reel-1",
-      src: "/videos/reel-1.mp4",
+      src: "/videos/Web BG Video.mp4",
       title: "Coastal Villa Awakening",
       location: "Thalpe, Southern Province",
       creator: "Elena Rostova",
@@ -26,7 +26,7 @@ export const VideoReelsSection: React.FC = () => {
     },
     {
       id: "reel-2",
-      src: "/videos/reel-2.mp4",
+      src: "/videos/Web BG Video.mp4",
       title: "Heritage Courtyard Escape",
       location: "Galle Fort, Sri Lanka",
       creator: "Marcus Vance",

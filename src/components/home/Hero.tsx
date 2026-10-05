@@ -1,30 +1,70 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Play, Pause, Volume2, VolumeX } from "lucide-react";
 
 export const Hero: React.FC = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.defaultMuted = true;
+      video.muted = true;
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          console.warn("Autoplay was prevented by browser policy:", err);
+          setIsPlaying(false);
+        });
+      }
+    }
+  }, []);
+
+  const togglePlay = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      video.play().then(() => setIsPlaying(true)).catch(() => {});
+    } else {
+      video.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  const toggleMute = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = !video.muted;
+    setIsMuted(video.muted);
+  };
 
   return (
     <section className="relative min-h-[92vh] sm:min-h-screen flex flex-col justify-between overflow-hidden bg-white dark:bg-black transition-colors duration-200">
       {/* Background Video (Web BG Video.mp4) */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 z-0 overflow-hidden">
         <video
+          ref={videoRef}
           autoPlay
           loop
           muted
           playsInline
           preload="auto"
-          className="w-full h-full object-cover object-center transition-opacity duration-1000 dark:opacity-40"
-          style={{ filter: "brightness(0.95)" }}
+          className="w-full h-full object-cover object-center transition-opacity duration-700"
+          style={{ filter: "brightness(0.96)" }}
         >
-          <source src="/videos/web-bg-video.mp4" type="video/mp4" />
+          <source src="/videos/Web%20BG%20Video.mp4" type="video/mp4" />
           <source src="/videos/Web BG Video.mp4" type="video/mp4" />
+          <source src="/videos/web-bg-video.mp4" type="video/mp4" />
         </video>
 
-        {/* Horizontal Linear Shader: Smooth Left-to-Right Editorial Wash */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 via-45% to-transparent dark:from-black dark:via-black/90 pointer-events-none" />
+        {/* Ambient Overlays: Preserves Video Vibrancy while Ensuring Text Readability */}
+        <div className="absolute inset-0 bg-white/20 dark:bg-black/40 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/70 via-35% to-white/10 dark:from-black/95 dark:via-black/75 dark:via-35% dark:to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white dark:from-black to-transparent pointer-events-none" />
       </div>
 
       {/* Top Spacer for Fixed Transparent Navbar */}
@@ -40,7 +80,7 @@ export const Hero: React.FC = () => {
             </span>
           </div>
 
-          {/* Editorial Display Headline (Upright serif matching Weligama card typography) */}
+          {/* Editorial Display Headline */}
           <h1 className="font-serif text-4xl sm:text-6xl lg:text-[68px] font-normal tracking-tight text-[#1A3739] dark:text-white leading-[1.14]">
             An island tells its story best through the people who stay.
           </h1>
@@ -50,7 +90,7 @@ export const Hero: React.FC = () => {
             We bring Sri Lanka&apos;s finest stays together with the voices worth trusting with them.
           </p>
 
-          {/* Dual CTAs (Functional — keep plain, not italic) */}
+          {/* Dual CTAs */}
           <div className="flex items-center gap-4 mt-8 flex-wrap">
             <Link
               href="/creators"
@@ -76,9 +116,49 @@ export const Hero: React.FC = () => {
         </div>
       </div>
 
-      {/* Bottom Slogan */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-8 pt-4 flex items-end justify-end text-xs text-[#1A3739] dark:text-neutral-400">
-        <div className="text-right">
+      {/* Bottom Hero Bar with Controls & Slogan */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-8 pt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        {/* Discreet Video Controls */}
+        <div className="flex items-center gap-2">
+          <button
+            onClick={togglePlay}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/80 dark:bg-black/60 hover:bg-white dark:hover:bg-black/80 backdrop-blur-md border border-gray-200/70 dark:border-white/15 text-[#1A3739] dark:text-white text-xs font-medium shadow-xs transition-all cursor-pointer"
+            aria-label={isPlaying ? "Pause video" : "Play video"}
+          >
+            {isPlaying ? (
+              <>
+                <Pause className="w-3.5 h-3.5 fill-current" />
+                <span className="text-[11px] uppercase tracking-wider font-semibold">Pause Video</span>
+              </>
+            ) : (
+              <>
+                <Play className="w-3.5 h-3.5 fill-current" />
+                <span className="text-[11px] uppercase tracking-wider font-semibold">Play Video</span>
+              </>
+            )}
+          </button>
+
+          <button
+            onClick={toggleMute}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/80 dark:bg-black/60 hover:bg-white dark:hover:bg-black/80 backdrop-blur-md border border-gray-200/70 dark:border-white/15 text-[#1A3739] dark:text-white text-xs font-medium shadow-xs transition-all cursor-pointer"
+            aria-label={isMuted ? "Unmute audio" : "Mute audio"}
+          >
+            {isMuted ? (
+              <>
+                <VolumeX className="w-3.5 h-3.5" />
+                <span className="text-[11px] uppercase tracking-wider font-semibold">Sound Off</span>
+              </>
+            ) : (
+              <>
+                <Volume2 className="w-3.5 h-3.5" />
+                <span className="text-[11px] uppercase tracking-wider font-semibold">Sound On</span>
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* Right Slogan */}
+        <div className="text-left sm:text-right">
           <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#1A3739] dark:text-neutral-400">
             A BRIGHTER WAY TO TRAVEL TOGETHER
           </span>
