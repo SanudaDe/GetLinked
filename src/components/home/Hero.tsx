@@ -56,6 +56,7 @@ export const Hero: React.FC = () => {
           className="w-full h-full object-cover object-center transition-opacity duration-700"
           style={{ filter: "brightness(0.96)" }}
         >
+          <source src="https://omuepglydxtqdazqqhby.supabase.co/storage/v1/object/public/images/web-bg-video-optimized.mp4" type="video/mp4" />
           <source src="/videos/web-bg-video-optimized.mp4" type="video/mp4" />
           <source src="/videos/Web%20BG%20Video.mp4" type="video/mp4" />
           <source src="/videos/Web BG Video.mp4" type="video/mp4" />
