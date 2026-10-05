@@ -205,25 +205,25 @@ export default function ListPropertyPage() {
     const coverPhoto = images.length > 0 ? images[0] : null;
 
     return (
-      <div className="py-20 bg-sand-50 min-h-screen">
+      <div className="py-20 bg-white dark:bg-black text-[#1A3739] dark:text-white min-h-screen transition-colors duration-300">
         <div className="max-w-2xl mx-auto px-4 sm:px-6">
-          <div className="bg-sand-50 rounded-2xl border border-sand-300 p-8 sm:p-12 text-center space-y-6 shadow-warm">
-            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto">
+          <div className="bg-sand-50 dark:bg-neutral-950 rounded-2xl border border-sand-300 dark:border-neutral-800 p-8 sm:p-12 text-center space-y-6 shadow-warm">
+            <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 flex items-center justify-center mx-auto">
               <CheckCircle2 className="w-8 h-8" />
             </div>
 
             <div className="space-y-2">
-              <h1 className="font-serif text-3xl font-bold text-teal-950">
+              <h1 className="font-serif text-3xl font-bold text-teal-950 dark:text-white">
                 Property Listing Queued!
               </h1>
-              <p className="text-sm text-ink-700 max-w-md mx-auto leading-relaxed">
+              <p className="text-sm text-ink-700 dark:text-neutral-400 max-w-md mx-auto leading-relaxed">
                 Thank you for listing <strong>{formData.accommodationName}</strong>. Our concierge team will review your property details, photos, and contact you via WhatsApp.
               </p>
             </div>
 
             {/* Photo preview on success screen */}
             {coverPhoto && (
-              <div className="relative h-48 w-full max-w-md mx-auto rounded-xl overflow-hidden border border-sand-300 shadow-sm">
+              <div className="relative h-48 w-full max-w-md mx-auto rounded-xl overflow-hidden border border-sand-300 dark:border-neutral-800 shadow-sm">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={coverPhoto}
@@ -242,14 +242,14 @@ export default function ListPropertyPage() {
               </div>
             )}
 
-            <div className="p-4 bg-sand-200/60 rounded-xl border border-sand-300 max-w-sm mx-auto">
-              <span className="text-xs uppercase font-semibold text-ink-600 block">
+            <div className="p-4 bg-sand-200/60 dark:bg-neutral-900 rounded-xl border border-sand-300 dark:border-neutral-800 max-w-sm mx-auto">
+              <span className="text-xs uppercase font-semibold text-ink-600 dark:text-neutral-400 block">
                 Your Listing Reference:
               </span>
-              <span className="font-mono text-2xl font-bold text-teal-900 tracking-wider">
+              <span className="font-mono text-2xl font-bold text-teal-900 dark:text-[#D7400B] tracking-wider">
                 {submittedCode}
               </span>
-              <p className="text-[11px] text-ink-500 mt-1">
+              <p className="text-[11px] text-ink-500 dark:text-neutral-400 mt-1">
                 Keep this reference to check your listing and matching status.
               </p>
             </div>
@@ -257,13 +257,13 @@ export default function ListPropertyPage() {
             <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/status"
-                className="w-full sm:w-auto px-6 py-3 rounded-lg bg-teal-900 text-sand-50 text-xs font-semibold uppercase tracking-wider hover:bg-teal-800 transition-colors"
+                className="w-full sm:w-auto px-6 py-3 rounded-lg bg-teal-900 hover:bg-teal-800 dark:bg-[#D7400B] dark:hover:bg-[#BD3607] text-white text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer"
               >
                 Track Status
               </Link>
               <Link
                 href="/creators"
-                className="w-full sm:w-auto px-6 py-3 rounded-lg bg-sand-200 text-ink-900 text-xs font-semibold uppercase tracking-wider hover:bg-sand-300 transition-colors"
+                className="w-full sm:w-auto px-6 py-3 rounded-lg bg-sand-200 dark:bg-neutral-800 text-ink-900 dark:text-white text-xs font-semibold uppercase tracking-wider hover:bg-sand-300 dark:hover:bg-neutral-700 transition-colors cursor-pointer"
               >
                 Browse Creators Now
               </Link>
@@ -275,22 +275,22 @@ export default function ListPropertyPage() {
   }
 
   return (
-    <div className="py-16 bg-sand-50 min-h-screen">
+    <div className="py-16 bg-white dark:bg-black text-[#1A3739] dark:text-white min-h-screen transition-colors duration-300">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="text-center space-y-3 mb-10">
           <span className="text-xs uppercase font-bold tracking-widest text-gold-600 block">
             For Stays & Hospitality Hosts
           </span>
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-teal-950">
+          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-teal-950 dark:text-white">
             List Your Sri Lankan Property
           </h1>
-          <p className="text-xs sm:text-sm text-ink-700 max-w-lg mx-auto">
+          <p className="text-xs sm:text-sm text-ink-700 dark:text-neutral-400 max-w-lg mx-auto">
             Get matched with verified international and local travel creators visiting your destination.
           </p>
 
           {/* Dynamic Platform Phase Pricing Banner */}
-          <div className="p-3 bg-teal-900/10 border border-teal-900/20 rounded-xl max-w-xl mx-auto flex items-center justify-center gap-2 text-xs font-semibold text-teal-950">
+          <div className="p-3 bg-teal-900/10 dark:bg-teal-950/40 border border-teal-900/20 dark:border-teal-800/40 rounded-xl max-w-xl mx-auto flex items-center justify-center gap-2 text-xs font-semibold text-teal-950 dark:text-teal-200">
             <Sparkles className="w-4 h-4 text-gold-500 shrink-0" />
             <span>
               {settings.platform_phase === "FREE"
@@ -302,7 +302,7 @@ export default function ListPropertyPage() {
 
         {/* Error Alert */}
         {errorMsg && (
-          <div className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-medium flex items-center gap-2">
+          <div className="mb-6 p-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/50 text-rose-800 dark:text-rose-300 text-xs font-medium flex items-center gap-2">
             <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
             <span>{errorMsg}</span>
           </div>
@@ -311,14 +311,14 @@ export default function ListPropertyPage() {
         {/* Form Container */}
         <form
           onSubmit={handleSubmit}
-          className="bg-sand-50 rounded-2xl border border-sand-300 p-6 sm:p-10 shadow-warm space-y-8"
+          className="bg-sand-50 dark:bg-neutral-950 rounded-2xl border border-sand-300 dark:border-neutral-800 p-6 sm:p-10 shadow-warm space-y-8"
         >
           {/* Section 1: Property Info */}
-          <div className="border-b border-sand-200 pb-4">
-            <h2 className="font-serif text-xl font-bold text-teal-950">
+          <div className="border-b border-sand-200 dark:border-neutral-800 pb-4">
+            <h2 className="font-serif text-xl font-bold text-teal-950 dark:text-white">
               1. Property Details
             </h2>
-            <p className="text-xs text-ink-600 mt-0.5">
+            <p className="text-xs text-ink-600 dark:text-neutral-400 mt-0.5">
               Tell us about your accommodation in Sri Lanka.
             </p>
           </div>

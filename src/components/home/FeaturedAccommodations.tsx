@@ -227,11 +227,11 @@ export const FeaturedAccommodations: React.FC = () => {
   }, []);
 
   return (
-    <section className="py-24 sm:py-32 bg-[#E0DDAE] text-[#336467] border-t border-[#C8C488] overflow-hidden select-none">
+    <section className="py-24 sm:py-32 bg-white dark:bg-black text-[#1A3739] dark:text-white border-t border-gray-200 dark:border-neutral-800 overflow-hidden select-none transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* COMO Style Top Category Search / Filter */}
         <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-20">
-          <span className="text-[11px] sm:text-xs font-normal uppercase tracking-[0.32em] text-[#336467]/70 block mb-3.5">
+          <span className="text-[11px] sm:text-xs font-normal uppercase tracking-[0.32em] text-[#1A3739]/70 dark:text-neutral-400 block mb-3.5">
             PLACES WORTH THE STORY
           </span>
 
@@ -239,22 +239,22 @@ export const FeaturedAccommodations: React.FC = () => {
             <button
               type="button"
               onClick={() => setIsFilterOpen(!isFilterOpen)}
-              className="group inline-flex items-center gap-3 text-2xl sm:text-4xl lg:text-[46px] font-serif font-light uppercase tracking-[0.08em] sm:tracking-[0.12em] text-[#336467] hover:text-[#D7400B] transition-colors cursor-pointer select-none"
+              className="group inline-flex items-center gap-3 text-2xl sm:text-4xl lg:text-[46px] font-serif font-light uppercase tracking-[0.08em] sm:tracking-[0.12em] text-[#1A3739] dark:text-white hover:text-[#D7400B] transition-colors cursor-pointer select-none"
             >
               <span>{activeCategory}</span>
               <ChevronDown
-                className={`w-5 h-5 sm:w-7 sm:h-7 transition-transform duration-300 text-[#336467]/60 group-hover:text-[#D7400B] ${
+                className={`w-5 h-5 sm:w-7 sm:h-7 transition-transform duration-300 text-[#1A3739]/60 dark:text-neutral-400 group-hover:text-[#D7400B] ${
                   isFilterOpen ? "rotate-180" : ""
                 }`}
               />
             </button>
 
             {/* Hairline Underline across selector */}
-            <div className="w-full max-w-md mx-auto h-px bg-[#336467]/25 mt-3 transition-colors group-hover:bg-[#D7400B]" />
+            <div className="w-full max-w-md mx-auto h-px bg-[#1A3739]/20 dark:bg-neutral-700 mt-3 transition-colors group-hover:bg-[#D7400B]" />
 
             {/* Dropdown Menu */}
             {isFilterOpen && (
-              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-64 sm:w-80 bg-[#ECE9C4] border border-[#C8C488] rounded-xl shadow-warm-lg z-40 py-2 animate-in fade-in zoom-in-95 duration-200">
+              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-64 sm:w-80 bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 rounded-xl shadow-warm-lg z-40 py-2 animate-in fade-in zoom-in-95 duration-200">
                 {ACCOMMODATION_CATEGORIES.map((cat) => (
                   <button
                     key={cat}
@@ -265,8 +265,8 @@ export const FeaturedAccommodations: React.FC = () => {
                     }}
                     className={`w-full text-left px-5 py-2.5 text-xs uppercase tracking-[0.2em] transition-colors ${
                       activeCategory === cat
-                        ? "bg-[#E0DDAE] text-[#D7400B] font-semibold"
-                        : "text-[#336467] hover:bg-[#E0DDAE]/60 font-medium"
+                        ? "bg-gray-100 dark:bg-neutral-800 text-[#D7400B] font-semibold"
+                        : "text-[#1A3739] dark:text-neutral-200 hover:bg-gray-50 dark:hover:bg-neutral-800/60 font-medium"
                     }`}
                   >
                     {cat}
@@ -289,7 +289,7 @@ export const FeaturedAccommodations: React.FC = () => {
             type="button"
             onClick={handlePrev}
             aria-label="Previous stay"
-            className="absolute left-1 sm:left-4 lg:left-8 top-[32%] -translate-y-1/2 z-30 p-3 text-[#336467] hover:text-[#D7400B] transition-all duration-300 hover:-translate-x-1.5 cursor-pointer bg-[#E0DDAE]/70 sm:bg-transparent backdrop-blur-xs sm:backdrop-blur-none rounded-full group"
+            className="absolute left-1 sm:left-4 lg:left-8 top-[32%] -translate-y-1/2 z-30 p-3 text-[#336467] dark:text-neutral-300 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-all duration-300 hover:-translate-x-1.5 cursor-pointer bg-white/80 dark:bg-black/80 sm:bg-transparent dark:sm:bg-transparent backdrop-blur-xs sm:backdrop-blur-none rounded-full group"
           >
             <svg
               width="48"
@@ -313,7 +313,7 @@ export const FeaturedAccommodations: React.FC = () => {
             type="button"
             onClick={handleNext}
             aria-label="Next stay"
-            className="absolute right-1 sm:right-4 lg:right-8 top-[32%] -translate-y-1/2 z-30 p-3 text-[#336467] hover:text-[#D7400B] transition-all duration-300 hover:translate-x-1.5 cursor-pointer bg-[#E0DDAE]/70 sm:bg-transparent backdrop-blur-xs sm:backdrop-blur-none rounded-full group"
+            className="absolute right-1 sm:right-4 lg:right-8 top-[32%] -translate-y-1/2 z-30 p-3 text-[#336467] dark:text-neutral-300 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-all duration-300 hover:translate-x-1.5 cursor-pointer bg-white/80 dark:bg-black/80 sm:bg-transparent dark:sm:bg-transparent backdrop-blur-xs sm:backdrop-blur-none rounded-full group"
           >
             <svg
               width="48"
@@ -369,7 +369,7 @@ export const FeaturedAccommodations: React.FC = () => {
                   }`}
                 >
                   {/* Photo Frame (COMO Landscape Ratio) */}
-                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl sm:rounded-2xl bg-[#D0CD96] shadow-warm">
+                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl sm:rounded-2xl bg-neutral-100 dark:bg-neutral-900 shadow-warm dark:shadow-none">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={photo}
@@ -383,7 +383,7 @@ export const FeaturedAccommodations: React.FC = () => {
 
                   {/* Editorial Content Below Image (Pure COMO Minimalist Luxury) */}
                   <div className="pt-8 sm:pt-10 px-1 sm:px-2 space-y-3">
-                    <h3 className="font-serif text-3xl sm:text-4xl lg:text-[44px] font-light uppercase tracking-[0.14em] text-[#336467] leading-[1.1]">
+                    <h3 className="font-serif text-3xl sm:text-4xl lg:text-[44px] font-light uppercase tracking-[0.14em] text-[#336467] dark:text-white leading-[1.1]">
                       {stay.accommodation_name}
                     </h3>
 
@@ -392,11 +392,11 @@ export const FeaturedAccommodations: React.FC = () => {
                       {stay.property_type ? ` — ${stay.property_type}` : ""}
                     </p>
 
-                    <p className="text-sm sm:text-base text-[#336467]/85 font-light leading-relaxed max-w-xl pt-1">
+                    <p className="text-sm sm:text-base text-[#336467]/85 dark:text-neutral-300 font-light leading-relaxed max-w-xl pt-1">
                       {sensory.line}
                     </p>
 
-                    <p className="text-[11px] uppercase tracking-[0.2em] text-[#336467]/60 font-medium pt-1">
+                    <p className="text-[11px] uppercase tracking-[0.2em] text-[#336467]/60 dark:text-neutral-400 font-medium pt-1">
                       {sensory.offer.toUpperCase()}
                       {stay.minimum_followers
                         ? ` • MIN. ${formatFollowerCount(stay.minimum_followers)} FOLLOWERS`
@@ -411,9 +411,9 @@ export const FeaturedAccommodations: React.FC = () => {
                         onClick={(e) => {
                           if (!isActive) e.preventDefault();
                         }}
-                        className="group inline-flex items-center gap-3.5 text-xs font-semibold uppercase tracking-[0.24em] text-[#336467] hover:text-[#D7400B] transition-colors py-1 cursor-pointer disabled:cursor-default"
+                        className="group inline-flex items-center gap-3.5 text-xs font-semibold uppercase tracking-[0.24em] text-[#336467] dark:text-neutral-200 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors py-1 cursor-pointer disabled:cursor-default"
                       >
-                        <span className="w-8 h-[1px] bg-[#336467] group-hover:bg-[#D7400B] group-hover:w-12 transition-all duration-300" />
+                        <span className="w-8 h-[1px] bg-[#336467] dark:bg-neutral-400 group-hover:bg-[#D7400B] group-hover:w-12 transition-all duration-300" />
                         <span>Propose Collaboration</span>
                       </Link>
 
@@ -423,9 +423,9 @@ export const FeaturedAccommodations: React.FC = () => {
                         onClick={(e) => {
                           if (!isActive) e.preventDefault();
                         }}
-                        className="group inline-flex items-center gap-3.5 text-xs font-semibold uppercase tracking-[0.24em] text-[#336467] hover:text-[#D7400B] transition-colors py-1 disabled:cursor-default"
+                        className="group inline-flex items-center gap-3.5 text-xs font-semibold uppercase tracking-[0.24em] text-[#336467] dark:text-neutral-200 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors py-1 disabled:cursor-default"
                       >
-                        <span className="w-8 h-[1px] bg-[#336467] group-hover:bg-[#D7400B] group-hover:w-12 transition-all duration-300" />
+                        <span className="w-8 h-[1px] bg-[#336467] dark:bg-neutral-400 group-hover:bg-[#D7400B] group-hover:w-12 transition-all duration-300" />
                         <span>List Your Stay</span>
                       </Link>
                     </div>
@@ -439,18 +439,18 @@ export const FeaturedAccommodations: React.FC = () => {
         {/* Bottom Section: Counter & Directory Link */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6 max-w-5xl mx-auto mt-14 sm:mt-18 px-4">
           {/* Counter Indicator: 01 —— 04 */}
-          <div className="flex items-center gap-4 text-xs uppercase tracking-[0.25em] text-[#336467]/70 font-light">
-            <span className="font-semibold text-[#336467]">
+          <div className="flex items-center gap-4 text-xs uppercase tracking-[0.25em] text-[#336467]/70 dark:text-neutral-400 font-light">
+            <span className="font-semibold text-[#336467] dark:text-white">
               {String((currentIndex % N) + 1).padStart(2, "0")}
             </span>
-            <span className="w-12 h-px bg-[#336467]/30" />
+            <span className="w-12 h-px bg-[#336467]/30 dark:bg-neutral-700" />
             <span>{String(N).padStart(2, "0")}</span>
           </div>
 
           {/* Link to List Stays */}
           <Link
             href="/list-property"
-            className="group inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#336467] hover:text-[#D7400B] transition-colors"
+            className="group inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#336467] dark:text-neutral-300 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors"
           >
             <span>List your stay, free during launch</span>
             <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />

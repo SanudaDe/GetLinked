@@ -9,7 +9,7 @@ import { SriLankaAwaitsBanner } from "@/components/home/SriLankaAwaitsBanner";
 
 export default function HomePage() {
   return (
-    <main className="bg-[#E0DDAE] text-[#336467] selection:bg-[#D7400B] selection:text-white">
+    <main className="bg-white dark:bg-black text-[#1A3739] dark:text-white selection:bg-[#D7400B] selection:text-white transition-colors duration-200">
       {/* 1. Hero: An island tells its story best through the people who stay */}
       <Hero />
 

@@ -22,7 +22,7 @@ export const HowItWorksCurated: React.FC = () => {
   ];
 
   return (
-    <section id="how-it-works" className="py-20 sm:py-32 bg-[#E0DDAE] text-[#336467] overflow-hidden border-t border-[#C8C488]">
+    <section id="how-it-works" className="py-20 sm:py-32 bg-white text-[#1A3739] overflow-hidden border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Top-Right Circular Seal Stamp (Matching Reference Image) */}
         <div className="hidden lg:block absolute top-0 right-8 w-36 h-36 select-none opacity-80 hover:opacity-100 transition-opacity">
@@ -88,7 +88,7 @@ export const HowItWorksCurated: React.FC = () => {
           {steps.map((step) => (
             <div
               key={step.number}
-              className="relative space-y-3 pt-6 border-t border-[#C8C488] md:border-t-0 md:pt-0"
+              className="relative space-y-3 pt-6 border-t border-gray-200 md:border-t-0 md:pt-0"
             >
               {/* Subtle Step Number */}
               <span className="font-mono text-xs sm:text-sm text-[#D7400B] tracking-widest font-semibold block">

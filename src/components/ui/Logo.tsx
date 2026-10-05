@@ -38,7 +38,7 @@ export const Logo: React.FC<LogoProps> = ({
     aspectRatio = 442 / 296;
   } else if (isLight) {
     imageSrc = "/logo-white.png";
-    aspectRatio = 496 / 100;
+    aspectRatio = 442 / 296;
   }
 
   const width = Math.round(height * aspectRatio);
@@ -59,10 +59,10 @@ export const Logo: React.FC<LogoProps> = ({
 
       {showSubtext && (
         <span
-          className={`text-[9px] uppercase tracking-[0.22em] font-medium px-2 py-0.5 rounded-full border ${
+          className={`text-[9px] uppercase tracking-[0.22em] font-medium px-2 py-0.5 rounded-full border transition-colors ${
             isLight
-              ? "text-[#E0DDAE]/90 border-[#E0DDAE]/30 bg-[#E0DDAE]/10"
-              : "text-[#336467] border-[#336467]/20 bg-[#E0DDAE]"
+              ? "text-white/90 border-white/30 bg-white/10"
+              : "text-[#1A3739] dark:text-neutral-200 border-gray-200 dark:border-neutral-700 bg-gray-100 dark:bg-neutral-800"
           }`}
         >
           {subtext}

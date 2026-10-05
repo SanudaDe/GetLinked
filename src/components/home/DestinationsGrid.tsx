@@ -39,7 +39,7 @@ export const DestinationsGrid: React.FC = () => {
   ];
 
   return (
-    <section className="py-20 sm:py-28 bg-[#E0DDAE] text-[#336467] border-t border-[#C8C488]">
+    <section className="py-20 sm:py-28 bg-white dark:bg-black text-[#1A3739] dark:text-white border-t border-gray-200 dark:border-neutral-800 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="max-w-2xl mb-12 sm:mb-16 space-y-3">
@@ -47,7 +47,7 @@ export const DestinationsGrid: React.FC = () => {
             Where To Begin
           </span>
 
-          <h2 className="font-serif text-3xl sm:text-5xl font-normal text-[#336467] tracking-tight leading-[1.15]">
+          <h2 className="font-serif text-3xl sm:text-5xl font-normal text-[#336467] dark:text-white tracking-tight leading-[1.15]">
             Six places, each holding its own quiet.
           </h2>
         </div>
@@ -58,7 +58,7 @@ export const DestinationsGrid: React.FC = () => {
             <Link
               key={dest.city}
               href={`/creators?city=${encodeURIComponent(dest.city)}`}
-              className="group relative h-80 sm:h-96 rounded-2xl overflow-hidden shadow-warm hover:shadow-warm-lg transition-all duration-500 flex flex-col justify-end p-6 sm:p-7 bg-[#D0CD96]"
+              className="group relative h-80 sm:h-96 rounded-2xl overflow-hidden shadow-warm hover:shadow-warm-lg dark:shadow-none transition-all duration-500 flex flex-col justify-end p-6 sm:p-7 bg-neutral-100 dark:bg-neutral-900 border border-transparent dark:border-neutral-800"
             >
               {/* Image */}
               {/* eslint-disable-next-line @next/next/no-img-element */}

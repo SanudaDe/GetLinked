@@ -6,12 +6,12 @@ import { ArrowRight } from "lucide-react";
 
 export const ForCreatorsSection: React.FC = () => {
   return (
-    <section className="py-20 sm:py-28 bg-[#E0DDAE] text-[#336467] overflow-hidden border-t border-[#C8C488]">
+    <section className="py-20 sm:py-28 bg-white text-[#1A3739] overflow-hidden border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Left Column: Creator Image with Corner Text Overlay */}
           <div className="lg:col-span-6 relative order-2 lg:order-1">
-            <div className="relative rounded-2xl overflow-hidden shadow-warm-lg aspect-[4/3] sm:aspect-[16/11] bg-[#D0CD96] group">
+            <div className="relative rounded-2xl overflow-hidden shadow-warm-lg aspect-[4/3] sm:aspect-[16/11] bg-neutral-100 group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1600&q=85"

@@ -6,12 +6,12 @@ import { ArrowRight } from "lucide-react";
 
 export const EditorialStorySection: React.FC = () => {
   return (
-    <section id="our-story" className="py-20 sm:py-32 bg-[#E0DDAE] text-[#336467] overflow-hidden border-t border-[#C8C488]">
+    <section id="our-story" className="py-20 sm:py-32 bg-white dark:bg-black text-[#1A3739] dark:text-white overflow-hidden border-t border-gray-200 dark:border-neutral-800 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Left Column: Editorial Headline & Ethos */}
           <div className="lg:col-span-5 space-y-6">
-            <h2 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-normal text-[#336467] tracking-tight leading-[1.05]">
+            <h2 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-normal text-[#336467] dark:text-white tracking-tight leading-[1.05]">
               People.
               <br />
               Places.
@@ -19,14 +19,14 @@ export const EditorialStorySection: React.FC = () => {
               Possibilities.
             </h2>
 
-            <p className="text-sm sm:text-base text-[#336467]/85 leading-relaxed max-w-md pt-2">
+            <p className="text-sm sm:text-base text-[#336467]/85 dark:text-neutral-300 leading-relaxed max-w-md pt-2">
               Travel collaborations should begin with the right fit. Get Linked brings verified creators and distinctive stays together, making it easier to discover, connect and create something worth sharing.
             </p>
 
             <div className="pt-4">
               <Link
                 href="/about"
-                className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#336467] hover:text-[#D7400B] transition-colors group"
+                className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#336467] dark:text-neutral-300 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors group"
               >
                 <span>OUR STORY</span>
                 <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
@@ -36,7 +36,7 @@ export const EditorialStorySection: React.FC = () => {
 
           {/* Right Column: High-End Villa Bedroom Image with Script Accent */}
           <div className="lg:col-span-7 relative">
-            <div className="relative rounded-2xl overflow-hidden shadow-warm-lg aspect-[4/3] sm:aspect-[16/10] bg-[#D0CD96]">
+            <div className="relative rounded-2xl overflow-hidden shadow-warm-lg dark:shadow-none aspect-[4/3] sm:aspect-[16/10] bg-neutral-100 dark:bg-neutral-900">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1600&q=85"

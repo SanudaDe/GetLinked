@@ -252,36 +252,36 @@ export default function ApplyPage() {
 
   if (submittedCode) {
     return (
-      <div className="py-20 bg-sand-50 min-h-screen">
+      <div className="py-20 bg-white dark:bg-black text-[#1A3739] dark:text-white min-h-screen transition-colors duration-300">
         <div className="max-w-2xl mx-auto px-4 sm:px-6">
-          <div className="bg-sand-50 rounded-2xl border border-sand-300 p-8 sm:p-12 text-center space-y-6 shadow-warm">
-            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto">
+          <div className="bg-sand-50 dark:bg-neutral-950 rounded-2xl border border-sand-300 dark:border-neutral-800 p-8 sm:p-12 text-center space-y-6 shadow-warm">
+            <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 flex items-center justify-center mx-auto">
               <CheckCircle2 className="w-8 h-8" />
             </div>
 
             <div className="space-y-2">
-              <h1 className="font-serif text-3xl font-bold text-teal-950">
+              <h1 className="font-serif text-3xl font-bold text-teal-950 dark:text-white">
                 Application Received!
               </h1>
-              <p className="text-sm text-ink-700 max-w-md mx-auto leading-relaxed">
+              <p className="text-sm text-ink-700 dark:text-neutral-400 max-w-md mx-auto leading-relaxed">
                 Thank you, <strong>{formData.fullName}</strong>. Your creator application has been received and queued for manual human verification.
               </p>
             </div>
 
-            <div className="p-4 bg-sand-200/60 rounded-xl border border-sand-300 max-w-sm mx-auto">
-              <span className="text-xs uppercase font-semibold text-ink-600 block">
+            <div className="p-4 bg-sand-200/60 dark:bg-neutral-900 rounded-xl border border-sand-300 dark:border-neutral-800 max-w-sm mx-auto">
+              <span className="text-xs uppercase font-semibold text-ink-600 dark:text-neutral-400 block">
                 Your Secure Application Reference:
               </span>
-              <span className="font-mono text-2xl font-bold text-teal-900 tracking-wider">
+              <span className="font-mono text-2xl font-bold text-teal-900 dark:text-[#D7400B] tracking-wider">
                 {submittedCode}
               </span>
-              <p className="text-[11px] text-ink-500 mt-1">
+              <p className="text-[11px] text-ink-500 dark:text-neutral-400 mt-1">
                 Save this code to check your verification status anytime.
               </p>
             </div>
 
-            <div className="text-xs text-ink-600 max-w-md mx-auto space-y-2 text-left bg-sand-100 p-4 rounded-lg border border-sand-200">
-              <p className="font-semibold text-teal-950">What happens next?</p>
+            <div className="text-xs text-ink-600 dark:text-neutral-300 max-w-md mx-auto space-y-2 text-left bg-sand-100 dark:bg-neutral-900 p-4 rounded-lg border border-sand-200 dark:border-neutral-800">
+              <p className="font-semibold text-teal-950 dark:text-white">What happens next?</p>
               <ul className="list-disc pl-4 space-y-1">
                 <li>Our team verifies your identity document against your social profile.</li>
                 <li>Your profile remains completely private until approved.</li>
@@ -292,13 +292,13 @@ export default function ApplyPage() {
             <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/status"
-                className="w-full sm:w-auto px-6 py-3 rounded-lg bg-teal-900 text-sand-50 text-xs font-semibold uppercase tracking-wider hover:bg-teal-800 transition-colors"
+                className="w-full sm:w-auto px-6 py-3 rounded-lg bg-teal-900 hover:bg-teal-800 dark:bg-[#D7400B] dark:hover:bg-[#BD3607] text-white text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer"
               >
                 Track Status
               </Link>
               <Link
                 href="/"
-                className="w-full sm:w-auto px-6 py-3 rounded-lg bg-sand-200 text-ink-900 text-xs font-semibold uppercase tracking-wider hover:bg-sand-300 transition-colors"
+                className="w-full sm:w-auto px-6 py-3 rounded-lg bg-sand-200 dark:bg-neutral-800 text-ink-900 dark:text-white text-xs font-semibold uppercase tracking-wider hover:bg-sand-300 dark:hover:bg-neutral-700 transition-colors cursor-pointer"
               >
                 Return Home
               </Link>
@@ -310,18 +310,18 @@ export default function ApplyPage() {
   }
 
   return (
-    <div className="py-12 bg-sand-50 min-h-screen">
+    <div className="py-12 bg-white dark:bg-black text-[#1A3739] dark:text-white min-h-screen transition-colors duration-300">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center space-y-3 mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-900/10 text-teal-900 text-xs font-semibold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-900/10 dark:bg-teal-950/40 text-teal-900 dark:text-teal-300 text-xs font-semibold uppercase tracking-wider">
             <ShieldCheck className="w-3.5 h-3.5 text-gold-500" />
             Verified Creator Application
           </div>
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-teal-950">
+          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-teal-950 dark:text-white">
             Apply to Join Get Linked
           </h1>
-          <p className="text-xs sm:text-sm text-ink-700 max-w-lg mx-auto">
+          <p className="text-xs sm:text-sm text-ink-700 dark:text-neutral-400 max-w-lg mx-auto">
             Connect with Sri Lanka&apos;s finest hotels, villas, and boutique stays. 18+ age & 5,000+ authentic followers required.
           </p>
         </div>
@@ -329,7 +329,7 @@ export default function ApplyPage() {
         {/* Multi-step Stepper Progress Tracker per Modern Web Guidance */}
         <nav aria-label="Application Progress" className="mb-8">
           <ol className="flex items-center justify-between relative">
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 w-full bg-sand-300 -z-0" />
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 w-full bg-sand-300 dark:bg-neutral-800 -z-0" />
             {stepsMeta.map((s) => {
               const isDone = step > s.num;
               const isActive = step === s.num;
@@ -338,17 +338,17 @@ export default function ApplyPage() {
                   <div
                     className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
                       isDone
-                        ? "bg-teal-900 text-sand-50 shadow-warm"
+                        ? "bg-teal-900 dark:bg-[#D7400B] text-white shadow-warm"
                         : isActive
-                        ? "bg-gold-500 text-ink-950 ring-4 ring-gold-200"
-                        : "bg-sand-200 text-ink-600 border border-sand-400"
+                        ? "bg-gold-500 text-ink-950 ring-4 ring-gold-200 dark:ring-gold-900/40"
+                        : "bg-sand-200 dark:bg-neutral-800 text-ink-600 dark:text-neutral-400 border border-sand-400 dark:border-neutral-700"
                     }`}
                   >
                     {isDone ? <CheckCircle2 className="w-5 h-5" /> : s.num}
                   </div>
                   <span
                     className={`text-[11px] font-semibold mt-1.5 hidden sm:block ${
-                      isActive ? "text-teal-950" : "text-ink-500"
+                      isActive ? "text-teal-950 dark:text-white" : "text-ink-500 dark:text-neutral-400"
                     }`}
                   >
                     {s.title}
@@ -361,22 +361,22 @@ export default function ApplyPage() {
 
         {/* Error Alert Banner */}
         {errorMsg && (
-          <div className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-medium flex items-center gap-2">
+          <div className="mb-6 p-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/50 text-rose-800 dark:text-rose-300 text-xs font-medium flex items-center gap-2">
             <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
             <span>{errorMsg}</span>
           </div>
         )}
 
         {/* Main Form Container */}
-        <div className="bg-sand-50 rounded-2xl border border-sand-300 p-6 sm:p-10 shadow-warm">
+        <div className="bg-sand-50 dark:bg-neutral-950 rounded-2xl border border-sand-300 dark:border-neutral-800 p-6 sm:p-10 shadow-warm">
           {/* STEP 1: ABOUT YOU */}
           {step === 1 && (
             <div className="space-y-6 animate-in fade-in">
-              <div className="border-b border-sand-200 pb-4">
-                <h2 className="font-serif text-xl font-bold text-teal-950">
+              <div className="border-b border-sand-200 dark:border-neutral-800 pb-4">
+                <h2 className="font-serif text-xl font-bold text-teal-950 dark:text-white">
                   Step 1: Personal Details
                 </h2>
-                <p className="text-xs text-ink-600 mt-0.5">
+                <p className="text-xs text-ink-600 dark:text-neutral-400 mt-0.5">
                   Used solely for identity verification. Never publicly displayed.
                 </p>
               </div>

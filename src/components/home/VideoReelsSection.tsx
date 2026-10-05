@@ -70,15 +70,15 @@ export const VideoReelsSection: React.FC = () => {
   };
 
   return (
-    <section className="py-20 sm:py-28 bg-[#E0DDAE] text-[#336467] overflow-hidden border-t border-[#C8C488]">
+    <section className="py-20 sm:py-28 bg-white dark:bg-black text-[#1A3739] dark:text-white overflow-hidden border-t border-gray-200 dark:border-neutral-800 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-14 sm:mb-18 space-y-3">
-          <h2 className="font-serif text-3xl sm:text-5xl font-normal text-[#336467] tracking-tight leading-tight">
+          <h2 className="font-serif text-3xl sm:text-5xl font-normal text-[#1A3739] dark:text-white tracking-tight leading-tight">
             Real stays through the creator&apos;s lens.
           </h2>
 
-          <p className="text-sm sm:text-base text-[#336467]/85 leading-relaxed">
+          <p className="text-sm sm:text-base text-[#1A3739]/85 dark:text-neutral-300 leading-relaxed">
             Watch recent visual collaborations captured by verified creators at distinctive boutique villas across Sri Lanka.
           </p>
         </div>
@@ -88,10 +88,10 @@ export const VideoReelsSection: React.FC = () => {
           {reels.map((reel) => (
             <div
               key={reel.id}
-              className="bg-[#ECE9C4] rounded-2xl overflow-hidden border border-[#C8C488] shadow-warm hover:shadow-warm-lg transition-all duration-300 group flex flex-col justify-between"
+              className="bg-gray-50 dark:bg-neutral-900 rounded-2xl overflow-hidden border border-gray-200 dark:border-neutral-800 shadow-warm hover:shadow-warm-lg dark:shadow-none transition-all duration-300 group flex flex-col justify-between"
             >
               {/* Video Player Frame */}
-              <div className="relative aspect-[16/9] bg-[#1A3739] overflow-hidden">
+              <div className="relative aspect-[16/9] bg-[#1A3739] dark:bg-black overflow-hidden">
                 <video
                   ref={(el) => {
                     videoRefs.current[reel.id] = el;
@@ -130,7 +130,7 @@ export const VideoReelsSection: React.FC = () => {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => togglePlay(reel.id)}
-                      className="p-2 rounded-full bg-white/90 hover:bg-white text-[#336467] shadow-sm transition-transform hover:scale-105 cursor-pointer"
+                      className="p-2 rounded-full bg-white/90 hover:bg-white text-[#1A3739] shadow-sm transition-transform hover:scale-105 cursor-pointer"
                       aria-label={isPlaying[reel.id] ? "Pause video" : "Play video"}
                     >
                       {isPlaying[reel.id] ? (
@@ -160,13 +160,13 @@ export const VideoReelsSection: React.FC = () => {
               </div>
 
               {/* Video Info Footer */}
-              <div className="p-5 sm:p-6 bg-[#E0DDAE] border-t border-[#C8C488] flex items-center justify-between">
+              <div className="p-5 sm:p-6 bg-white dark:bg-neutral-950 border-t border-gray-200 dark:border-neutral-800 flex items-center justify-between">
                 <div>
-                  <h3 className="font-serif text-lg sm:text-xl font-normal text-[#336467]">
+                  <h3 className="font-serif text-lg sm:text-xl font-normal text-[#336467] dark:text-white">
                     {reel.title}
                   </h3>
-                  <p className="text-xs text-[#336467]/75 mt-0.5">
-                    {reel.location} • <span className="text-[#336467] font-semibold">{reel.creator}</span> ({reel.handle})
+                  <p className="text-xs text-[#336467]/75 dark:text-neutral-400 mt-0.5">
+                    {reel.location} • <span className="text-[#336467] dark:text-neutral-200 font-semibold">{reel.creator}</span> ({reel.handle})
                   </p>
                 </div>
 

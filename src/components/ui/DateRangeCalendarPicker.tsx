@@ -312,14 +312,14 @@ export const DateRangeCalendarPicker: React.FC<DateRangeCalendarPickerProps> = (
 
     return (
       <div className="w-full flex-1">
-        <div className="text-center font-serif font-bold text-teal-950 text-sm mb-3">
+        <div className="text-center font-serif font-bold text-teal-950 dark:text-white text-sm mb-3">
           {title}
         </div>
         <div className="grid grid-cols-7 gap-1 text-center mb-1">
           {DAYS_SHORT.map((d, idx) => (
             <div
               key={idx}
-              className="text-[10px] font-bold text-ink-500 uppercase tracking-wider py-1"
+              className="text-[10px] font-bold text-ink-500 dark:text-neutral-400 uppercase tracking-wider py-1"
             >
               {d}
             </div>
@@ -346,13 +346,13 @@ export const DateRangeCalendarPicker: React.FC<DateRangeCalendarPickerProps> = (
               >
                 {/* Connecting Range Background Bar */}
                 {isInRange && (
-                  <div className="absolute inset-y-1 inset-x-0 bg-sinopia/15" />
+                  <div className="absolute inset-y-1 inset-x-0 bg-sinopia/15 dark:bg-sinopia/25" />
                 )}
                 {isStart && (localEnd || hoveredDate) && (
-                  <div className="absolute inset-y-1 right-0 left-1/2 bg-sinopia/15" />
+                  <div className="absolute inset-y-1 right-0 left-1/2 bg-sinopia/15 dark:bg-sinopia/25" />
                 )}
                 {isEnd && localStart && (
-                  <div className="absolute inset-y-1 left-0 right-1/2 bg-sinopia/15" />
+                  <div className="absolute inset-y-1 left-0 right-1/2 bg-sinopia/15 dark:bg-sinopia/25" />
                 )}
 
                 {/* Date Button */}
@@ -363,8 +363,8 @@ export const DateRangeCalendarPicker: React.FC<DateRangeCalendarPickerProps> = (
                     isSelected
                       ? "bg-sinopia text-white shadow-md font-bold scale-105"
                       : isInRange
-                      ? "text-teal-950 hover:bg-sinopia/25 font-semibold"
-                      : "text-ink-800 hover:bg-sand-200/80 hover:text-teal-950"
+                      ? "text-teal-950 dark:text-white hover:bg-sinopia/25 font-semibold"
+                      : "text-ink-800 dark:text-neutral-200 hover:bg-sand-200/80 dark:hover:bg-neutral-800 hover:text-teal-950 dark:hover:text-white"
                   } ${isToday && !isSelected ? "border border-sinopia text-sinopia font-bold" : ""}`}
                 >
                   {item.dayNumber}
@@ -385,10 +385,10 @@ export const DateRangeCalendarPicker: React.FC<DateRangeCalendarPickerProps> = (
         onClick={() => setIsOpen((prev) => !prev)}
         className={`w-full group flex items-center justify-between gap-2.5 px-3.5 py-2 rounded-xl border text-left transition-all ${
           isOpen
-            ? "border-teal-900 bg-white ring-2 ring-teal-900/10 shadow-sm"
+            ? "border-teal-900 dark:border-[#D7400B] bg-white dark:bg-neutral-900 ring-2 ring-teal-900/10 dark:ring-[#D7400B]/20 shadow-sm"
             : localStart && localEnd
-            ? "border-sinopia/40 bg-sinopia/5 hover:border-sinopia"
-            : "border-sand-300 bg-white hover:border-teal-800 hover:bg-sand-50/50"
+            ? "border-sinopia/40 bg-sinopia/5 dark:bg-sinopia/10 hover:border-sinopia"
+            : "border-sand-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:border-teal-800 dark:hover:border-neutral-700 hover:bg-sand-50/50 dark:hover:bg-neutral-800"
         }`}
       >
         <div className="flex items-center gap-2.5 min-w-0">
@@ -396,31 +396,31 @@ export const DateRangeCalendarPicker: React.FC<DateRangeCalendarPickerProps> = (
             className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
               localStart && localEnd
                 ? "bg-sinopia text-white shadow-xs"
-                : "bg-sand-100 text-teal-900 group-hover:bg-sand-200"
+                : "bg-sand-100 dark:bg-neutral-800 text-teal-900 dark:text-teal-400 group-hover:bg-sand-200 dark:group-hover:bg-neutral-700"
             }`}
           >
             <CalendarIcon className="w-4 h-4" />
           </div>
 
           <div className="truncate">
-            <span className="block text-[10px] font-bold uppercase tracking-wider text-ink-500">
+            <span className="block text-[10px] font-bold uppercase tracking-wider text-ink-500 dark:text-neutral-400">
               Travel Window
             </span>
-            <span className="block text-xs font-semibold text-teal-950 truncate">
+            <span className="block text-xs font-semibold text-teal-950 dark:text-white truncate">
               {localStart && localEnd ? (
                 <>
                   <span className="font-bold">{formatHumanDate(localStart, false)}</span>
-                  <span className="text-ink-400 mx-1.5">—</span>
+                  <span className="text-ink-400 dark:text-neutral-500 mx-1.5">—</span>
                   <span className="font-bold">{formatHumanDate(localEnd, true)}</span>
                 </>
               ) : localStart ? (
                 <>
                   <span className="font-bold text-sinopia">{formatHumanDate(localStart, false)}</span>
-                  <span className="text-ink-400 mx-1.5">→</span>
-                  <span className="italic text-ink-500">Select departure date</span>
+                  <span className="text-ink-400 dark:text-neutral-500 mx-1.5">→</span>
+                  <span className="italic text-ink-500 dark:text-neutral-400">Select departure date</span>
                 </>
               ) : (
-                <span className="text-ink-500 font-normal">{placeholder}</span>
+                <span className="text-ink-500 dark:text-neutral-400 font-normal">{placeholder}</span>
               )}
             </span>
           </div>
@@ -429,7 +429,7 @@ export const DateRangeCalendarPicker: React.FC<DateRangeCalendarPickerProps> = (
         {/* Right Badges & Quick Clear */}
         <div className="flex items-center gap-1.5 shrink-0">
           {nightCount !== null && (
-            <span className="text-[10px] font-bold bg-teal-950 text-white px-2 py-0.5 rounded-full font-mono shadow-xs">
+            <span className="text-[10px] font-bold bg-teal-950 dark:bg-neutral-800 text-white px-2 py-0.5 rounded-full font-mono shadow-xs border border-transparent dark:border-neutral-700">
               {nightCount} {nightCount === 1 ? "night" : "nights"}
             </span>
           )}
@@ -445,7 +445,7 @@ export const DateRangeCalendarPicker: React.FC<DateRangeCalendarPickerProps> = (
                 }
               }}
               title="Clear travel dates"
-              className="p-1 rounded-full text-ink-400 hover:text-sinopia hover:bg-sand-200/80 transition-colors cursor-pointer"
+              className="p-1 rounded-full text-ink-400 dark:text-neutral-400 hover:text-sinopia hover:bg-sand-200/80 dark:hover:bg-neutral-800 transition-colors cursor-pointer"
             >
               <X className="w-3.5 h-3.5" />
             </div>
@@ -457,36 +457,36 @@ export const DateRangeCalendarPicker: React.FC<DateRangeCalendarPickerProps> = (
       {isOpen && (
         <div
           onMouseLeave={() => setHoveredDate(null)}
-          className="absolute left-0 mt-2 z-[100] w-full sm:w-[620px] max-w-[95vw] bg-white rounded-2xl border border-sand-300 shadow-[0_20px_50px_rgba(0,0,0,0.22)] p-4 sm:p-5 animate-in fade-in zoom-in-95 duration-150"
+          className="absolute left-0 mt-2 z-[100] w-full sm:w-[620px] max-w-[95vw] bg-white dark:bg-neutral-950 rounded-2xl border border-sand-300 dark:border-neutral-800 shadow-[0_20px_50px_rgba(0,0,0,0.22)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.8)] p-4 sm:p-5 animate-in fade-in zoom-in-95 duration-150 text-[#1A3739] dark:text-white"
         >
           {/* Top Bar with Presets & Navigation */}
-          <div className="flex items-center justify-between pb-3 mb-3 border-b border-sand-200 gap-2 flex-wrap">
+          <div className="flex items-center justify-between pb-3 mb-3 border-b border-sand-200 dark:border-neutral-800 gap-2 flex-wrap">
             <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-0.5">
               <button
                 type="button"
                 onClick={() => applyPreset("thisMonth")}
-                className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-sand-100 hover:bg-sand-200 text-teal-950 transition-colors shrink-0"
+                className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-sand-100 dark:bg-neutral-900 hover:bg-sand-200 dark:hover:bg-neutral-800 text-teal-950 dark:text-white transition-colors shrink-0"
               >
                 This Month
               </button>
               <button
                 type="button"
                 onClick={() => applyPreset("nextMonth")}
-                className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-sand-100 hover:bg-sand-200 text-teal-950 transition-colors shrink-0"
+                className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-sand-100 dark:bg-neutral-900 hover:bg-sand-200 dark:hover:bg-neutral-800 text-teal-950 dark:text-white transition-colors shrink-0"
               >
                 Next Month
               </button>
               <button
                 type="button"
                 onClick={() => applyPreset("next7")}
-                className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-sand-100 hover:bg-sand-200 text-teal-950 transition-colors shrink-0"
+                className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-sand-100 dark:bg-neutral-900 hover:bg-sand-200 dark:hover:bg-neutral-800 text-teal-950 dark:text-white transition-colors shrink-0"
               >
                 Next 7 Days
               </button>
               <button
                 type="button"
                 onClick={() => applyPreset("next14")}
-                className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-sand-100 hover:bg-sand-200 text-teal-950 transition-colors shrink-0"
+                className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-sand-100 dark:bg-neutral-900 hover:bg-sand-200 dark:hover:bg-neutral-800 text-teal-950 dark:text-white transition-colors shrink-0"
               >
                 Next 14 Days
               </button>
@@ -497,7 +497,7 @@ export const DateRangeCalendarPicker: React.FC<DateRangeCalendarPickerProps> = (
               <button
                 type="button"
                 onClick={handlePrevMonth}
-                className="p-1.5 rounded-lg border border-sand-300 hover:bg-sand-100 text-teal-950 transition-colors"
+                className="p-1.5 rounded-lg border border-sand-300 dark:border-neutral-800 hover:bg-sand-100 dark:hover:bg-neutral-900 text-teal-950 dark:text-white transition-colors cursor-pointer"
                 title="Previous Month"
               >
                 <ChevronLeft className="w-4 h-4" />
@@ -505,7 +505,7 @@ export const DateRangeCalendarPicker: React.FC<DateRangeCalendarPickerProps> = (
               <button
                 type="button"
                 onClick={handleNextMonth}
-                className="p-1.5 rounded-lg border border-sand-300 hover:bg-sand-100 text-teal-950 transition-colors"
+                className="p-1.5 rounded-lg border border-sand-300 dark:border-neutral-800 hover:bg-sand-100 dark:hover:bg-neutral-900 text-teal-950 dark:text-white transition-colors cursor-pointer"
                 title="Next Month"
               >
                 <ChevronRight className="w-4 h-4" />
@@ -514,7 +514,7 @@ export const DateRangeCalendarPicker: React.FC<DateRangeCalendarPickerProps> = (
           </div>
 
           {/* Calendars: Responsive Dual-Month on Desktop, Single on Mobile */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:divide-x sm:divide-sand-200">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:divide-x sm:divide-sand-200 dark:sm:divide-neutral-800">
             {/* Month 1 */}
             <div>
               {renderCalendarMonth(
@@ -537,14 +537,14 @@ export const DateRangeCalendarPicker: React.FC<DateRangeCalendarPickerProps> = (
           </div>
 
           {/* Bottom Action Footer */}
-          <div className="mt-4 pt-3 border-t border-sand-200 flex items-center justify-between gap-3 text-xs">
-            <div className="text-ink-600 flex items-center gap-1.5">
+          <div className="mt-4 pt-3 border-t border-sand-200 dark:border-neutral-800 flex items-center justify-between gap-3 text-xs">
+            <div className="text-ink-600 dark:text-neutral-400 flex items-center gap-1.5">
               <Clock className="w-3.5 h-3.5 text-sinopia" />
               <span>
                 {localStart && localEnd ? (
                   <>
-                    <strong className="text-teal-950 font-bold">{formatHumanDate(localStart)}</strong> to{" "}
-                    <strong className="text-teal-950 font-bold">{formatHumanDate(localEnd)}</strong>
+                    <strong className="text-teal-950 dark:text-white font-bold">{formatHumanDate(localStart)}</strong> to{" "}
+                    <strong className="text-teal-950 dark:text-white font-bold">{formatHumanDate(localEnd)}</strong>
                   </>
                 ) : (
                   <span>Click arrival date, then departure date</span>
@@ -556,7 +556,7 @@ export const DateRangeCalendarPicker: React.FC<DateRangeCalendarPickerProps> = (
               <button
                 type="button"
                 onClick={() => applyPreset("clear")}
-                className="px-3 py-1.5 rounded-lg text-ink-600 hover:text-teal-950 hover:bg-sand-100 font-semibold transition-colors"
+                className="px-3 py-1.5 rounded-lg text-ink-600 dark:text-neutral-400 hover:text-teal-950 dark:hover:text-white hover:bg-sand-100 dark:hover:bg-neutral-900 font-semibold transition-colors cursor-pointer"
               >
                 Clear
               </button>
@@ -571,7 +571,7 @@ export const DateRangeCalendarPicker: React.FC<DateRangeCalendarPickerProps> = (
                   }
                   setIsOpen(false);
                 }}
-                className="px-4 py-1.5 rounded-lg bg-teal-950 hover:bg-teal-900 text-white font-semibold transition-colors flex items-center gap-1 shadow-sm cursor-pointer"
+                className="px-4 py-1.5 rounded-lg bg-teal-950 hover:bg-teal-900 dark:bg-[#D7400B] dark:hover:bg-[#BD3607] text-white font-semibold transition-colors flex items-center gap-1 shadow-sm cursor-pointer"
               >
                 <Check className="w-3.5 h-3.5" />
                 <span>Apply</span>

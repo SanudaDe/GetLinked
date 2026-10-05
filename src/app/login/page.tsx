@@ -30,28 +30,28 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#E0DDAE] text-[#336467] flex items-center justify-center p-4 py-16">
-      <div className="bg-[#ECE9C4] rounded-2xl border border-[#C8C488] p-8 max-w-md w-full shadow-warm space-y-6">
+    <div className="min-h-screen bg-white dark:bg-black text-[#1A3739] dark:text-white flex items-center justify-center p-4 py-16 transition-colors duration-300">
+      <div className="bg-white dark:bg-neutral-950 rounded-2xl border border-gray-200 dark:border-neutral-800 p-8 max-w-md w-full shadow-xl space-y-6">
         {/* Header with Logo */}
         <div className="text-center space-y-2">
           <Logo variant="dark" height={42} className="mx-auto" />
-          <h1 className="font-serif text-2xl sm:text-3xl text-[#336467] pt-2">
+          <h1 className="font-serif text-2xl sm:text-3xl text-[#1A3739] dark:text-white pt-2">
             Welcome to Get Linked
           </h1>
-          <p className="text-xs sm:text-sm text-[#336467]/80 leading-relaxed">
+          <p className="text-xs sm:text-sm text-[#1A3739]/80 dark:text-neutral-400 leading-relaxed">
             Direct sign-in for verified creators and boutique accommodation hosts.
           </p>
         </div>
 
         {/* Role Switcher */}
-        <div className="grid grid-cols-2 p-1 rounded-xl bg-[#E0DDAE] border border-[#C8C488] text-xs font-semibold">
+        <div className="grid grid-cols-2 p-1 rounded-xl bg-gray-100 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 text-xs font-semibold">
           <button
             type="button"
             onClick={() => setRole("creator")}
             className={`py-2.5 rounded-lg flex items-center justify-center gap-2 transition-all cursor-pointer ${
               role === "creator"
                 ? "bg-[#D7400B] text-white shadow-xs"
-                : "text-[#336467] hover:text-[#D7400B]"
+                : "text-[#1A3739] dark:text-neutral-300 hover:text-[#D7400B]"
             }`}
           >
             <Compass className="w-3.5 h-3.5" />
@@ -63,7 +63,7 @@ export default function LoginPage() {
             className={`py-2.5 rounded-lg flex items-center justify-center gap-2 transition-all cursor-pointer ${
               role === "stay"
                 ? "bg-[#D7400B] text-white shadow-xs"
-                : "text-[#336467] hover:text-[#D7400B]"
+                : "text-[#1A3739] dark:text-neutral-300 hover:text-[#D7400B]"
             }`}
           >
             <Building2 className="w-3.5 h-3.5" />
@@ -77,10 +77,10 @@ export default function LoginPage() {
             onClick={handleGoogleSignIn}
             disabled={googleLoading}
             type="button"
-            className="w-full flex items-center justify-center gap-3 px-6 py-3.5 rounded-full bg-white hover:bg-white/95 text-[#336467] font-semibold text-xs sm:text-sm uppercase tracking-wider border border-[#C8C488] shadow-xs hover:shadow-md transition-all cursor-pointer disabled:opacity-60"
+            className="w-full flex items-center justify-center gap-3 px-6 py-3.5 rounded-full bg-white dark:bg-neutral-900 hover:bg-gray-50 dark:hover:bg-neutral-800 text-[#1A3739] dark:text-white font-semibold text-xs sm:text-sm uppercase tracking-wider border border-gray-200 dark:border-neutral-700 shadow-sm hover:shadow-md transition-all cursor-pointer disabled:opacity-60"
           >
             {googleLoading ? (
-              <div className="w-4 h-4 border-2 border-[#336467] border-t-transparent rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-[#1A3739] dark:border-white border-t-transparent rounded-full animate-spin" />
             ) : (
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path
@@ -104,14 +104,14 @@ export default function LoginPage() {
             <span>Sign in with Google</span>
           </button>
 
-          <p className="text-[11px] text-center text-[#336467]/70">
+          <p className="text-[11px] text-center text-[#1A3739]/70 dark:text-neutral-400">
             Use the Google Account registered with your application or profile.
           </p>
         </div>
 
         {/* Alternative Links: Status Tracker or Apply */}
-        <div className="pt-4 border-t border-[#C8C488] space-y-3">
-          <div className="flex items-center justify-between text-xs text-[#336467]/80">
+        <div className="pt-4 border-t border-gray-200 dark:border-neutral-800 space-y-3">
+          <div className="flex items-center justify-between text-xs text-[#1A3739]/80 dark:text-neutral-300">
             <span>Check application status?</span>
             <Link
               href="/status"
@@ -121,19 +121,19 @@ export default function LoginPage() {
             </Link>
           </div>
 
-          <div className="flex items-center justify-between text-xs text-[#336467]/80">
+          <div className="flex items-center justify-between text-xs text-[#1A3739]/80 dark:text-neutral-300">
             <span>New to Get Linked?</span>
             {role === "creator" ? (
               <Link
                 href="/apply"
-                className="font-semibold text-[#336467] underline hover:text-[#D7400B]"
+                className="font-semibold text-[#1A3739] dark:text-white underline hover:text-[#D7400B]"
               >
                 Apply as Creator
               </Link>
             ) : (
               <Link
                 href="/list-property"
-                className="font-semibold text-[#336467] underline hover:text-[#D7400B]"
+                className="font-semibold text-[#1A3739] dark:text-white underline hover:text-[#D7400B]"
               >
                 List Your Stay
               </Link>
@@ -142,10 +142,10 @@ export default function LoginPage() {
         </div>
 
         {/* Footer Admin Link */}
-        <div className="text-center pt-2 border-t border-[#C8C488]/60">
+        <div className="text-center pt-2 border-t border-gray-100 dark:border-neutral-900">
           <Link
             href="/admin/login"
-            className="text-[11px] text-[#336467]/60 hover:text-[#336467] transition-colors"
+            className="text-[11px] text-[#1A3739]/60 dark:text-neutral-500 hover:text-[#1A3739] dark:hover:text-white transition-colors"
           >
             Staff & Administrators Portal →
           </Link>

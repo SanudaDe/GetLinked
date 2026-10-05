@@ -57,10 +57,10 @@ export const WaitlistModal: React.FC<WaitlistModalProps> = ({
       />
 
       {/* Modal Content */}
-      <div className="relative bg-[#E0DDAE] text-[#336467] rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-[#C8C488] z-10 animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative bg-white dark:bg-neutral-950 text-[#1A3739] dark:text-white rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-gray-200 dark:border-neutral-800 z-10 animate-in fade-in zoom-in-95 duration-200">
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-2 text-[#336467]/70 hover:text-[#336467] rounded-full hover:bg-[#D0CD96] transition-colors cursor-pointer"
+          className="absolute top-5 right-5 p-2 text-[#336467]/70 dark:text-neutral-400 hover:text-[#336467] dark:hover:text-white rounded-full hover:bg-gray-100 dark:hover:bg-neutral-900 transition-colors cursor-pointer"
           aria-label="Close modal"
         >
           <X className="w-5 h-5" />
@@ -72,23 +72,23 @@ export const WaitlistModal: React.FC<WaitlistModalProps> = ({
               <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#D7400B]">
                 Get Linked Sri Lanka
               </span>
-              <h2 className="font-serif text-2xl sm:text-3xl font-normal text-[#336467] mt-1.5 leading-tight">
+              <h2 className="font-serif text-2xl sm:text-3xl font-normal text-[#1A3739] dark:text-white mt-1.5 leading-tight">
                 Join the Curated Network
               </h2>
-              <p className="text-xs sm:text-sm text-[#336467]/80 mt-2 leading-relaxed">
+              <p className="text-xs sm:text-sm text-[#1A3739]/80 dark:text-neutral-300 mt-2 leading-relaxed">
                 Connect with verified creators and distinctive boutique stays across Sri Lanka.
               </p>
             </div>
 
             {/* Role Selector Tabs */}
-            <div className="flex rounded-full bg-[#D0CD96] p-1 mb-6 border border-[#C8C488]">
+            <div className="flex rounded-full bg-gray-100 dark:bg-neutral-900 p-1 mb-6 border border-gray-200 dark:border-neutral-800">
               <button
                 type="button"
                 onClick={() => setRole("creator")}
                 className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                   role === "creator"
                     ? "bg-[#D7400B] text-white shadow-sm"
-                    : "text-[#336467] hover:text-[#336467]/80"
+                    : "text-[#336467] dark:text-neutral-400 hover:text-[#336467] dark:hover:text-white"
                 }`}
               >
                 <Compass className="w-3.5 h-3.5" />
@@ -100,7 +100,7 @@ export const WaitlistModal: React.FC<WaitlistModalProps> = ({
                 className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                   role === "stay"
                     ? "bg-[#D7400B] text-white shadow-sm"
-                    : "text-[#336467] hover:text-[#336467]/80"
+                    : "text-[#336467] dark:text-neutral-400 hover:text-[#336467] dark:hover:text-white"
                 }`}
               >
                 <Building2 className="w-3.5 h-3.5" />
@@ -113,10 +113,10 @@ export const WaitlistModal: React.FC<WaitlistModalProps> = ({
               onClick={handleGoogleSignIn}
               disabled={googleLoading}
               type="button"
-              className="w-full flex items-center justify-center gap-3 px-6 py-3 rounded-full bg-white hover:bg-white/90 text-[#336467] font-semibold text-xs uppercase tracking-wider border border-[#C8C488] shadow-xs transition-all cursor-pointer disabled:opacity-60 mb-4"
+              className="w-full flex items-center justify-center gap-3 px-6 py-3 rounded-full bg-white dark:bg-neutral-900 hover:bg-gray-50 dark:hover:bg-neutral-850 text-[#1A3739] dark:text-white font-semibold text-xs uppercase tracking-wider border border-gray-200 dark:border-neutral-700 shadow-xs transition-all cursor-pointer disabled:opacity-60 mb-4"
             >
               {googleLoading ? (
-                <div className="w-4 h-4 border-2 border-[#336467] border-t-transparent rounded-full animate-spin" />
+                <div className="w-4 h-4 border-2 border-[#1A3739] dark:border-white border-t-transparent rounded-full animate-spin" />
               ) : (
                 <svg className="w-4 h-4" viewBox="0 0 24 24">
                   <path
@@ -141,8 +141,8 @@ export const WaitlistModal: React.FC<WaitlistModalProps> = ({
             </button>
 
             <div className="relative flex items-center justify-center mb-5">
-              <div className="border-t border-[#C8C488] w-full" />
-              <span className="bg-[#E0DDAE] px-3 text-[10px] uppercase tracking-wider font-semibold text-[#336467]/60 absolute">
+              <div className="border-t border-gray-200 dark:border-neutral-800 w-full" />
+              <span className="bg-white dark:bg-neutral-950 px-3 text-[10px] uppercase tracking-wider font-semibold text-[#1A3739]/60 dark:text-neutral-400 absolute">
                 or with email
               </span>
             </div>
@@ -150,7 +150,7 @@ export const WaitlistModal: React.FC<WaitlistModalProps> = ({
             {/* Email Early Access Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-[11px] uppercase tracking-wider font-semibold text-[#336467] mb-1.5">
+                <label className="block text-[11px] uppercase tracking-wider font-semibold text-[#1A3739] dark:text-neutral-300 mb-1.5">
                   Email Address
                 </label>
                 <input
@@ -159,7 +159,7 @@ export const WaitlistModal: React.FC<WaitlistModalProps> = ({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
-                  className="w-full px-4 py-3 rounded-xl bg-white border border-[#C8C488] focus:border-[#D7400B] focus:outline-none text-sm text-[#336467] placeholder:text-[#336467]/50"
+                  className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 focus:border-[#D7400B] focus:outline-none text-sm text-[#1A3739] dark:text-white placeholder:text-[#1A3739]/50 dark:placeholder:text-neutral-500"
                 />
               </div>
 
@@ -172,13 +172,13 @@ export const WaitlistModal: React.FC<WaitlistModalProps> = ({
               </button>
             </form>
 
-            <div className="mt-6 pt-5 border-t border-[#C8C488] flex items-center justify-between text-xs text-[#336467]/80">
+            <div className="mt-6 pt-5 border-t border-gray-200 dark:border-neutral-800 flex items-center justify-between text-xs text-[#1A3739]/80 dark:text-neutral-400">
               <span>Ready for immediate onboarding?</span>
               {role === "creator" ? (
                 <Link
                   href="/apply"
                   onClick={onClose}
-                  className="font-semibold text-[#336467] underline hover:text-[#D7400B] transition-colors"
+                  className="font-semibold text-[#1A3739] dark:text-neutral-200 underline hover:text-[#D7400B] transition-colors"
                 >
                   Full Creator Application →
                 </Link>
@@ -186,7 +186,7 @@ export const WaitlistModal: React.FC<WaitlistModalProps> = ({
                 <Link
                   href="/list-property"
                   onClick={onClose}
-                  className="font-semibold text-[#336467] underline hover:text-[#D7400B] transition-colors"
+                  className="font-semibold text-[#1A3739] dark:text-neutral-200 underline hover:text-[#D7400B] transition-colors"
                 >
                   List Your Property →
                 </Link>
@@ -195,12 +195,12 @@ export const WaitlistModal: React.FC<WaitlistModalProps> = ({
           </div>
         ) : (
           <div className="text-center py-8 space-y-4">
-            <div className="w-12 h-12 rounded-full bg-[#D0CD96] text-[#336467] flex items-center justify-center mx-auto border border-[#C8C488]">
-              <CheckCircle2 className="w-6 h-6 text-[#D7400B]" />
+            <div className="w-12 h-12 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto border border-emerald-200 dark:border-emerald-800">
+              <CheckCircle2 className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
             </div>
-            <h3 className="font-serif text-2xl text-[#336467]">You&apos;re on the list</h3>
-            <p className="text-xs sm:text-sm text-[#336467]/80 max-w-xs mx-auto leading-relaxed">
-              Thank you for your interest in Get Linked. We review applications by cohort and will reach out to <span className="font-semibold text-[#336467]">{email}</span> soon.
+            <h3 className="font-serif text-2xl text-[#1A3739] dark:text-white">You&apos;re on the list</h3>
+            <p className="text-xs sm:text-sm text-[#1A3739]/80 dark:text-neutral-300 max-w-xs mx-auto leading-relaxed">
+              Thank you for your interest in Get Linked. We review applications by cohort and will reach out to <span className="font-semibold text-[#1A3739] dark:text-white">{email}</span> soon.
             </p>
             <div className="pt-4">
               <button

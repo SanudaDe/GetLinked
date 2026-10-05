@@ -197,59 +197,59 @@ function CreatorDirectoryContent() {
   );
 
   return (
-    <div className="py-10 bg-sand-50 min-h-screen">
+    <div className="py-10 bg-white dark:bg-black text-[#1A3739] dark:text-white min-h-screen transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb / Top Bar */}
-        <div className="flex items-center justify-between flex-wrap gap-3 pb-6 border-b border-sand-300 mb-8 text-xs">
-          <div className="flex items-center gap-2 text-ink-600">
-            <Link href="/" className="hover:text-teal-900 font-medium">Home</Link>
+        <div className="flex items-center justify-between flex-wrap gap-3 pb-6 border-b border-sand-300 dark:border-neutral-800 mb-8 text-xs">
+          <div className="flex items-center gap-2 text-ink-600 dark:text-neutral-400">
+            <Link href="/" className="hover:text-teal-900 dark:hover:text-white font-medium">Home</Link>
             <span>/</span>
-            <span className="text-teal-950 font-bold">Creator Directory</span>
+            <span className="text-teal-950 dark:text-white font-bold">Creator Directory</span>
             <span>/</span>
             <span className="text-gold-600 font-medium">Sri Lanka</span>
           </div>
           <Link
             href="/admin/matching"
-            className="text-xs font-semibold text-teal-950 bg-sand-200 hover:bg-sand-300 border border-sand-400 px-3 py-1 rounded-full flex items-center gap-1.5 transition-colors"
+            className="text-xs font-semibold text-teal-950 dark:text-neutral-200 bg-sand-200 dark:bg-neutral-900 hover:bg-sand-300 dark:hover:bg-neutral-800 border border-sand-400 dark:border-neutral-700 px-3 py-1 rounded-full flex items-center gap-1.5 transition-colors"
           >
-            <ShieldCheck className="w-3.5 h-3.5 text-teal-800" />
+            <ShieldCheck className="w-3.5 h-3.5 text-teal-800 dark:text-teal-400" />
             <span>Admin: Open Matching Workspace →</span>
           </Link>
         </div>
 
         {/* Header */}
         <div className="space-y-3 mb-8">
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-teal-950">
+          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-teal-950 dark:text-white">
             Verified Creators Visiting Sri Lanka
           </h1>
-          <p className="text-xs sm:text-sm text-ink-700 max-w-2xl">
+          <p className="text-xs sm:text-sm text-ink-700 dark:text-neutral-400 max-w-2xl">
             Search 100% ID-verified travel and lifestyle influencers with confirmed travel dates across Sri Lanka.
           </p>
         </div>
 
         {/* Luxury Modern Filter & Search Hub */}
-        <div className="relative z-30 bg-white/95 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-sand-300 shadow-warm-lg p-4 sm:p-6 mb-8 space-y-4 transition-all">
+        <div className="relative z-30 bg-white/95 dark:bg-neutral-950/95 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-sand-300 dark:border-neutral-800 shadow-warm-lg p-4 sm:p-6 mb-8 space-y-4 transition-all">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3.5">
             {/* Search Input */}
             <div className="lg:col-span-4">
-              <label className="block text-[10px] font-bold text-ink-600 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+              <label className="block text-[10px] font-bold text-ink-600 dark:text-neutral-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                 <Search className="w-3 h-3 text-sinopia" />
                 <span>Search Creator or City</span>
               </label>
               <div className="relative">
-                <Search className="w-4 h-4 text-ink-400 absolute left-3 top-3 pointer-events-none" />
+                <Search className="w-4 h-4 text-ink-400 dark:text-neutral-500 absolute left-3 top-3 pointer-events-none" />
                 <input
                   type="text"
                   placeholder="e.g. Elena, Galle, Surfing, Luxury..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-8 py-2.5 rounded-xl border border-sand-300 bg-sand-50/60 hover:bg-white focus:bg-white text-xs text-teal-950 placeholder:text-ink-400 font-medium focus:outline-none focus:ring-2 focus:ring-teal-900/20 focus:border-teal-900 transition-all shadow-xs"
+                  className="w-full pl-9 pr-8 py-2.5 rounded-xl border border-sand-300 dark:border-neutral-800 bg-sand-50/60 dark:bg-neutral-900 hover:bg-white dark:hover:bg-neutral-900 focus:bg-white dark:focus:bg-neutral-900 text-xs text-teal-950 dark:text-white placeholder:text-ink-400 dark:placeholder:text-neutral-500 font-medium focus:outline-none focus:ring-2 focus:ring-teal-900/20 focus:border-teal-900 dark:focus:border-neutral-700 transition-all shadow-xs"
                 />
                 {searchQuery && (
                   <button
                     type="button"
                     onClick={() => setSearchQuery("")}
-                    className="absolute right-2.5 top-2.5 p-0.5 rounded-full text-ink-400 hover:text-sinopia hover:bg-sand-200/60 transition-colors"
+                    className="absolute right-2.5 top-2.5 p-0.5 rounded-full text-ink-400 dark:text-neutral-400 hover:text-sinopia hover:bg-sand-200/60 dark:hover:bg-neutral-800 transition-colors"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
@@ -259,7 +259,7 @@ function CreatorDirectoryContent() {
 
             {/* City Dropdown */}
             <div className="lg:col-span-3">
-              <label className="block text-[10px] font-bold text-ink-600 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+              <label className="block text-[10px] font-bold text-ink-600 dark:text-neutral-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                 <MapPin className="w-3 h-3 text-sinopia" />
                 <span>Destination City</span>
               </label>
@@ -268,21 +268,21 @@ function CreatorDirectoryContent() {
                 <select
                   value={selectedCity}
                   onChange={(e) => setSelectedCity(e.target.value)}
-                  className="w-full appearance-none pl-9 pr-8 py-2.5 rounded-xl border border-sand-300 bg-sand-50/60 hover:bg-white focus:bg-white text-xs text-teal-950 font-semibold focus:outline-none focus:ring-2 focus:ring-teal-900/20 focus:border-teal-900 cursor-pointer transition-all shadow-xs"
+                  className="w-full appearance-none pl-9 pr-8 py-2.5 rounded-xl border border-sand-300 dark:border-neutral-800 bg-sand-50/60 dark:bg-neutral-900 hover:bg-white dark:hover:bg-neutral-900 focus:bg-white dark:focus:bg-neutral-900 text-xs text-teal-950 dark:text-white font-semibold focus:outline-none focus:ring-2 focus:ring-teal-900/20 focus:border-teal-900 dark:focus:border-neutral-700 cursor-pointer transition-all shadow-xs"
                 >
                   {SRI_LANKA_CITIES.map((c) => (
-                    <option key={c} value={c}>
+                    <option key={c} value={c} className="dark:bg-neutral-900 dark:text-white">
                       {c}
                     </option>
                   ))}
                 </select>
-                <ChevronDown className="w-4 h-4 text-ink-400 absolute right-3 top-3 pointer-events-none" />
+                <ChevronDown className="w-4 h-4 text-ink-400 dark:text-neutral-500 absolute right-3 top-3 pointer-events-none" />
               </div>
             </div>
 
             {/* Niche Dropdown */}
             <div className="lg:col-span-3">
-              <label className="block text-[10px] font-bold text-ink-600 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+              <label className="block text-[10px] font-bold text-ink-600 dark:text-neutral-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                 <Sparkles className="w-3 h-3 text-sinopia" />
                 <span>Creative Niche</span>
               </label>
@@ -291,44 +291,44 @@ function CreatorDirectoryContent() {
                 <select
                   value={selectedNiche}
                   onChange={(e) => setSelectedNiche(e.target.value)}
-                  className="w-full appearance-none pl-9 pr-8 py-2.5 rounded-xl border border-sand-300 bg-sand-50/60 hover:bg-white focus:bg-white text-xs text-teal-950 font-semibold focus:outline-none focus:ring-2 focus:ring-teal-900/20 focus:border-teal-900 cursor-pointer transition-all shadow-xs"
+                  className="w-full appearance-none pl-9 pr-8 py-2.5 rounded-xl border border-sand-300 dark:border-neutral-800 bg-sand-50/60 dark:bg-neutral-900 hover:bg-white dark:hover:bg-neutral-900 focus:bg-white dark:focus:bg-neutral-900 text-xs text-teal-950 dark:text-white font-semibold focus:outline-none focus:ring-2 focus:ring-teal-900/20 focus:border-teal-900 dark:focus:border-neutral-700 cursor-pointer transition-all shadow-xs"
                 >
-                  <option value="All Niches">All Niches</option>
+                  <option value="All Niches" className="dark:bg-neutral-900 dark:text-white">All Niches</option>
                   {CREATOR_NICHES.map((n) => (
-                    <option key={n} value={n}>
+                    <option key={n} value={n} className="dark:bg-neutral-900 dark:text-white">
                       {n}
                     </option>
                   ))}
                 </select>
-                <ChevronDown className="w-4 h-4 text-ink-400 absolute right-3 top-3 pointer-events-none" />
+                <ChevronDown className="w-4 h-4 text-ink-400 dark:text-neutral-500 absolute right-3 top-3 pointer-events-none" />
               </div>
             </div>
 
             {/* Follower Tier */}
             <div className="lg:col-span-2">
-              <label className="block text-[10px] font-bold text-ink-600 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+              <label className="block text-[10px] font-bold text-ink-600 dark:text-neutral-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                 <Users className="w-3 h-3 text-sinopia" />
                 <span>Audience Tier</span>
               </label>
               <div className="relative">
-                <Users className="w-4 h-4 text-teal-800 absolute left-3 top-3 pointer-events-none" />
+                <Users className="w-4 h-4 text-teal-800 dark:text-teal-400 absolute left-3 top-3 pointer-events-none" />
                 <select
                   value={minFollowers}
                   onChange={(e) => setMinFollowers(Number(e.target.value))}
-                  className="w-full appearance-none pl-9 pr-8 py-2.5 rounded-xl border border-sand-300 bg-sand-50/60 hover:bg-white focus:bg-white text-xs text-teal-950 font-semibold focus:outline-none focus:ring-2 focus:ring-teal-900/20 focus:border-teal-900 cursor-pointer transition-all shadow-xs"
+                  className="w-full appearance-none pl-9 pr-8 py-2.5 rounded-xl border border-sand-300 dark:border-neutral-800 bg-sand-50/60 dark:bg-neutral-900 hover:bg-white dark:hover:bg-neutral-900 focus:bg-white dark:focus:bg-neutral-900 text-xs text-teal-950 dark:text-white font-semibold focus:outline-none focus:ring-2 focus:ring-teal-900/20 focus:border-teal-900 dark:focus:border-neutral-700 cursor-pointer transition-all shadow-xs"
                 >
-                  <option value={5000}>5K+ Followers</option>
-                  <option value={20000}>20K+ Followers</option>
-                  <option value={50000}>50K+ Followers</option>
-                  <option value={100000}>100K+ Followers</option>
+                  <option value={5000} className="dark:bg-neutral-900 dark:text-white">5K+ Followers</option>
+                  <option value={20000} className="dark:bg-neutral-900 dark:text-white">20K+ Followers</option>
+                  <option value={50000} className="dark:bg-neutral-900 dark:text-white">50K+ Followers</option>
+                  <option value={100000} className="dark:bg-neutral-900 dark:text-white">100K+ Followers</option>
                 </select>
-                <ChevronDown className="w-4 h-4 text-ink-400 absolute right-3 top-3 pointer-events-none" />
+                <ChevronDown className="w-4 h-4 text-ink-400 dark:text-neutral-500 absolute right-3 top-3 pointer-events-none" />
               </div>
             </div>
           </div>
 
           {/* Secondary Controls Bar: Interactive Date Range Calendar & Sort Options */}
-          <div className="pt-3 border-t border-sand-200 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+          <div className="pt-3 border-t border-sand-200 dark:border-neutral-800 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
             {/* Interactive Calendar Picker (No dd/mm/yyyy typing!) */}
             <div className="flex-1 max-w-xl">
               <DateRangeCalendarPicker
@@ -345,7 +345,7 @@ function CreatorDirectoryContent() {
             {/* Right Controls: Sort & Reset */}
             <div className="flex items-center gap-2.5 justify-between md:justify-end shrink-0">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-ink-500 whitespace-nowrap hidden sm:inline">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-ink-500 dark:text-neutral-400 whitespace-nowrap hidden sm:inline">
                   Sort by:
                 </span>
                 <div className="relative">
@@ -353,13 +353,13 @@ function CreatorDirectoryContent() {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as "recommended" | "followers" | "dates")}
-                    className="appearance-none pl-8 pr-7 py-2 rounded-xl border border-sand-300 bg-white text-xs font-bold text-teal-950 hover:border-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-900/20 transition-all cursor-pointer shadow-xs"
+                    className="appearance-none pl-8 pr-7 py-2 rounded-xl border border-sand-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-xs font-bold text-teal-950 dark:text-white hover:border-teal-800 dark:hover:border-neutral-700 focus:outline-none focus:ring-2 focus:ring-teal-900/20 transition-all cursor-pointer shadow-xs"
                   >
-                    <option value="recommended">⭐ Recommended</option>
-                    <option value="followers">🔥 Highest Followers</option>
-                    <option value="dates">🗓️ Earliest Travel Date</option>
+                    <option value="recommended" className="dark:bg-neutral-900 dark:text-white">⭐ Recommended</option>
+                    <option value="followers" className="dark:bg-neutral-900 dark:text-white">🔥 Highest Followers</option>
+                    <option value="dates" className="dark:bg-neutral-900 dark:text-white">🗓️ Earliest Travel Date</option>
                   </select>
-                  <ChevronDown className="w-3.5 h-3.5 text-ink-400 absolute right-2.5 top-3 pointer-events-none" />
+                  <ChevronDown className="w-3.5 h-3.5 text-ink-400 dark:text-neutral-500 absolute right-2.5 top-3 pointer-events-none" />
                 </div>
               </div>
 
@@ -370,8 +370,8 @@ function CreatorDirectoryContent() {
                 disabled={!hasActiveFilters}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all ${
                   hasActiveFilters
-                    ? "bg-sand-100 hover:bg-sand-200 text-teal-950 border-sand-400 hover:border-teal-900 shadow-xs cursor-pointer"
-                    : "opacity-40 text-ink-400 border-sand-300 cursor-not-allowed bg-transparent"
+                    ? "bg-sand-100 dark:bg-neutral-900 hover:bg-sand-200 dark:hover:bg-neutral-800 text-teal-950 dark:text-white border-sand-400 dark:border-neutral-700 hover:border-teal-900 shadow-xs cursor-pointer"
+                    : "opacity-40 text-ink-400 dark:text-neutral-500 border-sand-300 dark:border-neutral-800 cursor-not-allowed bg-transparent"
                 }`}
                 title="Reset all filters"
               >
@@ -383,12 +383,12 @@ function CreatorDirectoryContent() {
 
           {/* Active Filter Chips Strip */}
           {hasActiveFilters && (
-            <div className="pt-3 border-t border-sand-200 flex items-center gap-2 flex-wrap text-xs">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-ink-500">
+            <div className="pt-3 border-t border-sand-200 dark:border-neutral-800 flex items-center gap-2 flex-wrap text-xs">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-ink-500 dark:text-neutral-400">
                 Active:
               </span>
               {searchQuery && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-sand-100 text-teal-950 text-[11px] font-semibold border border-sand-300">
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-sand-100 dark:bg-neutral-900 text-teal-950 dark:text-white text-[11px] font-semibold border border-sand-300 dark:border-neutral-700">
                   <span>&ldquo;{searchQuery}&rdquo;</span>
                   <button onClick={() => setSearchQuery("")} className="hover:text-sinopia ml-0.5">
                     <X className="w-3 h-3" />
@@ -396,7 +396,7 @@ function CreatorDirectoryContent() {
                 </span>
               )}
               {selectedCity !== "All Sri Lanka" && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-sand-100 text-teal-950 text-[11px] font-semibold border border-sand-300">
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-sand-100 dark:bg-neutral-900 text-teal-950 dark:text-white text-[11px] font-semibold border border-sand-300 dark:border-neutral-700">
                   <MapPin className="w-3 h-3 text-sinopia" />
                   <span>{selectedCity}</span>
                   <button onClick={() => setSelectedCity("All Sri Lanka")} className="hover:text-sinopia ml-0.5">
@@ -405,7 +405,7 @@ function CreatorDirectoryContent() {
                 </span>
               )}
               {selectedNiche !== "All Niches" && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-sand-100 text-teal-950 text-[11px] font-semibold border border-sand-300">
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-sand-100 dark:bg-neutral-900 text-teal-950 dark:text-white text-[11px] font-semibold border border-sand-300 dark:border-neutral-700">
                   <Sparkles className="w-3 h-3 text-amber-500" />
                   <span>{selectedNiche}</span>
                   <button onClick={() => setSelectedNiche("All Niches")} className="hover:text-sinopia ml-0.5">
@@ -414,8 +414,8 @@ function CreatorDirectoryContent() {
                 </span>
               )}
               {minFollowers > 5000 && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-sand-100 text-teal-950 text-[11px] font-semibold border border-sand-300">
-                  <Users className="w-3 h-3 text-teal-800" />
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-sand-100 dark:bg-neutral-900 text-teal-950 dark:text-white text-[11px] font-semibold border border-sand-300 dark:border-neutral-700">
+                  <Users className="w-3 h-3 text-teal-800 dark:text-teal-400" />
                   <span>{minFollowers / 1000}K+ Followers</span>
                   <button onClick={() => setMinFollowers(5000)} className="hover:text-sinopia ml-0.5">
                     <X className="w-3 h-3" />
@@ -449,37 +449,37 @@ function CreatorDirectoryContent() {
         </div>
 
         {/* Results Counter & Verification Assurance */}
-        <div className="flex items-center justify-between text-xs text-ink-600 mb-6 flex-wrap gap-2">
+        <div className="flex items-center justify-between text-xs text-ink-600 dark:text-neutral-400 mb-6 flex-wrap gap-2">
           <div className="flex items-center gap-2">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
             </span>
             <span>
-              Showing <strong className="text-teal-950 font-bold">{filteredProfiles.length}</strong> verified creators scheduled in Sri Lanka
+              Showing <strong className="text-teal-950 dark:text-white font-bold">{filteredProfiles.length}</strong> verified creators scheduled in Sri Lanka
             </span>
           </div>
-          <span className="hidden sm:inline-flex items-center gap-1.5 text-emerald-800 font-semibold bg-emerald-50 border border-emerald-200/60 px-2.5 py-0.5 rounded-full">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+          <span className="hidden sm:inline-flex items-center gap-1.5 text-emerald-800 dark:text-emerald-400 font-semibold bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-800/60 px-2.5 py-0.5 rounded-full">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400" />
             <span>ID & passport verification active</span>
           </span>
         </div>
 
         {/* Creator Cards Grid (Trip.com Travel Card Aesthetic) */}
         {filteredProfiles.length === 0 ? (
-          <div className="bg-sand-50 rounded-2xl border border-sand-300 p-12 text-center space-y-4 max-w-lg mx-auto my-12 shadow-warm">
-            <div className="w-12 h-12 rounded-full bg-sand-200 text-ink-600 flex items-center justify-center mx-auto">
+          <div className="bg-sand-50 dark:bg-neutral-900 rounded-2xl border border-sand-300 dark:border-neutral-800 p-12 text-center space-y-4 max-w-lg mx-auto my-12 shadow-warm">
+            <div className="w-12 h-12 rounded-full bg-sand-200 dark:bg-neutral-800 text-ink-600 dark:text-neutral-300 flex items-center justify-center mx-auto">
               <Filter className="w-6 h-6" />
             </div>
-            <h3 className="font-serif text-xl font-bold text-teal-950">
+            <h3 className="font-serif text-xl font-bold text-teal-950 dark:text-white">
               No Creators Match These Filters
             </h3>
-            <p className="text-xs sm:text-sm text-ink-700 leading-relaxed">
+            <p className="text-xs sm:text-sm text-ink-700 dark:text-neutral-400 leading-relaxed">
               Try adjusting your city filter or date window. New verified creators submit travel plans weekly.
             </p>
             <button
               onClick={handleResetFilters}
-              className="px-5 py-2 rounded-lg bg-teal-900 text-sand-50 text-xs font-semibold uppercase tracking-wider hover:bg-teal-800 transition-colors"
+              className="px-5 py-2 rounded-lg bg-teal-900 dark:bg-teal-700 text-sand-50 text-xs font-semibold uppercase tracking-wider hover:bg-teal-800 dark:hover:bg-teal-600 transition-colors"
             >
               Reset All Filters
             </button>
@@ -630,12 +630,12 @@ function CreatorDirectoryContent() {
             </div>
           ) : (
             <form onSubmit={handleRequestSubmit} className="space-y-4">
-              <div className="p-3 bg-sand-200/50 rounded-lg text-xs text-ink-700 leading-relaxed border border-sand-300">
-                <span className="font-semibold text-teal-900">Privacy Notice:</span> Contact details are never exposed. Your request is reviewed by Get Linked staff. Once confirmed, we introduce both parties directly on WhatsApp.
+              <div className="p-3 bg-sand-200/50 dark:bg-neutral-900 rounded-lg text-xs text-ink-700 dark:text-neutral-300 leading-relaxed border border-sand-300 dark:border-neutral-800">
+                <span className="font-semibold text-teal-900 dark:text-teal-400">Privacy Notice:</span> Contact details are never exposed. Your request is reviewed by Get Linked staff. Once confirmed, we introduce both parties directly on WhatsApp.
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-semibold text-ink-800 dark:text-neutral-300 uppercase tracking-wider mb-1">
                   Accommodation / Property Name *
                 </label>
                 <input
@@ -644,13 +644,13 @@ function CreatorDirectoryContent() {
                   placeholder="e.g. The Dutch Fort Heritage Villa"
                   value={formData.accommodationName}
                   onChange={(e) => setFormData({ ...formData, accommodationName: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-lg border border-sand-400 bg-sand-50 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-sand-400 dark:border-neutral-700 bg-sand-50 dark:bg-neutral-900 text-teal-950 dark:text-white placeholder:text-ink-400 dark:placeholder:text-neutral-500 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-semibold text-ink-800 dark:text-neutral-300 uppercase tracking-wider mb-1">
                     Contact Person Name *
                   </label>
                   <input
@@ -659,11 +659,11 @@ function CreatorDirectoryContent() {
                     placeholder="e.g. Rohan De Silva"
                     value={formData.requesterName}
                     onChange={(e) => setFormData({ ...formData, requesterName: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-lg border border-sand-400 bg-sand-50 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
+                    className="w-full px-3.5 py-2.5 rounded-lg border border-sand-400 dark:border-neutral-700 bg-sand-50 dark:bg-neutral-900 text-teal-950 dark:text-white placeholder:text-ink-400 dark:placeholder:text-neutral-500 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-semibold text-ink-800 dark:text-neutral-300 uppercase tracking-wider mb-1">
                     Your WhatsApp Number *
                   </label>
                   <input
@@ -672,13 +672,13 @@ function CreatorDirectoryContent() {
                     placeholder="e.g. +94771234567"
                     value={formData.requesterWhatsApp}
                     onChange={(e) => setFormData({ ...formData, requesterWhatsApp: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-lg border border-sand-400 bg-sand-50 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
+                    className="w-full px-3.5 py-2.5 rounded-lg border border-sand-400 dark:border-neutral-700 bg-sand-50 dark:bg-neutral-900 text-teal-950 dark:text-white placeholder:text-ink-400 dark:placeholder:text-neutral-500 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-semibold text-ink-800 dark:text-neutral-300 uppercase tracking-wider mb-1">
                   Message / Proposed Offer (Optional)
                 </label>
                 <textarea
@@ -686,7 +686,7 @@ function CreatorDirectoryContent() {
                   placeholder="e.g. We would love to host you for 3 nights with private pool villa and breakfast in exchange for 2 Instagram Reels."
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-lg border border-sand-400 bg-sand-50 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-sand-400 dark:border-neutral-700 bg-sand-50 dark:bg-neutral-900 text-teal-950 dark:text-white placeholder:text-ink-400 dark:placeholder:text-neutral-500 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
                 />
               </div>
 
@@ -694,13 +694,13 @@ function CreatorDirectoryContent() {
                 <button
                   type="button"
                   onClick={() => setSelectedCreator(null)}
-                  className="px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-ink-600 hover:text-ink-900"
+                  className="px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-ink-600 dark:text-neutral-400 hover:text-ink-900 dark:hover:text-white transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2.5 rounded-lg bg-teal-900 hover:bg-teal-800 text-sand-50 text-xs font-semibold uppercase tracking-wider shadow-warm transition-all"
+                  className="px-6 py-2.5 rounded-lg bg-teal-900 hover:bg-teal-800 dark:bg-[#D7400B] dark:hover:bg-[#BD3607] text-sand-50 text-xs font-semibold uppercase tracking-wider shadow-warm transition-all"
                 >
                   Submit Request
                 </button>
