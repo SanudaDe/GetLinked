@@ -1,13 +1,11 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Play, Pause, Volume2, VolumeX } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export const Hero: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(true);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -18,29 +16,10 @@ export const Hero: React.FC = () => {
       if (playPromise !== undefined) {
         playPromise.catch((err) => {
           console.warn("Autoplay was prevented by browser policy:", err);
-          setIsPlaying(false);
         });
       }
     }
   }, []);
-
-  const togglePlay = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    if (video.paused) {
-      video.play().then(() => setIsPlaying(true)).catch(() => {});
-    } else {
-      video.pause();
-      setIsPlaying(false);
-    }
-  };
-
-  const toggleMute = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    video.muted = !video.muted;
-    setIsMuted(video.muted);
-  };
 
   return (
     <section className="relative min-h-[92vh] sm:min-h-screen flex flex-col justify-between overflow-hidden bg-white dark:bg-black transition-colors duration-200">
@@ -118,49 +97,9 @@ export const Hero: React.FC = () => {
         </div>
       </div>
 
-      {/* Bottom Hero Bar with Controls & Slogan */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-8 pt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        {/* Discreet Video Controls */}
-        <div className="flex items-center gap-2">
-          <button
-            onClick={togglePlay}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/80 dark:bg-black/60 hover:bg-white dark:hover:bg-black/80 backdrop-blur-md border border-gray-200/70 dark:border-white/15 text-[#1A3739] dark:text-white text-xs font-medium shadow-xs transition-all cursor-pointer"
-            aria-label={isPlaying ? "Pause video" : "Play video"}
-          >
-            {isPlaying ? (
-              <>
-                <Pause className="w-3.5 h-3.5 fill-current" />
-                <span className="text-[11px] uppercase tracking-wider font-semibold">Pause Video</span>
-              </>
-            ) : (
-              <>
-                <Play className="w-3.5 h-3.5 fill-current" />
-                <span className="text-[11px] uppercase tracking-wider font-semibold">Play Video</span>
-              </>
-            )}
-          </button>
-
-          <button
-            onClick={toggleMute}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/80 dark:bg-black/60 hover:bg-white dark:hover:bg-black/80 backdrop-blur-md border border-gray-200/70 dark:border-white/15 text-[#1A3739] dark:text-white text-xs font-medium shadow-xs transition-all cursor-pointer"
-            aria-label={isMuted ? "Unmute audio" : "Mute audio"}
-          >
-            {isMuted ? (
-              <>
-                <VolumeX className="w-3.5 h-3.5" />
-                <span className="text-[11px] uppercase tracking-wider font-semibold">Sound Off</span>
-              </>
-            ) : (
-              <>
-                <Volume2 className="w-3.5 h-3.5" />
-                <span className="text-[11px] uppercase tracking-wider font-semibold">Sound On</span>
-              </>
-            )}
-          </button>
-        </div>
-
-        {/* Right Slogan */}
-        <div className="text-left sm:text-right">
+      {/* Bottom Slogan */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-8 pt-4 flex items-end justify-end text-xs text-[#1A3739] dark:text-neutral-400">
+        <div className="text-right">
           <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#1A3739] dark:text-neutral-400">
             A BRIGHTER WAY TO TRAVEL TOGETHER
           </span>
