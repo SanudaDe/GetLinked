@@ -61,8 +61,13 @@ export const Navbar: React.FC = () => {
           </nav>
 
           {/* Center Brand Wordmark / Logo */}
-          <div className="flex-1 md:flex-initial text-left md:text-center flex justify-start md:justify-center items-center">
-            <Logo href="/" height={44} variant="dark" priority />
+          <div className="flex-1 md:flex-initial text-left md:text-center flex justify-start md:justify-center items-center min-w-0 pr-1">
+            <div className="md:hidden">
+              <Logo href="/" height={28} variant="dark" priority />
+            </div>
+            <div className="hidden md:block">
+              <Logo href="/" height={44} variant="dark" priority />
+            </div>
           </div>
 
           {/* Right Navigation & CTAs */}
@@ -123,21 +128,21 @@ export const Navbar: React.FC = () => {
             </button>
           </div>
 
-          {/* Mobile Hamburger Button */}
-          <div className="flex md:hidden items-center gap-2.5">
-            <ThemeSwitch />
+          {/* Mobile Hamburger Button & Action Bar */}
+          <div className="flex md:hidden items-center gap-2 shrink-0">
+            <ThemeSwitch compact />
             <button
               onClick={() => setWaitlistOpen(true)}
-              className="px-3.5 py-1.5 rounded-full bg-[#D7400B] text-white text-xs font-semibold tracking-wide cursor-pointer"
+              className="px-3 py-1.5 rounded-full bg-[#D7400B] text-white text-xs font-semibold tracking-wide cursor-pointer shrink-0"
             >
               Waitlist
             </button>
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 text-[#336467] dark:text-neutral-200 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
+              className="p-1.5 text-[#336467] dark:text-neutral-200 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer shrink-0"
               aria-label="Toggle Navigation Menu"
             >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
@@ -226,7 +231,15 @@ export const Navbar: React.FC = () => {
               </div>
             </div>
 
-            <div className="pt-2">
+            {/* Theme Toggle in Mobile Drawer */}
+            <div className="flex items-center justify-between py-3 border-t border-gray-200 dark:border-neutral-800">
+              <span className="text-sm font-sans font-medium text-[#336467] dark:text-neutral-200">
+                Appearance
+              </span>
+              <ThemeSwitch showLabels />
+            </div>
+
+            <div className="pt-1">
               <button
                 onClick={() => {
                   setIsOpen(false);

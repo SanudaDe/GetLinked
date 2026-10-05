@@ -7,14 +7,38 @@ import { useTheme } from "@/context/ThemeContext";
 interface ThemeSwitchProps {
   className?: string;
   showLabels?: boolean;
+  compact?: boolean;
 }
 
 export const ThemeSwitch: React.FC<ThemeSwitchProps> = ({
   className = "",
   showLabels = false,
+  compact = false,
 }) => {
   const { theme, toggleTheme, isLoaded } = useTheme();
   const isDark = isLoaded ? theme === "dark" : false;
+
+  if (compact) {
+    return (
+      <button
+        type="button"
+        aria-label={`Switch to ${isDark ? "light" : "dark"} theme`}
+        onClick={toggleTheme}
+        className={`relative inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full border transition-all duration-200 select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D7400B] ${
+          isDark
+            ? "bg-neutral-900 border-neutral-700 text-amber-400 hover:bg-neutral-800"
+            : "bg-gray-100 border-gray-300 text-[#336467] hover:bg-gray-200"
+        } ${className}`}
+        title={`Switch to ${isDark ? "light" : "dark"} theme`}
+      >
+        {isDark ? (
+          <Sun className="h-4 w-4 fill-amber-400/30 text-amber-400 transition-transform duration-300 rotate-0 hover:rotate-45" />
+        ) : (
+          <Moon className="h-4 w-4 fill-[#336467]/20 text-[#336467] transition-transform duration-300 rotate-0 hover:-rotate-12" />
+        )}
+      </button>
+    );
+  }
 
   return (
     <div className={`inline-flex items-center gap-2 ${className}`}>
