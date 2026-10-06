@@ -411,8 +411,8 @@ export default function ListPropertyPage() {
                 <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider">
                   City / Region in Sri Lanka *
                 </label>
-                <span className="text-[10px] text-teal-900 font-bold px-2 py-0.5 rounded-full bg-teal-100/80 border border-teal-200">
-                  {allowedVillaLocations.length} active regions
+                <span className="text-[10px] text-teal-900 font-bold px-2 py-0.5 rounded-full bg-teal-100/80 border border-teal-200 whitespace-nowrap">
+                  {allowedVillaLocations.length}
                 </span>
               </div>
 
