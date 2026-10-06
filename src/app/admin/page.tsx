@@ -17,6 +17,7 @@ import {
   AlertTriangle,
   Send,
   Eye,
+  MapPin,
 } from "lucide-react";
 
 export default function AdminDashboardPage() {
@@ -177,6 +178,33 @@ export default function AdminDashboardPage() {
           >
             <span>Open Matching Tool</span>
             <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+
+        {/* Location Switch Status Banner */}
+        <div className="bg-sand-50 rounded-2xl border border-sand-300 p-5 shadow-warm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-teal-900 text-gold-400 flex items-center justify-center shrink-0 shadow-sm">
+              <MapPin className="w-5 h-5" />
+            </div>
+            <div>
+              <h4 className="font-serif text-base font-bold text-teal-950 flex items-center gap-2">
+                <span>Location Registration Controls</span>
+                <span className="text-[10px] font-sans font-bold px-2 py-0.5 rounded-full bg-teal-100 text-teal-900 border border-teal-200">
+                  {settings.allowed_creator_locations?.length ?? 18} Creator / {settings.allowed_villa_locations?.length ?? 18} Villa Open
+                </span>
+              </h4>
+              <p className="text-xs text-ink-600 mt-0.5">
+                Admin switches determine which Sri Lankan destinations are active for creators and villas to select during registration.
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/admin/locations"
+            className="px-4 py-2 rounded-lg bg-teal-900 hover:bg-teal-800 text-sand-50 text-xs font-semibold uppercase tracking-wider shadow-warm transition-colors shrink-0 flex items-center gap-1.5"
+          >
+            <span>Manage Locations</span>
+            <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 

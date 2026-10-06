@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useStore } from "@/data/store";
-import { SRI_LANKA_CITIES, CREATOR_NICHES } from "@/utils/formatters";
+import { SRI_LANKA_CITIES, CREATOR_NICHES, DEFAULT_ALLOWED_LOCATIONS } from "@/utils/formatters";
 import { DocumentType, NicheType } from "@/types";
 import {
   User,
@@ -25,7 +25,8 @@ import {
 import { supabaseService } from "@/services/supabaseService";
 
 export default function ApplyPage() {
-  const { submitCreatorApplication, authUser } = useStore();
+  const { submitCreatorApplication, authUser, settings } = useStore();
+  const allowedCreatorLocations = settings.allowed_creator_locations ?? DEFAULT_ALLOWED_LOCATIONS;
 
   const [step, setStep] = useState<number>(1);
   const [submittedCode, setSubmittedCode] = useState<string | null>(null);
@@ -71,6 +72,13 @@ export default function ApplyPage() {
     }
   }, [authUser]);
 
+  // Ensure selected city is valid within currently allowed creator locations
+  useEffect(() => {
+    if (allowedCreatorLocations.length > 0 && !allowedCreatorLocations.includes(formData.city)) {
+      setFormData((prev) => ({ ...prev, city: allowedCreatorLocations[0] }));
+    }
+  }, [allowedCreatorLocations, formData.city]);
+
   // Step
   const validateStep = (currentStep: number): boolean => {
     setErrorMsg(null);
@@ -108,8 +116,12 @@ export default function ApplyPage() {
     }
 
     if (currentStep === 3) {
-      if (!formData.city) {
-        setErrorMsg("Please select the Sri Lankan destination you plan to visit.");
+      if (allowedCreatorLocations.length === 0) {
+        setErrorMsg("Creator registration is currently paused across all destinations. Please check back later.");
+        return false;
+      }
+      if (!formData.city || !allowedCreatorLocations.includes(formData.city)) {
+        setErrorMsg("Please select an active Sri Lankan destination currently accepting creators.");
         return false;
       }
       if (!formData.visitStart || !formData.visitEnd) {
@@ -217,6 +229,15 @@ export default function ApplyPage() {
       return;
     }
 
+    if (allowedCreatorLocations.length === 0) {
+      setErrorMsg("Creator registration is currently paused across all destinations.");
+      return;
+    }
+    if (!allowedCreatorLocations.includes(formData.city)) {
+      setErrorMsg(`Registration for ${formData.city} is currently closed. Please select an active destination.`);
+      return;
+    }
+
     const res = submitCreatorApplication({
       full_name: formData.fullName,
       age: formData.age,
@@ -239,6 +260,8 @@ export default function ApplyPage() {
 
     if (res.success) {
       setSubmittedCode(res.reference_code);
+    } else {
+      setErrorMsg(res.message || "Failed to submit application.");
     }
   };
 
@@ -598,20 +621,35 @@ export default function ApplyPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-1">
-                  Destination City in Sri Lanka *
-                </label>
-                <select
-                  value={formData.city}
-                  onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                  className="w-full px-4 py-3 rounded-lg border border-sand-400 bg-sand-50 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
-                >
-                  {SRI_LANKA_CITIES.filter((c) => c !== "All Sri Lanka").map((c) => (
-                    <option key={c} value={c}>
-                      {c}
-                    </option>
-                  ))}
-                </select>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider">
+                    Destination City in Sri Lanka *
+                  </label>
+                  <span className="text-[10px] text-teal-900 font-bold px-2 py-0.5 rounded-full bg-teal-100/80 border border-teal-200">
+                    {allowedCreatorLocations.length} active destinations
+                  </span>
+                </div>
+
+                {allowedCreatorLocations.length === 0 ? (
+                  <div className="p-3.5 bg-amber-50 border border-amber-300 rounded-lg text-amber-900 text-xs font-medium">
+                    Creator registrations are temporarily not accepted for any locations. Please check back later.
+                  </div>
+                ) : (
+                  <select
+                    value={formData.city}
+                    onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg border border-sand-400 bg-sand-50 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
+                  >
+                    {allowedCreatorLocations.map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                  </select>
+                )}
+                <p className="text-[11px] text-ink-500 mt-1">
+                  Only destinations currently open for creator partnerships are selectable.
+                </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

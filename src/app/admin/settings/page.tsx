@@ -16,7 +16,9 @@ import {
   Database,
   RefreshCw,
   ExternalLink,
+  MapPin,
 } from "lucide-react";
+import { LocationSwitchManager } from "@/components/admin/LocationSwitchManager";
 
 export default function AdminSettingsPage() {
   const {
@@ -319,13 +321,18 @@ export default function AdminSettingsPage() {
           <div className="flex justify-end pt-2">
             <button
               type="submit"
-              className="px-8 py-3 rounded-lg bg-teal-900 hover:bg-teal-800 text-sand-50 text-xs font-semibold uppercase tracking-wider shadow-warm transition-all flex items-center gap-2"
+              className="px-8 py-3 rounded-lg bg-teal-900 hover:bg-teal-800 text-sand-50 text-xs font-semibold uppercase tracking-wider shadow-warm transition-all flex items-center gap-2 cursor-pointer"
             >
               <CheckCircle2 className="w-4 h-4 text-gold-400" />
               <span>Save Platform Settings</span>
             </button>
           </div>
         </form>
+
+        {/* Section 6: Registration Location Switch */}
+        <div id="locations" className="pt-2">
+          <LocationSwitchManager embedded={true} />
+        </div>
       </div>
     </div>
   );

@@ -74,13 +74,75 @@ export const supabaseService = {
           .limit(100),
       ]);
 
+      let loadedSettings: PlatformSettings | null =
+        settingsRes.error || !settingsRes.data ? null : (settingsRes.data as PlatformSettings);
+
+      // If platform_settings table in Supabase hasn't had the location columns added yet,
+      // recover the latest saved location settings snapshot from audit logs
+      if (loadedSettings && (!loadedSettings.allowed_creator_locations || !loadedSettings.allowed_villa_locations) && auditRes.data) {
+        const snapshotLog = (auditRes.data as AdminAuditLog[]).find(
+          (log) => log.action === "LOCATION_SETTINGS_SNAPSHOT"
+        );
+        if (snapshotLog?.details) {
+          try {
+            const parsed = JSON.parse(snapshotLog.details);
+            if (Array.isArray(parsed.allowed_creator_locations)) {
+              loadedSettings.allowed_creator_locations = parsed.allowed_creator_locations;
+            }
+            if (Array.isArray(parsed.allowed_villa_locations)) {
+              loadedSettings.allowed_villa_locations = parsed.allowed_villa_locations;
+            }
+            if (Array.isArray(parsed.custom_locations)) {
+              loadedSettings.custom_locations = parsed.custom_locations;
+            }
+
+            // Also ensure this snapshot is cached in client localStorage
+            if (typeof window !== "undefined") {
+              try {
+                localStorage.setItem("getlinked_location_settings_v1", JSON.stringify({
+                  allowed_creator_locations: loadedSettings.allowed_creator_locations,
+                  allowed_villa_locations: loadedSettings.allowed_villa_locations,
+                  custom_locations: loadedSettings.custom_locations ?? [],
+                  updated_at: new Date().toISOString(),
+                }));
+              } catch {
+                // ignore
+              }
+            }
+          } catch {
+            // ignore JSON parse error
+          }
+        }
+      }
+
+      // If still missing and running in browser, check localStorage cache
+      if (loadedSettings && !loadedSettings.allowed_creator_locations && typeof window !== "undefined") {
+        try {
+          const cached = localStorage.getItem("getlinked_location_settings_v1");
+          if (cached) {
+            const parsed = JSON.parse(cached);
+            if (Array.isArray(parsed.allowed_creator_locations)) {
+              loadedSettings.allowed_creator_locations = parsed.allowed_creator_locations;
+            }
+            if (Array.isArray(parsed.allowed_villa_locations)) {
+              loadedSettings.allowed_villa_locations = parsed.allowed_villa_locations;
+            }
+            if (Array.isArray(parsed.custom_locations)) {
+              loadedSettings.custom_locations = parsed.custom_locations;
+            }
+          }
+        } catch {
+          // ignore
+        }
+      }
+
       return {
         applications: appsRes.error ? null : (appsRes.data as InfluencerApplication[]),
         profiles: profsRes.error ? null : (profsRes.data as InfluencerProfile[]),
         accommodations: accsRes.error ? null : (accsRes.data as AccommodationApplication[]),
         requests: reqsRes.error ? null : (reqsRes.data as CreatorRequest[]),
         matches: matchesRes.error ? null : (matchesRes.data as Match[]),
-        settings: settingsRes.error || !settingsRes.data ? null : (settingsRes.data as PlatformSettings),
+        settings: loadedSettings,
         ads: adsRes.error ? null : (adsRes.data as Advertisement[]),
         auditLogs: auditRes.error ? null : (auditRes.data as AdminAuditLog[]),
       };
@@ -373,6 +435,26 @@ export const supabaseService = {
         .from("platform_settings")
         .upsert({ ...settings, id: "global" });
       if (error) {
+        // If columns do not exist in Supabase schema cache yet, strip location fields and upsert core fields
+        if (error.code === "PGRST204" || error.message?.includes("column")) {
+          console.warn(
+            "Supabase platform_settings table lacks location columns. Please run migration in supabase/schema.sql. Retrying with core fields."
+          );
+          const {
+            allowed_creator_locations,
+            allowed_villa_locations,
+            custom_locations,
+            ...coreSettings
+          } = settings;
+          const { error: retryError } = await supabase
+            .from("platform_settings")
+            .upsert({ ...coreSettings, id: "global" });
+          if (retryError) {
+            console.error("Supabase upsertSettings core fallback error:", retryError);
+            return false;
+          }
+          return true;
+        }
         console.error("Supabase upsertSettings error:", error);
         return false;
       }

@@ -19,6 +19,7 @@ import {
   LogOut,
   ShieldCheck,
   AlertTriangle,
+  MapPin,
 } from "lucide-react";
 import { useStore } from "@/data/store";
 
@@ -89,6 +90,13 @@ export const AdminSidebar: React.FC = () => {
       label: "Audit Logs",
       icon: History,
       badge: null,
+    },
+    {
+      href: "/admin/locations",
+      label: "Location Switch",
+      icon: MapPin,
+      badge: `${settings.allowed_creator_locations?.length ?? 18} Active`,
+      badgeColor: "bg-teal-700 text-sand-50",
     },
     {
       href: "/admin/settings",

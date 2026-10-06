@@ -58,6 +58,16 @@ export const SRI_LANKA_CITIES = [
   "Yala / Tissamaharama",
 ] as const;
 
+export const DEFAULT_ALLOWED_LOCATIONS: string[] = SRI_LANKA_CITIES.filter(
+  (c) => c !== "All Sri Lanka"
+);
+
+export function getAllAvailableLocations(customLocations?: string[]): string[] {
+  const base = SRI_LANKA_CITIES.filter((c) => c !== "All Sri Lanka") as string[];
+  if (!customLocations || customLocations.length === 0) return base;
+  return Array.from(new Set([...base, ...customLocations]));
+}
+
 export const CREATOR_NICHES = [
   "Travel",
   "Food",

@@ -18,6 +18,7 @@ import {
   LogOut,
   AlertTriangle,
   Layers,
+  MapPin,
 } from "lucide-react";
 
 export const AdminSubnav: React.FC = () => {
@@ -94,6 +95,13 @@ export const AdminSubnav: React.FC = () => {
       label: "Audit Logs",
       icon: History,
       badge: null,
+    },
+    {
+      href: "/admin/locations",
+      label: "Locations",
+      icon: MapPin,
+      badge: `${settings.allowed_creator_locations?.length ?? 18}`,
+      badgeColor: "bg-teal-700 text-sand-50",
     },
     {
       href: "/admin/settings",

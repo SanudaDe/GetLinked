@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useStore } from "@/data/store";
-import { SRI_LANKA_CITIES, PROPERTY_TYPES, OFFER_TYPES } from "@/utils/formatters";
+import { SRI_LANKA_CITIES, PROPERTY_TYPES, OFFER_TYPES, DEFAULT_ALLOWED_LOCATIONS } from "@/utils/formatters";
 import { PropertyType, OfferType } from "@/types";
 import { supabaseService } from "@/services/supabaseService";
 import {
@@ -24,6 +24,7 @@ import {
 
 export default function ListPropertyPage() {
   const { settings, submitAccommodationApplication } = useStore();
+  const allowedVillaLocations = settings.allowed_villa_locations ?? DEFAULT_ALLOWED_LOCATIONS;
 
   const [submittedCode, setSubmittedCode] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -47,6 +48,13 @@ export default function ListPropertyPage() {
   const [images, setImages] = useState<string[]>([]);
   const [imageUrlInput, setImageUrlInput] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+
+  // Ensure selected city is valid within currently allowed villa locations
+  React.useEffect(() => {
+    if (allowedVillaLocations.length > 0 && !allowedVillaLocations.includes(formData.city)) {
+      setFormData((prev) => ({ ...prev, city: allowedVillaLocations[0] }));
+    }
+  }, [allowedVillaLocations, formData.city]);
 
   // Handle local file uploads (uploads directly to Supabase Storage bucket 'images')
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -178,6 +186,15 @@ export default function ListPropertyPage() {
       return;
     }
 
+    if (allowedVillaLocations.length === 0) {
+      setErrorMsg("Villa and property registration is currently closed across all locations.");
+      return;
+    }
+    if (!allowedVillaLocations.includes(formData.city)) {
+      setErrorMsg(`Registration for ${formData.city} is currently closed. Please select an active location.`);
+      return;
+    }
+
     const primaryImage = images.length > 0 ? images[0] : undefined;
 
     const res = submitAccommodationApplication({
@@ -198,6 +215,8 @@ export default function ListPropertyPage() {
 
     if (res.success) {
       setSubmittedCode(res.reference_code);
+    } else {
+      setErrorMsg(res.message || "Failed to submit property listing.");
     }
   };
 
@@ -388,20 +407,35 @@ export default function ListPropertyPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-1">
-                City / Region in Sri Lanka *
-              </label>
-              <select
-                value={formData.city}
-                onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-sand-400 bg-sand-50 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
-              >
-                {SRI_LANKA_CITIES.filter((c) => c !== "All Sri Lanka").map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider">
+                  City / Region in Sri Lanka *
+                </label>
+                <span className="text-[10px] text-teal-900 font-bold px-2 py-0.5 rounded-full bg-teal-100/80 border border-teal-200">
+                  {allowedVillaLocations.length} active regions
+                </span>
+              </div>
+
+              {allowedVillaLocations.length === 0 ? (
+                <div className="p-3.5 bg-amber-50 border border-amber-300 rounded-lg text-amber-900 text-xs font-medium">
+                  Villa and stay registrations are temporarily closed across all locations. Please check back later.
+                </div>
+              ) : (
+                <select
+                  value={formData.city}
+                  onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                  className="w-full px-4 py-3 rounded-lg border border-sand-400 bg-sand-50 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
+                >
+                  {allowedVillaLocations.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
+              )}
+              <p className="text-[11px] text-ink-500 mt-1">
+                Only locations currently open for new property onboarding are available.
+              </p>
             </div>
           </div>
 

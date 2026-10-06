@@ -170,6 +170,9 @@ export interface PlatformSettings {
   creator_pool_limit: number;
   directory_visibility: DirectoryVisibility;
   document_retention_days: number;
+  allowed_creator_locations?: string[];
+  allowed_villa_locations?: string[];
+  custom_locations?: string[];
   updated_at: string;
 }
 

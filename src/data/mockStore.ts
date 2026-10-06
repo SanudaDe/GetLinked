@@ -9,6 +9,7 @@ import {
   Advertisement,
   AdminAuditLog,
 } from "@/types";
+import { DEFAULT_ALLOWED_LOCATIONS } from "@/utils/formatters";
 
 export const initialPlatformSettings: PlatformSettings = {
   id: "global",
@@ -17,6 +18,9 @@ export const initialPlatformSettings: PlatformSettings = {
   creator_pool_limit: 1000,
   directory_visibility: "PUBLIC",
   document_retention_days: 90,
+  allowed_creator_locations: DEFAULT_ALLOWED_LOCATIONS,
+  allowed_villa_locations: DEFAULT_ALLOWED_LOCATIONS,
+  custom_locations: [],
   updated_at: new Date().toISOString(),
 };
 

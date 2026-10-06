@@ -25,8 +25,123 @@ import {
   initialAuditLogs,
 } from "./mockStore";
 import { cleanWhatsAppNumber } from "@/utils/whatsapp";
+import { DEFAULT_ALLOWED_LOCATIONS } from "@/utils/formatters";
 import { supabaseService } from "@/services/supabaseService";
 import { supabase } from "@/lib/supabaseClient";
+
+export const LOCATION_STORAGE_KEY = "getlinked_location_settings_v1";
+
+export interface SavedLocationSettings {
+  allowed_creator_locations: string[];
+  allowed_villa_locations: string[];
+  custom_locations: string[];
+  updated_at?: string;
+}
+
+export function readLocationSettingsFromStorage(): SavedLocationSettings | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(LOCATION_STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed.allowed_creator_locations) || Array.isArray(parsed.allowed_villa_locations)) {
+        return {
+          allowed_creator_locations: Array.isArray(parsed.allowed_creator_locations)
+            ? parsed.allowed_creator_locations
+            : DEFAULT_ALLOWED_LOCATIONS,
+          allowed_villa_locations: Array.isArray(parsed.allowed_villa_locations)
+            ? parsed.allowed_villa_locations
+            : DEFAULT_ALLOWED_LOCATIONS,
+          custom_locations: Array.isArray(parsed.custom_locations) ? parsed.custom_locations : [],
+          updated_at: parsed.updated_at,
+        };
+      }
+    }
+    const mainRaw = localStorage.getItem(STORAGE_KEY);
+    if (mainRaw) {
+      const parsedMain = JSON.parse(mainRaw);
+      if (
+        parsedMain?.settings &&
+        (Array.isArray(parsedMain.settings.allowed_creator_locations) ||
+          Array.isArray(parsedMain.settings.allowed_villa_locations))
+      ) {
+        return {
+          allowed_creator_locations: Array.isArray(parsedMain.settings.allowed_creator_locations)
+            ? parsedMain.settings.allowed_creator_locations
+            : DEFAULT_ALLOWED_LOCATIONS,
+          allowed_villa_locations: Array.isArray(parsedMain.settings.allowed_villa_locations)
+            ? parsedMain.settings.allowed_villa_locations
+            : DEFAULT_ALLOWED_LOCATIONS,
+          custom_locations: Array.isArray(parsedMain.settings.custom_locations)
+            ? parsedMain.settings.custom_locations
+            : [],
+          updated_at: parsedMain.settings.updated_at,
+        };
+      }
+    }
+  } catch (e) {
+    console.warn("Error reading location settings from localStorage:", e);
+  }
+  return null;
+}
+
+export function writeLocationSettingsToStorage(locations: {
+  allowed_creator_locations: string[];
+  allowed_villa_locations: string[];
+  custom_locations?: string[];
+}) {
+  if (typeof window === "undefined") return;
+  try {
+    const payload: SavedLocationSettings = {
+      allowed_creator_locations: locations.allowed_creator_locations,
+      allowed_villa_locations: locations.allowed_villa_locations,
+      custom_locations: locations.custom_locations ?? [],
+      updated_at: new Date().toISOString(),
+    };
+    localStorage.setItem(LOCATION_STORAGE_KEY, JSON.stringify(payload));
+    window.dispatchEvent(new CustomEvent("getlinked_locations_changed", { detail: payload }));
+  } catch (e) {
+    console.warn("Error saving location settings to localStorage:", e);
+  }
+}
+
+const normalizeSettings = (
+  s: PlatformSettings,
+  existingSettings?: PlatformSettings
+): PlatformSettings => {
+  const localSaved = readLocationSettingsFromStorage();
+
+  const allowed_creator_locations = Array.isArray(s.allowed_creator_locations)
+    ? s.allowed_creator_locations
+    : localSaved?.allowed_creator_locations !== undefined && Array.isArray(localSaved.allowed_creator_locations)
+    ? localSaved.allowed_creator_locations
+    : existingSettings?.allowed_creator_locations !== undefined && Array.isArray(existingSettings.allowed_creator_locations)
+    ? existingSettings.allowed_creator_locations
+    : DEFAULT_ALLOWED_LOCATIONS;
+
+  const allowed_villa_locations = Array.isArray(s.allowed_villa_locations)
+    ? s.allowed_villa_locations
+    : localSaved?.allowed_villa_locations !== undefined && Array.isArray(localSaved.allowed_villa_locations)
+    ? localSaved.allowed_villa_locations
+    : existingSettings?.allowed_villa_locations !== undefined && Array.isArray(existingSettings.allowed_villa_locations)
+    ? existingSettings.allowed_villa_locations
+    : DEFAULT_ALLOWED_LOCATIONS;
+
+  const custom_locations = Array.isArray(s.custom_locations)
+    ? s.custom_locations
+    : localSaved?.custom_locations !== undefined && Array.isArray(localSaved.custom_locations)
+    ? localSaved.custom_locations
+    : existingSettings?.custom_locations !== undefined && Array.isArray(existingSettings.custom_locations)
+    ? existingSettings.custom_locations
+    : [];
+
+  return {
+    ...s,
+    allowed_creator_locations,
+    allowed_villa_locations,
+    custom_locations,
+  };
+};
 
 export interface AuthUser {
   id: string;
@@ -137,6 +252,60 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [authUser, setAuthUser] = useState<AuthUser | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
 
+  // Immediate client hydration of location settings to avoid any uninitialized flash
+  useEffect(() => {
+    const saved = readLocationSettingsFromStorage();
+    if (saved) {
+      setSettings((prev) => ({
+        ...prev,
+        allowed_creator_locations: saved.allowed_creator_locations,
+        allowed_villa_locations: saved.allowed_villa_locations,
+        custom_locations: saved.custom_locations ?? prev.custom_locations,
+      }));
+    }
+  }, []);
+
+  // Listen for storage events across browser tabs/windows and custom events within the same window
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === LOCATION_STORAGE_KEY && e.newValue) {
+        try {
+          const parsed: SavedLocationSettings = JSON.parse(e.newValue);
+          setSettings((prev) => ({
+            ...prev,
+            allowed_creator_locations: parsed.allowed_creator_locations,
+            allowed_villa_locations: parsed.allowed_villa_locations,
+            custom_locations: parsed.custom_locations ?? prev.custom_locations,
+          }));
+        } catch {
+          // ignore
+        }
+      }
+    };
+
+    const handleCustomChange = (e: Event) => {
+      const customEvent = e as CustomEvent<SavedLocationSettings>;
+      if (customEvent.detail) {
+        setSettings((prev) => ({
+          ...prev,
+          allowed_creator_locations: customEvent.detail.allowed_creator_locations,
+          allowed_villa_locations: customEvent.detail.allowed_villa_locations,
+          custom_locations: customEvent.detail.custom_locations ?? prev.custom_locations,
+        }));
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("getlinked_locations_changed", handleCustomChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("getlinked_locations_changed", handleCustomChange);
+    };
+  }, []);
+
   // Listen to Supabase Auth State for Google / User login
   useEffect(() => {
     let mounted = true;
@@ -217,7 +386,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         if (data.accommodations) setAccommodations(data.accommodations);
         if (data.requests) setRequests(data.requests);
         if (data.matches) setMatches(data.matches);
-        if (data.settings) setSettings(data.settings);
+        if (data.settings) setSettings((prev) => normalizeSettings(data.settings!, prev));
         if (data.ads) setAds(data.ads);
         if (data.auditLogs) setAuditLogs(data.auditLogs);
       } else {
@@ -230,7 +399,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           if (parsed.accommodations?.length) setAccommodations(parsed.accommodations);
           if (parsed.requests?.length) setRequests(parsed.requests);
           if (parsed.matches?.length) setMatches(parsed.matches);
-          if (parsed.settings) setSettings(parsed.settings);
+          if (parsed.settings) setSettings((prev) => normalizeSettings(parsed.settings, prev));
           if (parsed.ads?.length) setAds(parsed.ads);
           if (parsed.auditLogs?.length) setAuditLogs(parsed.auditLogs);
         }
@@ -351,6 +520,22 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const submitCreatorApplication = (
     data: Omit<InfluencerApplication, "id" | "reference_code" | "status" | "created_at" | "updated_at">
   ) => {
+    const allowedCreatorLocs = settings.allowed_creator_locations ?? DEFAULT_ALLOWED_LOCATIONS;
+    if (allowedCreatorLocs.length > 0 && !allowedCreatorLocs.includes(data.city)) {
+      return {
+        success: false,
+        reference_code: "",
+        message: `Registration for ${data.city} is currently closed. Please select an active location.`,
+      };
+    }
+    if (allowedCreatorLocs.length === 0) {
+      return {
+        success: false,
+        reference_code: "",
+        message: "Creator registration is currently paused across all locations.",
+      };
+    }
+
     const cleanedPhone = cleanWhatsAppNumber(data.whatsapp);
     const duplicateByPhone = applications.find(
       (a) => cleanWhatsAppNumber(a.whatsapp) === cleanedPhone
@@ -523,6 +708,22 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const submitAccommodationApplication = (
     data: Omit<AccommodationApplication, "id" | "reference_code" | "status" | "created_at" | "updated_at">
   ) => {
+    const allowedVillaLocs = settings.allowed_villa_locations ?? DEFAULT_ALLOWED_LOCATIONS;
+    if (allowedVillaLocs.length > 0 && !allowedVillaLocs.includes(data.city)) {
+      return {
+        success: false,
+        reference_code: "",
+        message: `Registration for ${data.city} is currently closed. Please select an active location.`,
+      };
+    }
+    if (allowedVillaLocs.length === 0) {
+      return {
+        success: false,
+        reference_code: "",
+        message: "Villa and stay registration is currently closed across all locations.",
+      };
+    }
+
     const refCode = `GL-A-${Math.floor(1000 + Math.random() * 9000)}`;
     const newApp: AccommodationApplication = {
       ...data,
@@ -773,7 +974,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const updateSettings = async (newSettings: Partial<PlatformSettings>) => {
-    let updatedObj: PlatformSettings;
+    let updatedObj: PlatformSettings | undefined;
     setSettings((prev) => {
       updatedObj = { ...prev, ...newSettings, updated_at: new Date().toISOString() };
       addAuditLog(
@@ -784,16 +985,42 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         updatedObj.platform_phase,
         `Updated settings: Phase=${updatedObj.platform_phase}, BillingMode=${updatedObj.billing_mode}, PoolLimit=${updatedObj.creator_pool_limit}`
       );
+      if (
+        newSettings.allowed_creator_locations !== undefined ||
+        newSettings.allowed_villa_locations !== undefined ||
+        newSettings.custom_locations !== undefined
+      ) {
+        writeLocationSettingsToStorage({
+          allowed_creator_locations: updatedObj.allowed_creator_locations ?? DEFAULT_ALLOWED_LOCATIONS,
+          allowed_villa_locations: updatedObj.allowed_villa_locations ?? DEFAULT_ALLOWED_LOCATIONS,
+          custom_locations: updatedObj.custom_locations,
+        });
+
+        addAuditLog(
+          "LOCATION_SETTINGS_SNAPSHOT",
+          "PlatformSettings",
+          "global",
+          undefined,
+          undefined,
+          JSON.stringify({
+            allowed_creator_locations: updatedObj.allowed_creator_locations,
+            allowed_villa_locations: updatedObj.allowed_villa_locations,
+            custom_locations: updatedObj.custom_locations,
+          })
+        );
+      }
       return updatedObj;
     });
 
-    // Supabase persist
-    await supabaseService.upsertSettings({
+    const payloadToUpsert = updatedObj || {
       ...settings,
       ...newSettings,
       id: "global",
       updated_at: new Date().toISOString(),
-    });
+    };
+
+    // Supabase persist
+    await supabaseService.upsertSettings(payloadToUpsert);
   };
 
   const addAdvertisement = async (ad: Omit<Advertisement, "id">) => {

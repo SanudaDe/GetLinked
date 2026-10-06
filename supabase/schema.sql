@@ -147,8 +147,16 @@ CREATE TABLE IF NOT EXISTS platform_settings (
   creator_pool_limit INTEGER DEFAULT 1000,
   directory_visibility TEXT NOT NULL DEFAULT 'PUBLIC',
   document_retention_days INTEGER DEFAULT 90,
+  allowed_creator_locations JSONB DEFAULT '[]'::jsonb,
+  allowed_villa_locations JSONB DEFAULT '[]'::jsonb,
+  custom_locations JSONB DEFAULT '[]'::jsonb,
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Ensure columns exist if table was already created earlier
+ALTER TABLE platform_settings ADD COLUMN IF NOT EXISTS allowed_creator_locations JSONB DEFAULT '[]'::jsonb;
+ALTER TABLE platform_settings ADD COLUMN IF NOT EXISTS allowed_villa_locations JSONB DEFAULT '[]'::jsonb;
+ALTER TABLE platform_settings ADD COLUMN IF NOT EXISTS custom_locations JSONB DEFAULT '[]'::jsonb;
 
 -- ------------------------------------------------------------------------------
 -- 7. ADVERTISEMENTS TABLE (Sponsor Banner Campaigns)
@@ -262,8 +270,28 @@ END $$;
 -- ------------------------------------------------------------------------------
 
 -- Platform Settings
-INSERT INTO platform_settings (id, platform_phase, billing_mode, creator_pool_limit, directory_visibility, document_retention_days)
-VALUES ('global', 'FREE', 'none', 1000, 'PUBLIC', 90)
+INSERT INTO platform_settings (
+  id,
+  platform_phase,
+  billing_mode,
+  creator_pool_limit,
+  directory_visibility,
+  document_retention_days,
+  allowed_creator_locations,
+  allowed_villa_locations,
+  custom_locations
+)
+VALUES (
+  'global',
+  'FREE',
+  'none',
+  1000,
+  'PUBLIC',
+  90,
+  '["Colombo","Galle","Mirissa","Weligama","Ella","Kandy","Sigiriya","Nuwara Eliya","Arugam Bay","Trincomalee","Tangalle","Bentota","Unawatuna","Hiriketiya","Jaffna","Negombo","Dambulla","Yala / Tissamaharama"]'::jsonb,
+  '["Colombo","Galle","Mirissa","Weligama","Ella","Kandy","Sigiriya","Nuwara Eliya","Arugam Bay","Trincomalee","Tangalle","Bentota","Unawatuna","Hiriketiya","Jaffna","Negombo","Dambulla","Yala / Tissamaharama"]'::jsonb,
+  '[]'::jsonb
+)
 ON CONFLICT (id) DO NOTHING;
 
 -- Initial Influencer Applications
