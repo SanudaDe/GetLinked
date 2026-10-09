@@ -54,13 +54,15 @@ export {
 };
 
 /**
- * Resolves a storage image reference or URL into a fully-qualified public URL.
- * Handles full URLs (https://...), Google Drive file links, and relative Supabase paths (avatars/..., properties/...).
+ * Resolves a media image reference or URL into a fully-qualified public URL.
+ * Handles Google Drive links (converted to high-res Google CDN), full URLs (https://...),
+ * and local web paths (/images/...).
+ * Note: Media is stored exclusively in Google Drive, not Supabase storage buckets.
  */
 export function formatStorageUrl(pathOrUrl?: string, defaultFolder: "avatars" | "properties" = "avatars"): string {
   if (!pathOrUrl) return "";
 
-  // Handle Google Drive file URLs and bare IDs
+  // 1. Handle Google Drive file URLs and bare IDs (Primary Media Engine)
   if (isGoogleDriveUrl(pathOrUrl)) {
     const driveFileId = extractGoogleDriveFileId(pathOrUrl);
     if (driveFileId) {
@@ -68,14 +70,20 @@ export function formatStorageUrl(pathOrUrl?: string, defaultFolder: "avatars" | 
     }
   }
 
+  // 2. Full HTTP/HTTPS URLs or Data URLs
   if (pathOrUrl.startsWith("http://") || pathOrUrl.startsWith("https://") || pathOrUrl.startsWith("data:")) {
     return pathOrUrl;
   }
-  const cleanPath = pathOrUrl.startsWith("/") ? pathOrUrl.slice(1) : pathOrUrl;
-  const folder = cleanPath.includes("/") ? "" : `${defaultFolder}/`;
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SUPABASE_URL || "https://gpkljpnbgnylcekrcluy.supabase.co";
-  return `${baseUrl}/storage/v1/object/public/images/${folder}${cleanPath}`;
+
+  // 3. Local relative paths (e.g. /images/galle.jpg)
+  if (pathOrUrl.startsWith("/")) {
+    return pathOrUrl;
+  }
+
+  // 4. Default high-quality fallback placeholders
+  return defaultFolder === "avatars"
+    ? "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"
+    : "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80";
 }
 
 export const SRI_LANKA_CITIES = [

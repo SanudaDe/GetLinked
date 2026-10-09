@@ -126,6 +126,7 @@ function ListPropertyContent() {
 
     const fileList = Array.from(files);
 
+    // Load local files directly as preview images (Media is saved to Google Drive)
     for (const file of fileList) {
       if (!file.type.startsWith("image/")) {
         setErrorMsg("Please upload valid image files (JPG, PNG, WebP).");
@@ -136,21 +137,14 @@ function ListPropertyContent() {
         continue;
       }
 
-      // Upload directly to Supabase Storage 'images' bucket
-      const uploadRes = await supabaseService.uploadPropertyImage(file);
-      if (uploadRes.url) {
-        setImages((prev) => [...prev, uploadRes.url!]);
-      } else {
-        // Fallback to local Data URL so user is never blocked
-        const reader = new FileReader();
-        reader.onload = (loadEvt) => {
-          const result = loadEvt.target?.result as string;
-          if (result) {
-            setImages((prev) => [...prev, result]);
-          }
-        };
-        reader.readAsDataURL(file);
-      }
+      const reader = new FileReader();
+      reader.onload = (loadEvt) => {
+        const result = loadEvt.target?.result as string;
+        if (result) {
+          setImages((prev) => [...prev, result]);
+        }
+      };
+      reader.readAsDataURL(file);
     }
 
     setIsUploading(false);
@@ -645,42 +639,81 @@ function ListPropertyContent() {
                 : "Upload photos of your rooms, pool, dining, or property views. High-quality imagery attracts more creators!"}
             </p>
 
-            {/* Upload Controls Grid (Device, Web Link, or Google Drive) */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* Option A: Upload Files from Device */}
-              <label className="p-5 rounded-xl border-2 border-dashed border-sand-400 dark:border-neutral-700 hover:border-teal-700 dark:hover:border-[#D7400B] bg-sand-100/70 dark:bg-neutral-900 hover:bg-sand-100 transition-colors flex flex-col items-center justify-center text-center cursor-pointer group">
-                <UploadCloud className="w-8 h-8 text-teal-900 dark:text-[#D7400B] group-hover:scale-110 transition-transform mb-2" />
-                <span className="text-xs font-bold text-teal-950 dark:text-white block">
-                  {isUploading ? "Processing Photos..." : "Upload from Device"}
+            {/* Google Drive Primary Notice Banner */}
+            <div className="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 flex items-center justify-between gap-3 text-xs">
+              <div className="flex items-center gap-2.5 text-amber-900 dark:text-amber-200">
+                <Folder className="w-4 h-4 text-amber-700 dark:text-amber-400 shrink-0" />
+                <span>
+                  <strong>Google Drive Cloud Powered:</strong> High-resolution photos & video reels are stored and streamed via Google Drive for maximum quality and zero buffering.
                 </span>
-                <span className="text-[11px] text-ink-500 dark:text-neutral-400 mt-1 block">
-                  PNG, JPG, or WebP up to 10MB each
-                </span>
-                <input
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  onChange={handleFileUpload}
-                  className="hidden"
-                />
-              </label>
+              </div>
+              <a
+                href={GETLINKED_DRIVE_FOLDER_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shrink-0 font-bold text-amber-800 dark:text-gold-400 hover:underline inline-flex items-center gap-1"
+              >
+                <span>Open Drive Folder</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            </div>
 
-              {/* Option B: Direct Image URL Link */}
+            {/* Upload Controls Grid (Google Drive, Web Link, or Device) */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Option A: Google Drive Media Cloud (Primary) */}
+              <div className="p-5 rounded-xl border-2 border-amber-400 dark:border-amber-700 bg-amber-50/80 dark:bg-amber-950/30 flex flex-col justify-between space-y-3 shadow-xs">
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-amber-950 dark:text-amber-200">
+                      <Folder className="w-4 h-4 text-amber-700 dark:text-gold-400" />
+                      <span>Google Drive Cloud</span>
+                    </div>
+                    <span className="text-[9px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-amber-600 text-white">
+                      Recommended
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-amber-800 dark:text-amber-300">
+                    Connect directly to GetLinked_Media or your Drive folder.
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => setShowDrivePicker(!showDrivePicker)}
+                    className="w-full py-2 px-3 rounded-lg bg-amber-600 hover:bg-amber-700 dark:bg-gold-500 dark:hover:bg-gold-600 text-white dark:text-ink-950 text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow-xs"
+                  >
+                    <Folder className="w-3.5 h-3.5" />
+                    <span>{showDrivePicker ? "Hide Drive Library" : "Browse Drive Library"}</span>
+                  </button>
+                  <a
+                    href={GETLINKED_DRIVE_FOLDER_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[11px] text-center text-amber-900 dark:text-gold-400 hover:underline inline-flex items-center justify-center gap-1 font-semibold"
+                  >
+                    <span>Upload to Drive</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
+
+              {/* Option B: Direct Image URL / Drive Link */}
               <div className="p-5 rounded-xl border border-sand-300 dark:border-neutral-800 bg-sand-100/50 dark:bg-neutral-900 flex flex-col justify-between space-y-3">
                 <div className="space-y-1">
                   <div className="flex items-center gap-1.5 text-xs font-bold text-teal-950 dark:text-white">
                     <LinkIcon className="w-3.5 h-3.5 text-teal-800 dark:text-[#D7400B]" />
-                    <span>Paste Web or Drive Link</span>
+                    <span>Paste Drive or Web Link</span>
                   </div>
                   <p className="text-[11px] text-ink-500 dark:text-neutral-400">
-                    Paste any image URL or Google Drive share link.
+                    Paste any Google Drive share link or image URL.
                   </p>
                 </div>
 
                 <div className="flex gap-2">
                   <input
                     type="url"
-                    placeholder="https://... or Google Drive link"
+                    placeholder="https://drive.google.com/... or image link"
                     value={imageUrlInput}
                     onChange={(e) => setImageUrlInput(e.target.value)}
                     onKeyDown={(e) => {
@@ -702,38 +735,23 @@ function ListPropertyContent() {
                 </div>
               </div>
 
-              {/* Option C: Google Drive Media Cloud */}
-              <div className="p-5 rounded-xl border border-amber-300 dark:border-amber-900/60 bg-amber-50/60 dark:bg-amber-950/20 flex flex-col justify-between space-y-3">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-amber-900 dark:text-amber-300">
-                    <Folder className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400" />
-                    <span>Google Drive Cloud</span>
-                  </div>
-                  <p className="text-[11px] text-amber-800/80 dark:text-amber-300/80">
-                    Connect directly to GetLinked_Media or your Drive folder.
-                  </p>
-                </div>
-
-                <div className="flex flex-col gap-1.5">
-                  <button
-                    type="button"
-                    onClick={() => setShowDrivePicker(!showDrivePicker)}
-                    className="w-full py-2 px-3 rounded-lg bg-amber-600 hover:bg-amber-700 dark:bg-gold-500 dark:hover:bg-gold-600 text-white dark:text-ink-950 text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow-xs"
-                  >
-                    <Folder className="w-3.5 h-3.5" />
-                    <span>{showDrivePicker ? "Hide Drive Cloud" : "Browse Drive Cloud"}</span>
-                  </button>
-                  <a
-                    href={GETLINKED_DRIVE_FOLDER_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[11px] text-center text-amber-900 dark:text-gold-400 hover:underline inline-flex items-center justify-center gap-1 font-semibold"
-                  >
-                    <span>Open Folder in Drive</span>
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
-                </div>
-              </div>
+              {/* Option C: Upload Files from Device (Local Preview) */}
+              <label className="p-5 rounded-xl border-2 border-dashed border-sand-400 dark:border-neutral-700 hover:border-teal-700 dark:hover:border-[#D7400B] bg-sand-100/70 dark:bg-neutral-900 hover:bg-sand-100 transition-colors flex flex-col items-center justify-center text-center cursor-pointer group">
+                <UploadCloud className="w-8 h-8 text-teal-900 dark:text-[#D7400B] group-hover:scale-110 transition-transform mb-2" />
+                <span className="text-xs font-bold text-teal-950 dark:text-white block">
+                  {isUploading ? "Processing Photos..." : "Upload from Device"}
+                </span>
+                <span className="text-[11px] text-ink-500 dark:text-neutral-400 mt-1 block">
+                  PNG, JPG, or WebP up to 10MB each
+                </span>
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+              </label>
             </div>
 
             {/* Live Google Drive Cloud Picker */}

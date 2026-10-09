@@ -357,24 +357,11 @@ VALUES
 ON CONFLICT (id) DO NOTHING;
 
 -- ------------------------------------------------------------------------------
--- SUPABASE STORAGE: IMAGES BUCKET SETUP & POLICIES
+-- MEDIA ARCHITECTURE: GOOGLE DRIVE (SUPABASE IMAGES BUCKET DISCONTINUED)
 -- ------------------------------------------------------------------------------
-INSERT INTO storage.buckets (id, name, public)
-VALUES ('images', 'images', true)
-ON CONFLICT (id) DO UPDATE SET public = true;
+-- NOTE: Supabase Storage bucket 'images' is completely discontinued.
+-- All media (photos, food/eats photos, videos, reels, creator avatars) is saved
+-- directly in and served from Google Drive (Folder: 1F2xh_ii87HDSCW3PHFHLXY7DpN_qfkOX)
+-- via the Google Drive CDN thumbnail endpoint and responsive embed player.
+-- No storage egress or bucket provisioning in Supabase is required.
 
-DROP POLICY IF EXISTS "Public can upload to images bucket" ON storage.objects;
-CREATE POLICY "Public can upload to images bucket" ON storage.objects
-FOR INSERT WITH CHECK (bucket_id = 'images');
-
-DROP POLICY IF EXISTS "Public can view images bucket" ON storage.objects;
-CREATE POLICY "Public can view images bucket" ON storage.objects
-FOR SELECT USING (bucket_id = 'images');
-
-DROP POLICY IF EXISTS "Public can update images bucket" ON storage.objects;
-CREATE POLICY "Public can update images bucket" ON storage.objects
-FOR UPDATE USING (bucket_id = 'images') WITH CHECK (bucket_id = 'images');
-
-DROP POLICY IF EXISTS "Public can delete images bucket" ON storage.objects;
-CREATE POLICY "Public can delete images bucket" ON storage.objects
-FOR DELETE USING (bucket_id = 'images');

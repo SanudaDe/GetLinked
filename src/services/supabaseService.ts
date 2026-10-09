@@ -554,39 +554,33 @@ export const supabaseService = {
   },
 
   // ---------------------------------------------------------------------------
-  // 10. SUPABASE STORAGE (Bucket: images)
+  // 10. MEDIA ARCHITECTURE (Google Drive Only - Supabase Images Bucket Discontinued)
   // ---------------------------------------------------------------------------
   /**
-   * Generic upload helper for images and assets into Supabase 'images' bucket.
+   * Note: The Supabase 'images' storage bucket is completely discontinued.
+   * All media (photos, reels, videos, banners) is permanently saved in and served from
+   * the shared Google Drive folder (GetLinked_Media: 1F2xh_ii87HDSCW3PHFHLXY7DpN_qfkOX).
+   *
+   * For document verification uploads, local files are converted to secure client DataURLs.
    */
   async uploadImage(
     file: File,
-    folder: "properties" | "avatars" | "documents" = "properties"
+    _folder: "properties" | "avatars" | "documents" = "properties"
   ): Promise<{ url: string | null; error?: string }> {
     try {
-      const fileExt = file.name.split(".").pop()?.toLowerCase() || "jpg";
-      const cleanFileName = `${folder}/${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
-
-      const { error } = await supabase.storage
-        .from("images")
-        .upload(cleanFileName, file, {
-          cacheControl: "3600",
-          upsert: true,
-        });
-
-      if (error) {
-        console.warn(`Supabase Storage upload error in ${folder}:`, error);
-        return { url: null, error: error.message };
-      }
-
-      const { data: publicData } = supabase.storage
-        .from("images")
-        .getPublicUrl(cleanFileName);
-
-      return { url: publicData.publicUrl };
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          resolve({ url: reader.result as string });
+        };
+        reader.onerror = () => {
+          resolve({ url: null, error: "Failed to read local file into preview data" });
+        };
+        reader.readAsDataURL(file);
+      });
     } catch (err: any) {
-      console.warn(`Supabase Storage upload exception in ${folder}:`, err);
-      return { url: null, error: err?.message || "Storage upload failed" };
+      console.warn("Media file processing error:", err);
+      return { url: null, error: err?.message || "File processing failed" };
     }
   },
 

@@ -244,21 +244,16 @@ export default function ApplyPage() {
     setIsUploadingAvatar(true);
     setErrorMsg(null);
 
-    const res = await supabaseService.uploadAvatar(file);
-    if (res.url) {
-      setFormData((prev) => ({ ...prev, avatarUrl: res.url! }));
-    } else {
-      // Fallback preview
-      const reader = new FileReader();
-      reader.onload = (evt) => {
-        setFormData((prev) => ({ ...prev, avatarUrl: evt.target?.result as string }));
-      };
-      reader.readAsDataURL(file);
-      if (res.error) {
-        console.warn("Avatar upload notice:", res.error);
-      }
-    }
-    setIsUploadingAvatar(false);
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      setFormData((prev) => ({ ...prev, avatarUrl: evt.target?.result as string }));
+      setIsUploadingAvatar(false);
+    };
+    reader.onerror = () => {
+      setIsUploadingAvatar(false);
+      setErrorMsg("Failed to read image file.");
+    };
+    reader.readAsDataURL(file);
     e.target.value = "";
   };
 
@@ -709,10 +704,10 @@ export default function ApplyPage() {
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-semibold text-teal-950 flex items-center gap-1.5">
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                        Photo uploaded to Supabase Storage
+                        Profile Photo Loaded
                       </p>
                       <p className="text-[11px] text-ink-500 truncate mt-0.5 font-mono">
-                        {formData.avatarUrl}
+                        {formData.avatarUrl.startsWith("data:") ? "Image loaded from device" : formData.avatarUrl}
                       </p>
                     </div>
                     <button
@@ -743,10 +738,10 @@ export default function ApplyPage() {
                       </div>
                       <div>
                         <span className="text-xs font-bold text-teal-950 block">
-                          {isUploadingAvatar ? "Uploading photo to Supabase..." : "Click or drag profile photo here to upload"}
+                          {isUploadingAvatar ? "Processing photo..." : "Click or drag profile photo here"}
                         </span>
                         <span className="text-[11px] text-ink-500 block mt-0.5">
-                          JPG, PNG, or WebP up to 5MB (Saved to Supabase images bucket)
+                          JPG, PNG, or WebP up to 5MB (or paste Google Drive photo link below)
                         </span>
                       </div>
                     </div>
