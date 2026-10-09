@@ -600,7 +600,7 @@ ALTER TABLE platform_settings ADD COLUMN IF NOT EXISTS custom_locations JSONB DE
               <span>Database Persistence & Supabase Synchronization</span>
             </div>
             <a
-              href="https://supabase.com/dashboard/project/omuepglydxtqdazqqhby/sql/new"
+              href="https://supabase.com/dashboard/project/gpkljpnbgnylcekrcluy/sql/new"
               target="_blank"
               rel="noopener noreferrer"
               className="text-teal-900 hover:underline inline-flex items-center gap-1 text-[11px]"

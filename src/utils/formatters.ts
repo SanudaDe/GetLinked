@@ -33,7 +33,9 @@ export function formatStorageUrl(pathOrUrl?: string, defaultFolder: "avatars" | 
   }
   const cleanPath = pathOrUrl.startsWith("/") ? pathOrUrl.slice(1) : pathOrUrl;
   const folder = cleanPath.includes("/") ? "" : `${defaultFolder}/`;
-  return `https://omuepglydxtqdazqqhby.supabase.co/storage/v1/object/public/images/${folder}${cleanPath}`;
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SUPABASE_URL || "https://gpkljpnbgnylcekrcluy.supabase.co";
+  return `${baseUrl}/storage/v1/object/public/images/${folder}${cleanPath}`;
 }
 
 export const SRI_LANKA_CITIES = [

@@ -271,7 +271,7 @@ export default function AdminSettingsPage() {
                 <div>
                   <span className="text-ink-500 block">Supabase Endpoint:</span>
                   <span className="font-mono text-[11px] text-teal-950 font-semibold truncate block">
-                    https://omuepglydxtqdazqqhby.supabase.co
+                    https://gpkljpnbgnylcekrcluy.supabase.co
                   </span>
                 </div>
                 <div>
@@ -284,7 +284,7 @@ export default function AdminSettingsPage() {
 
               <div className="pt-2 border-t border-sand-200/80 flex flex-wrap items-center gap-3">
                 <a
-                  href="https://supabase.com/dashboard/project/omuepglydxtqdazqqhby/sql/new"
+                  href="https://supabase.com/dashboard/project/gpkljpnbgnylcekrcluy/sql/new"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-3.5 py-2 rounded-lg bg-teal-900 hover:bg-teal-800 text-sand-50 text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-sm"
