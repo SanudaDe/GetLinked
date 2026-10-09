@@ -9,21 +9,45 @@ export const Hero: React.FC = () => {
 
   useEffect(() => {
     const video = videoRef.current;
-    if (video) {
-      video.defaultMuted = true;
+    if (!video) return;
+
+    video.defaultMuted = true;
+    video.muted = true;
+
+    const tryPlay = () => {
       video.muted = true;
       const playPromise = video.play();
       if (playPromise !== undefined) {
-        playPromise.catch((err) => {
-          console.warn("Autoplay was prevented by browser policy:", err);
+        playPromise.catch(() => {
+          // Fallback: resume on first user interaction if browser policy requires it
+          const onUserGesture = () => {
+            video.muted = true;
+            video.play().catch(() => {});
+            window.removeEventListener("touchstart", onUserGesture);
+            window.removeEventListener("click", onUserGesture);
+          };
+          window.addEventListener("touchstart", onUserGesture, { once: true });
+          window.addEventListener("click", onUserGesture, { once: true });
         });
       }
+    };
+
+    if (video.readyState >= 2) {
+      tryPlay();
+    } else {
+      video.addEventListener("loadeddata", tryPlay, { once: true });
+      video.addEventListener("canplay", tryPlay, { once: true });
     }
+
+    return () => {
+      video.removeEventListener("loadeddata", tryPlay);
+      video.removeEventListener("canplay", tryPlay);
+    };
   }, []);
 
   return (
     <section className="relative min-h-[92vh] sm:min-h-screen flex flex-col justify-between overflow-hidden bg-white dark:bg-black transition-colors duration-200">
-      {/* Background Video (Web BG Video.mp4) */}
+      {/* Background Video */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <video
           ref={videoRef}
@@ -32,13 +56,16 @@ export const Hero: React.FC = () => {
           muted
           playsInline
           preload="auto"
+          poster="/images/galle.jpg"
           className="w-full h-full object-cover object-center transition-opacity duration-700"
           style={{ filter: "brightness(0.96)" }}
         >
+          <source
+            src="https://gpkljpnbgnylcekrcluy.supabase.co/storage/v1/object/public/images/web-bg-video-optimized.mp4"
+            type="video/mp4"
+          />
           <source src="/videos/web-bg-video-optimized.mp4" type="video/mp4" />
-          <source src="https://gpkljpnbgnylcekrcluy.supabase.co/storage/v1/object/public/images/web-bg-video-optimized.mp4" type="video/mp4" />
           <source src="/videos/Web%20BG%20Video.mp4" type="video/mp4" />
-          <source src="/videos/web-bg-video.mp4" type="video/mp4" />
         </video>
 
         {/* Ambient Overlays: Preserves Video Vibrancy while Ensuring Text Readability */}

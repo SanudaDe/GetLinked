@@ -11,6 +11,25 @@ export default function AuthCallbackPage() {
   useEffect(() => {
     const handleAuth = async () => {
       try {
+        if (typeof window !== "undefined") {
+          const searchParams = new URLSearchParams(window.location.search);
+          const errorParam = searchParams.get("error");
+          const errorDesc = searchParams.get("error_description");
+
+          if (errorParam || errorDesc) {
+            setErrorMsg(errorDesc || errorParam || "Authentication was cancelled or failed");
+            return;
+          }
+
+          const code = searchParams.get("code");
+          if (code) {
+            const { error: exchangeErr } = await supabase.auth.exchangeCodeForSession(code);
+            if (exchangeErr) {
+              console.warn("exchangeCodeForSession error, falling back to getSession:", exchangeErr.message);
+            }
+          }
+        }
+
         const { data, error } = await supabase.auth.getSession();
         if (error) {
           setErrorMsg(error.message);
