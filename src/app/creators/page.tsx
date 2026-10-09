@@ -208,13 +208,6 @@ function CreatorDirectoryContent() {
             <span>/</span>
             <span className="text-gold-600 font-medium">Sri Lanka</span>
           </div>
-          <Link
-            href="/admin/matching"
-            className="text-xs font-semibold text-teal-950 dark:text-neutral-200 bg-sand-200 dark:bg-neutral-900 hover:bg-sand-300 dark:hover:bg-neutral-800 border border-sand-400 dark:border-neutral-700 px-3 py-1 rounded-full flex items-center gap-1.5 transition-colors"
-          >
-            <ShieldCheck className="w-3.5 h-3.5 text-teal-800 dark:text-teal-400" />
-            <span>Admin: Open Matching Workspace →</span>
-          </Link>
         </div>
 
         {/* Header */}
