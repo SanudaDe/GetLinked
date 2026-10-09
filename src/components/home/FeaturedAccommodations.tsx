@@ -5,10 +5,11 @@ import Link from "next/link";
 import { ChevronDown, ArrowRight } from "lucide-react";
 import { useStore } from "@/data/store";
 import { AccommodationApplication } from "@/types";
-import { formatStorageUrl, formatFollowerCount } from "@/utils/formatters";
+import { formatStorageUrl, formatFollowerCount, isEatVenue } from "@/utils/formatters";
 
 const ACCOMMODATION_CATEGORIES = [
-  "ALL DISTINCTIVE STAYS",
+  "ALL DISTINCTIVE STAYS & EATS",
+  "EATS, CAFÉS & BARS",
   "GALLE & SOUTH COAST",
   "ELLA & TEA HIGHLANDS",
   "SIGIRIYA & CULTURAL TRIANGLE",
@@ -20,7 +21,7 @@ type CategoryType = (typeof ACCOMMODATION_CATEGORIES)[number];
 
 export const FeaturedAccommodations: React.FC = () => {
   const { accommodations } = useStore();
-  const [activeCategory, setActiveCategory] = useState<CategoryType>("ALL DISTINCTIVE STAYS");
+  const [activeCategory, setActiveCategory] = useState<CategoryType>("ALL DISTINCTIVE STAYS & EATS");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   // Fallback high-res imagery for demo stays
@@ -74,7 +75,10 @@ export const FeaturedAccommodations: React.FC = () => {
   const baseStays = approvedStays.length > 0 ? approvedStays : accommodations;
 
   const filteredStays = baseStays.filter((stay) => {
-    if (activeCategory === "ALL DISTINCTIVE STAYS") return true;
+    if (activeCategory === "ALL DISTINCTIVE STAYS & EATS") return true;
+    if (activeCategory === "EATS, CAFÉS & BARS") {
+      return isEatVenue(stay.property_type);
+    }
     const city = (stay.city || "").toLowerCase();
     const name = (stay.accommodation_name || "").toLowerCase();
     const type = (stay.property_type || "").toLowerCase();
@@ -447,12 +451,12 @@ export const FeaturedAccommodations: React.FC = () => {
             <span>{String(N).padStart(2, "0")}</span>
           </div>
 
-          {/* Link to List Stays */}
+          {/* Link to List Stays & Eats */}
           <Link
             href="/list-property"
             className="group inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#336467] dark:text-neutral-300 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors"
           >
-            <span>List your stay, free during launch</span>
+            <span>List your stay or eatery, free during launch</span>
             <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>

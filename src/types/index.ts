@@ -18,19 +18,34 @@ export type NicheType =
   | "Family & Kids"
   | "Other";
 
+export type VenueCategory = "STAYS" | "EATS";
+
 export type PropertyType =
   | "Hotel"
   | "Villa"
   | "Guesthouse"
   | "Resort"
   | "Boutique Hotel"
-  | "Eco Lodge";
+  | "Eco Lodge"
+  | "Restaurant"
+  | "Café"
+  | "Bar"
+  | "Bistro"
+  | "Bakery / Dessert Bar"
+  | "Beach Club / Sunset Bar"
+  | "Cafe / Bistro";
 
 export type OfferType =
   | "Free accommodation only"
   | "Free accommodation + meals"
   | "Paid collaboration"
-  | "Flexible / open to negotiate";
+  | "Flexible / open to negotiate"
+  | "Chef's Tasting Menu (Complimentary)"
+  | "Dinner for Two"
+  | "Lunch for Two"
+  | "Signature Dining & Drinks Experience"
+  | "Cocktails & Small Plates"
+  | "Complimentary Dining + Paid Collaboration";
 
 export type AdPlacement = "HOME" | "ACCOMMODATION_PAGES";
 

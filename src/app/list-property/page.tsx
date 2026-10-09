@@ -1,10 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useStore } from "@/data/store";
-import { SRI_LANKA_CITIES, PROPERTY_TYPES, OFFER_TYPES, DEFAULT_ALLOWED_LOCATIONS } from "@/utils/formatters";
-import { PropertyType, OfferType } from "@/types";
+import {
+  SRI_LANKA_CITIES,
+  STAY_VENUE_TYPES,
+  EATS_VENUE_TYPES,
+  STAY_OFFER_TYPES,
+  EATS_OFFER_TYPES,
+  DEFAULT_ALLOWED_LOCATIONS,
+  isEatVenue,
+} from "@/utils/formatters";
+import { PropertyType, OfferType, VenueCategory } from "@/types";
 import { supabaseService } from "@/services/supabaseService";
 import {
   Building2,
@@ -19,27 +28,39 @@ import {
   Star,
   Plus,
   Link as LinkIcon,
-  Image as ImageIcon,
+  Utensils,
+  Coffee,
+  Wine,
+  Clock,
+  Bed,
 } from "lucide-react";
 
-export default function ListPropertyPage() {
+function ListPropertyContent() {
+  const searchParams = useSearchParams();
+  const initialCategoryParam = searchParams.get("category");
+  const defaultCategory: VenueCategory =
+    initialCategoryParam?.toLowerCase() === "eats" ? "EATS" : "STAYS";
+
   const { settings, submitAccommodationApplication } = useStore();
   const allowedVillaLocations = settings.allowed_villa_locations ?? DEFAULT_ALLOWED_LOCATIONS;
 
   const [submittedCode, setSubmittedCode] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
+  const [category, setCategory] = useState<VenueCategory>(defaultCategory);
+  const [visitScheduleMode, setVisitScheduleMode] = useState<"single" | "window">("single");
+
   const [formData, setFormData] = useState({
     accommodationName: "",
-    propertyType: "Villa" as PropertyType,
+    propertyType: (defaultCategory === "EATS" ? "Restaurant" : "Villa") as PropertyType,
     contactPerson: "",
     whatsapp: "",
     email: "",
     city: "Galle",
     coverageStart: "",
     coverageEnd: "",
-    offerType: "Free accommodation + meals" as OfferType,
-    minimumFollowers: 30000,
+    offerType: (defaultCategory === "EATS" ? "Dinner for Two" : "Free accommodation + meals") as OfferType,
+    minimumFollowers: 20000,
     requirements: "",
     consentGiven: false,
   });
@@ -49,8 +70,31 @@ export default function ListPropertyPage() {
   const [imageUrlInput, setImageUrlInput] = useState("");
   const [isUploading, setIsUploading] = useState(false);
 
+  // Sync category changes to default venue and offer types
+  const handleCategoryChange = (newCat: VenueCategory) => {
+    setCategory(newCat);
+    setErrorMsg(null);
+    if (newCat === "EATS") {
+      setFormData((prev) => ({
+        ...prev,
+        propertyType: isEatVenue(prev.propertyType) ? prev.propertyType : "Restaurant",
+        offerType: (EATS_OFFER_TYPES.includes(prev.offerType as any)
+          ? prev.offerType
+          : "Dinner for Two") as OfferType,
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        propertyType: !isEatVenue(prev.propertyType) ? prev.propertyType : "Villa",
+        offerType: (STAY_OFFER_TYPES.includes(prev.offerType as any)
+          ? prev.offerType
+          : "Free accommodation + meals") as OfferType,
+      }));
+    }
+  };
+
   // Ensure selected city is valid within currently allowed villa locations
-  React.useEffect(() => {
+  useEffect(() => {
     if (allowedVillaLocations.length > 0 && !allowedVillaLocations.includes(formData.city)) {
       setFormData((prev) => ({ ...prev, city: allowedVillaLocations[0] }));
     }
@@ -127,8 +171,8 @@ export default function ListPropertyPage() {
     });
   };
 
-  // Quick sample photo presets for hoteliers or testing
-  const samplePhotoPresets = [
+  // Sample photo presets tailored for Stays and Eats
+  const stayPresets = [
     {
       name: "Luxury Villa Pool",
       url: "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80",
@@ -147,6 +191,27 @@ export default function ListPropertyPage() {
     },
   ];
 
+  const eatsPresets = [
+    {
+      name: "Fine Dining Ambience",
+      url: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80",
+    },
+    {
+      name: "Chef's Tasting Plate",
+      url: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=80",
+    },
+    {
+      name: "Cocktail Bar Lounge",
+      url: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=1200&q=80",
+    },
+    {
+      name: "Artisan Café / Bakery",
+      url: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1200&q=80",
+    },
+  ];
+
+  const samplePhotoPresets = category === "EATS" ? eatsPresets : stayPresets;
+
   const handleAddPreset = (url: string) => {
     if (!images.includes(url)) {
       setImages((prev) => [...prev, url]);
@@ -157,8 +222,14 @@ export default function ListPropertyPage() {
     e.preventDefault();
     setErrorMsg(null);
 
+    const isEats = category === "EATS";
+
     if (!formData.accommodationName.trim()) {
-      setErrorMsg("Please enter your accommodation name.");
+      setErrorMsg(
+        isEats
+          ? "Please enter your restaurant, café, or bar name."
+          : "Please enter your property or stay name."
+      );
       return;
     }
     if (!formData.contactPerson.trim()) {
@@ -169,25 +240,55 @@ export default function ListPropertyPage() {
       setErrorMsg("Please enter a valid WhatsApp number with country code.");
       return;
     }
-    if (!formData.coverageStart || !formData.coverageEnd) {
-      setErrorMsg("Please specify your collaboration coverage date window.");
-      return;
+
+    // Date validation
+    let finalStartDate = formData.coverageStart;
+    let finalEndDate = formData.coverageEnd;
+
+    if (isEats) {
+      if (visitScheduleMode === "single") {
+        if (!finalStartDate) {
+          setErrorMsg("Please specify the single visit date for creator collaboration.");
+          return;
+        }
+        finalEndDate = finalStartDate; // Same-day for single visit
+      } else {
+        if (!finalStartDate || !finalEndDate) {
+          setErrorMsg("Please specify the start and end dates of the available visit window.");
+          return;
+        }
+        if (new Date(finalEndDate) < new Date(finalStartDate)) {
+          setErrorMsg("Window end date cannot be earlier than window start date.");
+          return;
+        }
+      }
+    } else {
+      // Stays
+      if (!finalStartDate || !finalEndDate) {
+        setErrorMsg("Please specify your stay coverage check-in and check-out window.");
+        return;
+      }
+      if (new Date(finalEndDate) <= new Date(finalStartDate)) {
+        setErrorMsg("Stay coverage end date must be after start date.");
+        return;
+      }
     }
-    if (new Date(formData.coverageEnd) <= new Date(formData.coverageStart)) {
-      setErrorMsg("Coverage end date must be after coverage start date.");
-      return;
-    }
+
     if (!formData.requirements.trim() || formData.requirements.length < 20) {
-      setErrorMsg("Please specify what you are looking for from creators (at least 20 characters).");
+      setErrorMsg(
+        isEats
+          ? "Please specify what you are looking for from creators (e.g. 1 Reel featuring dishes + 3 stories) — at least 20 characters."
+          : "Please specify what you are looking for from creators (at least 20 characters)."
+      );
       return;
     }
     if (!formData.consentGiven) {
-      setErrorMsg("Please confirm host consent to submit your property for review.");
+      setErrorMsg("Please confirm host authorization to submit your listing for review.");
       return;
     }
 
     if (allowedVillaLocations.length === 0) {
-      setErrorMsg("Villa and property registration is currently closed across all locations.");
+      setErrorMsg("Registrations are currently closed across all locations.");
       return;
     }
     if (!allowedVillaLocations.includes(formData.city)) {
@@ -204,8 +305,8 @@ export default function ListPropertyPage() {
       whatsapp: formData.whatsapp,
       email: formData.email,
       city: formData.city,
-      coverage_start: formData.coverageStart,
-      coverage_end: formData.coverageEnd,
+      coverage_start: finalStartDate,
+      coverage_end: finalEndDate,
       offer_type: formData.offerType,
       minimum_followers: formData.minimumFollowers,
       requirements: formData.requirements,
@@ -216,12 +317,13 @@ export default function ListPropertyPage() {
     if (res.success) {
       setSubmittedCode(res.reference_code);
     } else {
-      setErrorMsg(res.message || "Failed to submit property listing.");
+      setErrorMsg(res.message || "Failed to submit listing.");
     }
   };
 
   if (submittedCode) {
     const coverPhoto = images.length > 0 ? images[0] : null;
+    const isEats = category === "EATS";
 
     return (
       <div className="py-20 bg-white dark:bg-black text-[#1A3739] dark:text-white min-h-screen transition-colors duration-300">
@@ -233,10 +335,11 @@ export default function ListPropertyPage() {
 
             <div className="space-y-2">
               <h1 className="font-serif text-3xl font-bold text-teal-950 dark:text-white">
-                Property Listing Queued!
+                {isEats ? "Eats Listing Queued!" : "Stay Listing Queued!"}
               </h1>
               <p className="text-sm text-ink-700 dark:text-neutral-400 max-w-md mx-auto leading-relaxed">
-                Thank you for listing <strong>{formData.accommodationName}</strong>. Our concierge team will review your property details, photos, and contact you via WhatsApp.
+                Thank you for listing <strong>{formData.accommodationName}</strong> ({formData.propertyType}).
+                Our concierge team will review your venue details, photos, and reach out via WhatsApp.
               </p>
             </div>
 
@@ -249,10 +352,10 @@ export default function ListPropertyPage() {
                   alt={formData.accommodationName}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 <div className="absolute bottom-3 left-3 text-left text-white">
                   <span className="text-[10px] uppercase font-bold text-gold-400 block tracking-wider">
-                    {formData.propertyType} • {formData.city}
+                    {category === "EATS" ? "Eats" : "Stay"} • {formData.propertyType} • {formData.city}
                   </span>
                   <span className="font-serif font-bold text-base block line-clamp-1">
                     {formData.accommodationName}
@@ -269,7 +372,7 @@ export default function ListPropertyPage() {
                 {submittedCode}
               </span>
               <p className="text-[11px] text-ink-500 dark:text-neutral-400 mt-1">
-                Keep this reference to check your listing and matching status.
+                Keep this reference to check your listing and creator matching status.
               </p>
             </div>
 
@@ -293,19 +396,23 @@ export default function ListPropertyPage() {
     );
   }
 
+  const isEats = category === "EATS";
+  const venueTypeOptions = isEats ? EATS_VENUE_TYPES : STAY_VENUE_TYPES;
+  const offerTypeOptions = isEats ? EATS_OFFER_TYPES : STAY_OFFER_TYPES;
+
   return (
     <div className="py-16 bg-white dark:bg-black text-[#1A3739] dark:text-white min-h-screen transition-colors duration-300">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="text-center space-y-3 mb-10">
-          <span className="text-xs uppercase font-bold tracking-widest text-gold-600 block">
-            For Stays & Hospitality Hosts
+          <span className="text-xs uppercase font-bold tracking-widest text-[#D7400B] block">
+            Stays • Eats • Creators
           </span>
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-teal-950 dark:text-white">
-            List Your Sri Lankan Property
+          <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-teal-950 dark:text-white">
+            List Your Sri Lankan Venue
           </h1>
           <p className="text-xs sm:text-sm text-ink-700 dark:text-neutral-400 max-w-lg mx-auto">
-            Get matched with verified international and local travel creators visiting your destination.
+            Get matched with verified travel & food creators visiting Sri Lanka.
           </p>
 
           {/* Dynamic Platform Phase Pricing Banner */}
@@ -313,7 +420,7 @@ export default function ListPropertyPage() {
             <Sparkles className="w-4 h-4 text-gold-500 shrink-0" />
             <span>
               {settings.platform_phase === "FREE"
-                ? "Listing and collaboration matching is currently free."
+                ? "Listing and creator introductions are currently 100% free."
                 : "Fees may apply to confirmed collaborations."}
             </span>
           </div>
@@ -332,43 +439,88 @@ export default function ListPropertyPage() {
           onSubmit={handleSubmit}
           className="bg-sand-50 dark:bg-neutral-950 rounded-2xl border border-sand-300 dark:border-neutral-800 p-6 sm:p-10 shadow-warm space-y-8"
         >
-          {/* Section 1: Property Info */}
+          {/* Top Category Switch: Stays vs Eats */}
+          <div className="space-y-2">
+            <label className="block text-xs font-bold text-ink-800 dark:text-neutral-300 uppercase tracking-wider">
+              Listing Category *
+            </label>
+            <div className="grid grid-cols-2 gap-3 p-1.5 bg-sand-200/80 dark:bg-neutral-900 rounded-xl border border-sand-300 dark:border-neutral-800">
+              <button
+                type="button"
+                onClick={() => handleCategoryChange("STAYS")}
+                className={`py-3 px-4 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                  category === "STAYS"
+                    ? "bg-teal-900 text-sand-50 shadow-sm"
+                    : "text-ink-700 dark:text-neutral-400 hover:text-teal-950 dark:hover:text-white"
+                }`}
+              >
+                <Bed className="w-4 h-4" />
+                <span>Stays (Hotels & Villas)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleCategoryChange("EATS")}
+                className={`py-3 px-4 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                  category === "EATS"
+                    ? "bg-[#D7400B] text-white shadow-sm"
+                    : "text-ink-700 dark:text-neutral-400 hover:text-[#D7400B] dark:hover:text-white"
+                }`}
+              >
+                <Utensils className="w-4 h-4" />
+                <span>Eats (Restaurants & Cafés)</span>
+              </button>
+            </div>
+            <p className="text-[11px] text-ink-500 dark:text-neutral-400">
+              {isEats
+                ? "Eats includes restaurants, cafés, bars, bistros, and beach clubs offering dining experiences."
+                : "Stays includes boutique hotels, private villas, resorts, guesthouses, and eco lodges."}
+            </p>
+          </div>
+
+          {/* Section 1: Venue Details */}
           <div className="border-b border-sand-200 dark:border-neutral-800 pb-4">
             <h2 className="font-serif text-xl font-bold text-teal-950 dark:text-white">
-              1. Property Details
+              1. Venue Details
             </h2>
             <p className="text-xs text-ink-600 dark:text-neutral-400 mt-0.5">
-              Tell us about your accommodation in Sri Lanka.
+              {isEats
+                ? "Tell us about your culinary spot, dining concepts, and location in Sri Lanka."
+                : "Tell us about your accommodation and property in Sri Lanka."}
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-1">
-                Property / Business Name *
+              <label className="block text-xs font-semibold text-ink-800 dark:text-neutral-300 uppercase tracking-wider mb-1">
+                {isEats ? "Eatery / Venue Name *" : "Property / Stay Name *"}
               </label>
               <input
                 type="text"
                 required
-                placeholder="e.g. The Dutch Fort Heritage Villa"
+                placeholder={
+                  isEats
+                    ? "e.g. Smoke & Bitters, Ministry of Crab, or Barefoot Garden Café"
+                    : "e.g. The Dutch Fort Heritage Villa"
+                }
                 value={formData.accommodationName}
                 onChange={(e) => setFormData({ ...formData, accommodationName: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-sand-400 bg-sand-50 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
+                className="w-full px-4 py-3 rounded-lg border border-sand-400 dark:border-neutral-700 bg-sand-50 dark:bg-neutral-900 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900 dark:focus:ring-[#D7400B]"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-1">
-                Property Type *
+              <label className="block text-xs font-semibold text-ink-800 dark:text-neutral-300 uppercase tracking-wider mb-1">
+                Venue Type *
               </label>
               <select
                 value={formData.propertyType}
                 onChange={(e) =>
                   setFormData({ ...formData, propertyType: e.target.value as PropertyType })
                 }
-                className="w-full px-4 py-3 rounded-lg border border-sand-400 bg-sand-50 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
+                className="w-full px-4 py-3 rounded-lg border border-sand-400 dark:border-neutral-700 bg-sand-50 dark:bg-neutral-900 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900 dark:focus:ring-[#D7400B]"
               >
-                {PROPERTY_TYPES.map((t) => (
+                {venueTypeOptions.map((t) => (
                   <option key={t} value={t}>
                     {t}
                   </option>
@@ -379,7 +531,7 @@ export default function ListPropertyPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-semibold text-ink-800 dark:text-neutral-300 uppercase tracking-wider mb-1">
                 Primary Contact Person *
               </label>
               <input
@@ -388,12 +540,12 @@ export default function ListPropertyPage() {
                 placeholder="e.g. Rohan De Silva"
                 value={formData.contactPerson}
                 onChange={(e) => setFormData({ ...formData, contactPerson: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-sand-400 bg-sand-50 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
+                className="w-full px-4 py-3 rounded-lg border border-sand-400 dark:border-neutral-700 bg-sand-50 dark:bg-neutral-900 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900 dark:focus:ring-[#D7400B]"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-semibold text-ink-800 dark:text-neutral-300 uppercase tracking-wider mb-1">
                 WhatsApp Number *
               </label>
               <input
@@ -402,29 +554,29 @@ export default function ListPropertyPage() {
                 placeholder="e.g. +94771234567"
                 value={formData.whatsapp}
                 onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-sand-400 bg-sand-50 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
+                className="w-full px-4 py-3 rounded-lg border border-sand-400 dark:border-neutral-700 bg-sand-50 dark:bg-neutral-900 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900 dark:focus:ring-[#D7400B]"
               />
             </div>
 
             <div>
               <div className="flex items-center justify-between mb-1">
-                <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider">
+                <label className="block text-xs font-semibold text-ink-800 dark:text-neutral-300 uppercase tracking-wider">
                   City / Region in Sri Lanka *
                 </label>
-                <span className="text-[10px] text-teal-900 font-bold px-2 py-0.5 rounded-full bg-teal-100/80 border border-teal-200 whitespace-nowrap">
+                <span className="text-[10px] text-teal-900 dark:text-[#D7400B] font-bold px-2 py-0.5 rounded-full bg-teal-100/80 dark:bg-neutral-800 border border-teal-200 dark:border-neutral-700 whitespace-nowrap">
                   {allowedVillaLocations.length}
                 </span>
               </div>
 
               {allowedVillaLocations.length === 0 ? (
-                <div className="p-3.5 bg-amber-50 border border-amber-300 rounded-lg text-amber-900 text-xs font-medium">
-                  Villa and stay registrations are temporarily closed across all locations. Please check back later.
+                <div className="p-3.5 bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 rounded-lg text-amber-900 dark:text-amber-200 text-xs font-medium">
+                  Registrations are temporarily closed across all locations.
                 </div>
               ) : (
                 <select
                   value={formData.city}
                   onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                  className="w-full px-4 py-3 rounded-lg border border-sand-400 bg-sand-50 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
+                  className="w-full px-4 py-3 rounded-lg border border-sand-400 dark:border-neutral-700 bg-sand-50 dark:bg-neutral-900 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900 dark:focus:ring-[#D7400B]"
                 >
                   {allowedVillaLocations.map((c) => (
                     <option key={c} value={c}>
@@ -433,39 +585,38 @@ export default function ListPropertyPage() {
                   ))}
                 </select>
               )}
-              <p className="text-[11px] text-ink-500 mt-1">
-                Only locations currently open for new property onboarding are available.
-              </p>
             </div>
           </div>
 
-          {/* Section 2: Property Photos & Visuals (NEW) */}
-          <div className="border-t border-sand-200 pt-6 space-y-4">
+          {/* Section 2: Photos & Visuals */}
+          <div className="border-t border-sand-200 dark:border-neutral-800 pt-6 space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Camera className="w-5 h-5 text-teal-800" />
-                <h2 className="font-serif text-xl font-bold text-teal-950">
-                  2. Property Photos & Visuals
+                <Camera className="w-5 h-5 text-teal-800 dark:text-[#D7400B]" />
+                <h2 className="font-serif text-xl font-bold text-teal-950 dark:text-white">
+                  2. {isEats ? "Dining & Venue Photos" : "Property Photos & Visuals"}
                 </h2>
               </div>
-              <span className="text-xs text-gold-700 font-semibold bg-gold-50 border border-gold-200 px-2.5 py-0.5 rounded-full">
+              <span className="text-xs text-gold-700 dark:text-gold-400 font-semibold bg-gold-50 dark:bg-neutral-900 border border-gold-200 dark:border-neutral-800 px-2.5 py-0.5 rounded-full">
                 {images.length} {images.length === 1 ? "photo" : "photos"} added
               </span>
             </div>
-            <p className="text-xs text-ink-600">
-              Upload photos of your rooms, pool, dining, or property views. High-quality imagery attracts more creator proposals!
+            <p className="text-xs text-ink-600 dark:text-neutral-400">
+              {isEats
+                ? "Upload high-quality imagery of your signature dishes, drinks, dining spaces, or outdoor patio."
+                : "Upload photos of your rooms, pool, dining, or property views. High-quality imagery attracts more creators!"}
             </p>
 
             {/* Upload Controls Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Option A: Upload Files from Device */}
-              <label className="p-5 rounded-xl border-2 border-dashed border-sand-400 hover:border-teal-700 bg-sand-100/70 hover:bg-sand-100 transition-colors flex flex-col items-center justify-center text-center cursor-pointer group">
-                <UploadCloud className="w-8 h-8 text-teal-900 group-hover:scale-110 transition-transform mb-2" />
-                <span className="text-xs font-bold text-teal-950 block">
+              <label className="p-5 rounded-xl border-2 border-dashed border-sand-400 dark:border-neutral-700 hover:border-teal-700 dark:hover:border-[#D7400B] bg-sand-100/70 dark:bg-neutral-900 hover:bg-sand-100 transition-colors flex flex-col items-center justify-center text-center cursor-pointer group">
+                <UploadCloud className="w-8 h-8 text-teal-900 dark:text-[#D7400B] group-hover:scale-110 transition-transform mb-2" />
+                <span className="text-xs font-bold text-teal-950 dark:text-white block">
                   {isUploading ? "Processing Photos..." : "Upload from Device"}
                 </span>
-                <span className="text-[11px] text-ink-500 mt-1 block">
-                  PNG, JPG, or WebP up to 8MB each (Select multiple)
+                <span className="text-[11px] text-ink-500 dark:text-neutral-400 mt-1 block">
+                  PNG, JPG, or WebP up to 10MB each (Select multiple)
                 </span>
                 <input
                   type="file"
@@ -477,21 +628,21 @@ export default function ListPropertyPage() {
               </label>
 
               {/* Option B: Direct Image URL Link */}
-              <div className="p-5 rounded-xl border border-sand-300 bg-sand-100/50 flex flex-col justify-between space-y-3">
+              <div className="p-5 rounded-xl border border-sand-300 dark:border-neutral-800 bg-sand-100/50 dark:bg-neutral-900 flex flex-col justify-between space-y-3">
                 <div className="space-y-1">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-teal-950">
-                    <LinkIcon className="w-3.5 h-3.5 text-teal-800" />
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-teal-950 dark:text-white">
+                    <LinkIcon className="w-3.5 h-3.5 text-teal-800 dark:text-[#D7400B]" />
                     <span>Paste Image Web Link</span>
                   </div>
-                  <p className="text-[11px] text-ink-500">
-                    From your official website, Booking.com, or cloud storage.
+                  <p className="text-[11px] text-ink-500 dark:text-neutral-400">
+                    From your Instagram, website, or cloud storage.
                   </p>
                 </div>
 
                 <div className="flex gap-2">
                   <input
                     type="url"
-                    placeholder="https://yourhotel.com/photos/pool.jpg"
+                    placeholder="https://example.com/photos/dish.jpg"
                     value={imageUrlInput}
                     onChange={(e) => setImageUrlInput(e.target.value)}
                     onKeyDown={(e) => {
@@ -500,12 +651,12 @@ export default function ListPropertyPage() {
                         handleAddUrl();
                       }
                     }}
-                    className="flex-grow px-3 py-2 rounded-lg border border-sand-400 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-teal-900"
+                    className="flex-grow px-3 py-2 rounded-lg border border-sand-400 dark:border-neutral-700 bg-white dark:bg-black text-xs focus:outline-none focus:ring-2 focus:ring-teal-900 dark:focus:ring-[#D7400B]"
                   />
                   <button
                     type="button"
                     onClick={handleAddUrl}
-                    className="px-3 py-2 rounded-lg bg-teal-900 hover:bg-teal-800 text-sand-50 text-xs font-semibold shrink-0 transition-colors flex items-center gap-1"
+                    className="px-3 py-2 rounded-lg bg-teal-900 hover:bg-teal-800 dark:bg-[#D7400B] dark:hover:bg-[#BD3607] text-white text-xs font-semibold shrink-0 transition-colors flex items-center gap-1"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>Add</span>
@@ -516,14 +667,16 @@ export default function ListPropertyPage() {
 
             {/* Quick Sample Photos for Testing */}
             <div className="pt-1">
-              <span className="text-[11px] text-ink-500 mr-2">Or try a sample luxury photo:</span>
+              <span className="text-[11px] text-ink-500 dark:text-neutral-400 mr-2">
+                Or try a sample {isEats ? "dining" : "luxury"} photo:
+              </span>
               <div className="inline-flex flex-wrap gap-1.5 mt-1">
                 {samplePhotoPresets.map((preset) => (
                   <button
                     key={preset.name}
                     type="button"
                     onClick={() => handleAddPreset(preset.url)}
-                    className="text-[11px] px-2.5 py-1 rounded-md bg-sand-200 hover:bg-teal-900 hover:text-sand-50 text-teal-950 border border-sand-300 transition-colors"
+                    className="text-[11px] px-2.5 py-1 rounded-md bg-sand-200 dark:bg-neutral-800 hover:bg-teal-900 hover:text-white dark:hover:bg-[#D7400B] text-teal-950 dark:text-neutral-300 border border-sand-300 dark:border-neutral-700 transition-colors cursor-pointer"
                   >
                     + {preset.name}
                   </button>
@@ -534,9 +687,9 @@ export default function ListPropertyPage() {
             {/* Gallery Preview Grid */}
             {images.length > 0 && (
               <div className="space-y-2 pt-2">
-                <div className="flex items-center justify-between text-xs text-ink-600">
-                  <span className="font-semibold">Selected Property Photos ({images.length}):</span>
-                  <span className="text-[11px] text-ink-500">
+                <div className="flex items-center justify-between text-xs text-ink-600 dark:text-neutral-400">
+                  <span className="font-semibold">Selected Photos ({images.length}):</span>
+                  <span className="text-[11px] text-ink-500 dark:text-neutral-500">
                     ★ First photo is your <strong>Cover Photo</strong> (click another to set as cover)
                   </span>
                 </div>
@@ -548,14 +701,14 @@ export default function ListPropertyPage() {
                     return (
                       <div
                         key={index}
-                        className={`relative group rounded-xl overflow-hidden border-2 bg-sand-200 aspect-video sm:aspect-square ${
-                          isCover ? "border-gold-500 ring-2 ring-gold-400/40" : "border-sand-300"
+                        className={`relative group rounded-xl overflow-hidden border-2 bg-sand-200 dark:bg-neutral-900 aspect-video sm:aspect-square ${
+                          isCover ? "border-gold-500 ring-2 ring-gold-400/40" : "border-sand-300 dark:border-neutral-800"
                         }`}
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={imgUrl}
-                          alt={`Property photo ${index + 1}`}
+                          alt={`Venue photo ${index + 1}`}
                           className="w-full h-full object-cover"
                         />
 
@@ -570,7 +723,7 @@ export default function ListPropertyPage() {
                             <button
                               type="button"
                               onClick={() => handleSetAsCover(index)}
-                              className="text-[10px] bg-black/60 hover:bg-teal-900 text-white px-1.5 py-0.5 rounded backdrop-blur-xs transition-colors"
+                              className="text-[10px] bg-black/60 hover:bg-teal-900 text-white px-1.5 py-0.5 rounded backdrop-blur-xs transition-colors cursor-pointer"
                             >
                               Set as Cover
                             </button>
@@ -579,7 +732,7 @@ export default function ListPropertyPage() {
                           <button
                             type="button"
                             onClick={() => handleRemoveImage(index)}
-                            className="p-1 rounded-md bg-rose-600 hover:bg-rose-700 text-white transition-colors shadow-sm"
+                            className="p-1 rounded-md bg-rose-600 hover:bg-rose-700 text-white transition-colors shadow-sm cursor-pointer"
                             title="Remove Photo"
                           >
                             <Trash2 className="w-3 h-3" />
@@ -594,47 +747,136 @@ export default function ListPropertyPage() {
           </div>
 
           {/* Section 3: Collaboration Parameters */}
-          <div className="border-t border-sand-200 pt-6 space-y-4">
+          <div className="border-t border-sand-200 dark:border-neutral-800 pt-6 space-y-4">
             <div>
-              <h2 className="font-serif text-xl font-bold text-teal-950">
+              <h2 className="font-serif text-xl font-bold text-teal-950 dark:text-white">
                 3. Collaboration Terms
               </h2>
-              <p className="text-xs text-ink-600 mt-0.5">
-                Define your availability window and what you can offer.
+              <p className="text-xs text-ink-600 dark:text-neutral-400 mt-0.5">
+                {isEats
+                  ? "Define your dining offer and single-visit dates or booking window."
+                  : "Define your stay availability window and what you can offer."}
               </p>
             </div>
 
+            {/* Date Configuration: Single Visit vs Window for Eats, or Multi-Day for Stays */}
+            {isEats ? (
+              <div className="p-4 rounded-xl bg-sand-200/50 dark:bg-neutral-900 border border-sand-300 dark:border-neutral-800 space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-semibold text-ink-800 dark:text-neutral-300 uppercase tracking-wider">
+                    Visit Scheduling Mode *
+                  </label>
+                  <div className="inline-flex rounded-lg border border-sand-300 dark:border-neutral-700 p-0.5 bg-white dark:bg-black text-[11px]">
+                    <button
+                      type="button"
+                      onClick={() => setVisitScheduleMode("single")}
+                      className={`px-3 py-1 rounded-md font-medium transition-colors cursor-pointer ${
+                        visitScheduleMode === "single"
+                          ? "bg-[#D7400B] text-white shadow-xs"
+                          : "text-ink-600 dark:text-neutral-400 hover:text-ink-900"
+                      }`}
+                    >
+                      Single Visit Date
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setVisitScheduleMode("window")}
+                      className={`px-3 py-1 rounded-md font-medium transition-colors cursor-pointer ${
+                        visitScheduleMode === "window"
+                          ? "bg-[#D7400B] text-white shadow-xs"
+                          : "text-ink-600 dark:text-neutral-400 hover:text-ink-900"
+                      }`}
+                    >
+                      Available Window
+                    </button>
+                  </div>
+                </div>
+
+                {visitScheduleMode === "single" ? (
+                  <div>
+                    <label className="block text-xs font-semibold text-ink-800 dark:text-neutral-300 uppercase tracking-wider mb-1">
+                      Target Visit Date *
+                    </label>
+                    <input
+                      type="date"
+                      required
+                      value={formData.coverageStart}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setFormData({
+                          ...formData,
+                          coverageStart: val,
+                          coverageEnd: val,
+                        });
+                      }}
+                      className="w-full px-4 py-3 rounded-lg border border-sand-400 dark:border-neutral-700 bg-white dark:bg-black text-sm focus:outline-none focus:ring-2 focus:ring-[#D7400B]"
+                    />
+                    <p className="text-[11px] text-ink-500 dark:text-neutral-400 mt-1">
+                      The single lunch or dinner visit date for creator reservation and content creation.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-ink-800 dark:text-neutral-300 uppercase tracking-wider mb-1">
+                        Window Open From *
+                      </label>
+                      <input
+                        type="date"
+                        required
+                        value={formData.coverageStart}
+                        onChange={(e) => setFormData({ ...formData, coverageStart: e.target.value })}
+                        className="w-full px-4 py-3 rounded-lg border border-sand-400 dark:border-neutral-700 bg-white dark:bg-black text-sm focus:outline-none focus:ring-2 focus:ring-[#D7400B]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-ink-800 dark:text-neutral-300 uppercase tracking-wider mb-1">
+                        Window Open Until *
+                      </label>
+                      <input
+                        type="date"
+                        required
+                        value={formData.coverageEnd}
+                        onChange={(e) => setFormData({ ...formData, coverageEnd: e.target.value })}
+                        className="w-full px-4 py-3 rounded-lg border border-sand-400 dark:border-neutral-700 bg-white dark:bg-black text-sm focus:outline-none focus:ring-2 focus:ring-[#D7400B]"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-ink-800 dark:text-neutral-300 uppercase tracking-wider mb-1">
+                    Stay Check-In / Window Start *
+                  </label>
+                  <input
+                    type="date"
+                    required
+                    value={formData.coverageStart}
+                    onChange={(e) => setFormData({ ...formData, coverageStart: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg border border-sand-400 dark:border-neutral-700 bg-sand-50 dark:bg-neutral-900 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-ink-800 dark:text-neutral-300 uppercase tracking-wider mb-1">
+                    Stay Check-Out / Window End *
+                  </label>
+                  <input
+                    type="date"
+                    required
+                    value={formData.coverageEnd}
+                    onChange={(e) => setFormData({ ...formData, coverageEnd: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg border border-sand-400 dark:border-neutral-700 bg-sand-50 dark:bg-neutral-900 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
+                  />
+                </div>
+              </div>
+            )}
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-1">
-                  Coverage Window Start *
-                </label>
-                <input
-                  type="date"
-                  required
-                  value={formData.coverageStart}
-                  onChange={(e) => setFormData({ ...formData, coverageStart: e.target.value })}
-                  className="w-full px-4 py-3 rounded-lg border border-sand-400 bg-sand-50 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-1">
-                  Coverage Window End *
-                </label>
-                <input
-                  type="date"
-                  required
-                  value={formData.coverageEnd}
-                  onChange={(e) => setFormData({ ...formData, coverageEnd: e.target.value })}
-                  className="w-full px-4 py-3 rounded-lg border border-sand-400 bg-sand-50 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-semibold text-ink-800 dark:text-neutral-300 uppercase tracking-wider mb-1">
                   What are you offering? *
                 </label>
                 <select
@@ -642,9 +884,9 @@ export default function ListPropertyPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, offerType: e.target.value as OfferType })
                   }
-                  className="w-full px-4 py-3 rounded-lg border border-sand-400 bg-sand-50 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
+                  className="w-full px-4 py-3 rounded-lg border border-sand-400 dark:border-neutral-700 bg-sand-50 dark:bg-neutral-900 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900 dark:focus:ring-[#D7400B]"
                 >
-                  {OFFER_TYPES.map((o) => (
+                  {offerTypeOptions.map((o) => (
                     <option key={o} value={o}>
                       {o}
                     </option>
@@ -653,13 +895,13 @@ export default function ListPropertyPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-semibold text-ink-800 dark:text-neutral-300 uppercase tracking-wider mb-1">
                   Minimum Follower Count Wanted *
                 </label>
                 <select
                   value={formData.minimumFollowers}
                   onChange={(e) => setFormData({ ...formData, minimumFollowers: Number(e.target.value) })}
-                  className="w-full px-4 py-3 rounded-lg border border-sand-400 bg-sand-50 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
+                  className="w-full px-4 py-3 rounded-lg border border-sand-400 dark:border-neutral-700 bg-sand-50 dark:bg-neutral-900 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900 dark:focus:ring-[#D7400B]"
                 >
                   <option value={5000}>5,000+ Followers (Micro)</option>
                   <option value={20000}>20,000+ Followers</option>
@@ -670,32 +912,36 @@ export default function ListPropertyPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-semibold text-ink-800 dark:text-neutral-300 uppercase tracking-wider mb-1">
                 What are you looking for from the creator? *
               </label>
               <textarea
                 rows={4}
                 required
-                placeholder="e.g. 1 High quality Instagram Reel showcasing our colonial plunge pool, 3 stories with location tag, and rights to use photos on our booking website..."
+                placeholder={
+                  isEats
+                    ? "e.g. 1 High quality Instagram Reel featuring our signature seafood tasting menu & craft cocktails, 3 stories with location tag, and rights to use photos on our social channels..."
+                    : "e.g. 1 High quality Instagram Reel showcasing our colonial plunge pool, 3 stories with location tag, and rights to use photos on our booking website..."
+                }
                 value={formData.requirements}
                 onChange={(e) => setFormData({ ...formData, requirements: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-sand-400 bg-sand-50 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
+                className="w-full px-4 py-3 rounded-lg border border-sand-400 dark:border-neutral-700 bg-sand-50 dark:bg-neutral-900 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900 dark:focus:ring-[#D7400B]"
               />
             </div>
           </div>
 
           {/* Host Consent */}
-          <div className="p-4 rounded-xl bg-sand-200/50 border border-sand-300 space-y-3">
+          <div className="p-4 rounded-xl bg-sand-200/50 dark:bg-neutral-900 border border-sand-300 dark:border-neutral-800 space-y-3">
             <label className="flex items-start gap-3 cursor-pointer">
               <input
                 type="checkbox"
                 required
                 checked={formData.consentGiven}
                 onChange={(e) => setFormData({ ...formData, consentGiven: e.target.checked })}
-                className="w-5 h-5 rounded border-sand-400 text-teal-900 focus:ring-teal-900 mt-0.5 shrink-0"
+                className="w-5 h-5 rounded border-sand-400 text-teal-900 focus:ring-teal-900 dark:focus:ring-[#D7400B] mt-0.5 shrink-0"
               />
-              <span className="text-xs text-ink-800 leading-relaxed">
-                I confirm that I am authorized to represent this property and agree to Get Linked verifying our listing details and imagery. I understand Get Linked will curate and personally facilitate all creator introductions.
+              <span className="text-xs text-ink-800 dark:text-neutral-300 leading-relaxed">
+                I confirm that I am authorized to represent this venue and agree to Get Linked verifying our listing details and imagery. I understand Get Linked will curate and personally facilitate all creator introductions.
               </span>
             </label>
           </div>
@@ -704,14 +950,22 @@ export default function ListPropertyPage() {
           <div className="pt-4 flex justify-end">
             <button
               type="submit"
-              className="w-full sm:w-auto px-8 py-3.5 rounded-lg bg-teal-900 hover:bg-teal-800 text-sand-50 text-xs font-semibold uppercase tracking-wider shadow-warm transition-all flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-8 py-3.5 rounded-lg bg-teal-900 hover:bg-teal-800 dark:bg-[#D7400B] dark:hover:bg-[#BD3607] text-white text-xs font-semibold uppercase tracking-wider shadow-warm transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               <CheckCircle2 className="w-4 h-4 text-gold-400" />
-              <span>Submit Property Listing</span>
+              <span>{isEats ? "Submit Eats Listing" : "Submit Stay Listing"}</span>
             </button>
           </div>
         </form>
       </div>
     </div>
+  );
+}
+
+export default function ListPropertyPage() {
+  return (
+    <Suspense fallback={<div className="py-24 text-center">Loading listing form...</div>}>
+      <ListPropertyContent />
+    </Suspense>
   );
 }

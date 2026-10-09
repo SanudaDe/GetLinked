@@ -7,7 +7,7 @@ import { useStore } from "@/data/store";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
-import { formatDateRange, formatFollowerCount, SRI_LANKA_CITIES } from "@/utils/formatters";
+import { formatDateRange, formatFollowerCount, SRI_LANKA_CITIES, isEatVenue } from "@/utils/formatters";
 import { generateWhatsAppLink } from "@/utils/whatsapp";
 import { ApplicationStatus, AccommodationApplication } from "@/types";
 import {
@@ -24,6 +24,8 @@ import {
   Trash2,
   Camera,
   Image as ImageIcon,
+  Utensils,
+  Bed,
 } from "lucide-react";
 
 export default function AdminAccommodationsPage() {
@@ -35,6 +37,7 @@ export default function AdminAccommodationsPage() {
   const [activeTab, setActiveTab] = useState<ApplicationStatus>(initialTab);
   const [searchQuery, setSearchQuery] = useState("");
   const [cityFilter, setCityFilter] = useState("All Sri Lanka");
+  const [categoryFilter, setCategoryFilter] = useState<"ALL" | "STAYS" | "EATS">("ALL");
   const [selectedAcc, setSelectedAcc] = useState<AccommodationApplication | null>(null);
   const [adminNotes, setAdminNotes] = useState("");
 
@@ -42,6 +45,9 @@ export default function AdminAccommodationsPage() {
     return accommodations.filter((acc) => {
       if (acc.status !== activeTab) return false;
       if (cityFilter !== "All Sri Lanka" && acc.city !== cityFilter) return false;
+
+      if (categoryFilter === "STAYS" && isEatVenue(acc.property_type)) return false;
+      if (categoryFilter === "EATS" && !isEatVenue(acc.property_type)) return false;
 
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
@@ -54,7 +60,7 @@ export default function AdminAccommodationsPage() {
 
       return true;
     });
-  }, [accommodations, activeTab, cityFilter, searchQuery]);
+  }, [accommodations, activeTab, cityFilter, categoryFilter, searchQuery]);
 
   const counts = {
     PENDING: accommodations.filter((a) => a.status === "PENDING").length,
@@ -80,8 +86,8 @@ export default function AdminAccommodationsPage() {
   return (
     <div className="space-y-6 pb-12">
       <AdminHeader
-        title="Accommodations Queue"
-        subtitle="Review hotel and villa listings, host offerings, and contact credentials."
+        title="Stays & Eats Queue"
+        subtitle="Review hotel, villa, restaurant, café, and bar listings, host offerings, and contact credentials."
       />
 
       <div className="px-6 space-y-6">
@@ -113,30 +119,45 @@ export default function AdminAccommodationsPage() {
 
         {/* Filters */}
         <div className="bg-sand-50 rounded-xl p-4 border border-sand-300 shadow-warm flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="relative w-full sm:w-80">
+          <div className="relative w-full sm:w-72">
             <Search className="w-4 h-4 text-ink-400 absolute left-3 top-3" />
             <input
               type="text"
-              placeholder="Search by property, ref code, contact person..."
+              placeholder="Search by venue, ref code, contact..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-9 pr-3 py-2 rounded-lg border border-sand-400 bg-sand-50 text-xs focus:outline-none focus:ring-2 focus:ring-teal-900"
             />
           </div>
 
-          <div className="flex items-center gap-3 w-full sm:w-auto">
-            <span className="text-xs text-ink-600 font-medium shrink-0">City:</span>
-            <select
-              value={cityFilter}
-              onChange={(e) => setCityFilter(e.target.value)}
-              className="px-3 py-2 rounded-lg border border-sand-400 bg-sand-50 text-xs focus:outline-none focus:ring-2 focus:ring-teal-900"
-            >
-              {SRI_LANKA_CITIES.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
+          <div className="flex items-center gap-4 w-full sm:w-auto flex-wrap">
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-ink-600 font-medium shrink-0">Category:</span>
+              <select
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value as any)}
+                className="px-3 py-2 rounded-lg border border-sand-400 bg-sand-50 text-xs focus:outline-none focus:ring-2 focus:ring-teal-900"
+              >
+                <option value="ALL">All Stays & Eats</option>
+                <option value="STAYS">Stays Only (Hotels/Villas)</option>
+                <option value="EATS">Eats Only (Dining/Cafés/Bars)</option>
+              </select>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-ink-600 font-medium shrink-0">City:</span>
+              <select
+                value={cityFilter}
+                onChange={(e) => setCityFilter(e.target.value)}
+                className="px-3 py-2 rounded-lg border border-sand-400 bg-sand-50 text-xs focus:outline-none focus:ring-2 focus:ring-teal-900"
+              >
+                {SRI_LANKA_CITIES.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
 
@@ -177,7 +198,11 @@ export default function AdminAccommodationsPage() {
                           </>
                         ) : (
                           <div className="w-full h-full flex flex-col items-center justify-center text-ink-400 bg-sand-200/80">
-                            <Building2 className="w-6 h-6" />
+                            {isEatVenue(acc.property_type) ? (
+                              <Utensils className="w-6 h-6 text-[#D7400B]" />
+                            ) : (
+                              <Building2 className="w-6 h-6 text-teal-800" />
+                            )}
                             <span className="text-[10px] text-ink-500 mt-1">No Photo</span>
                           </div>
                         )}
@@ -191,9 +216,15 @@ export default function AdminAccommodationsPage() {
                           <span className="font-mono text-xs text-teal-800 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
                             {acc.reference_code}
                           </span>
-                          <span className="text-xs text-ink-600">
-                            ({acc.property_type})
-                          </span>
+                          {isEatVenue(acc.property_type) ? (
+                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#D7400B] bg-orange-50 px-2 py-0.5 rounded border border-orange-200">
+                              <Utensils className="w-2.5 h-2.5" /> Eats: {acc.property_type}
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-teal-800 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
+                              <Bed className="w-2.5 h-2.5" /> Stay: {acc.property_type}
+                            </span>
+                          )}
                           <Badge
                             variant={
                               acc.status === "APPROVED"

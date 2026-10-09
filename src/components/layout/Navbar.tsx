@@ -32,8 +32,9 @@ export const Navbar: React.FC = () => {
   }, []);
 
   const navLinks = [
-    { href: "/creators", label: "Creators" },
     { href: "/for-accommodations", label: "Stays" },
+    { href: "/eats", label: "Eats" },
+    { href: "/creators", label: "Creators" },
     { href: isHomePage ? "#our-story" : "/about", label: "Our Story" },
   ];
 
@@ -210,7 +211,7 @@ export const Navbar: React.FC = () => {
                   onClick={() => setIsOpen(false)}
                   className="block text-sm uppercase tracking-wider text-[#467679] dark:text-neutral-400 py-1.5 hover:text-[#336467] dark:hover:text-white"
                 >
-                  List Property
+                  List Stays & Eats
                 </Link>
                 <Link
                   href="/status"

@@ -25,7 +25,7 @@ import {
   initialAuditLogs,
 } from "./mockStore";
 import { cleanWhatsAppNumber } from "@/utils/whatsapp";
-import { DEFAULT_ALLOWED_LOCATIONS } from "@/utils/formatters";
+import { DEFAULT_ALLOWED_LOCATIONS, isEatVenue } from "@/utils/formatters";
 import { supabaseService } from "@/services/supabaseService";
 import { supabase } from "@/lib/supabaseClient";
 
@@ -725,7 +725,9 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       };
     }
 
-    const refCode = `GL-A-${Math.floor(1000 + Math.random() * 9000)}`;
+    const isEat = isEatVenue(data.property_type);
+    const prefix = isEat ? "GL-E-" : "GL-A-";
+    const refCode = `${prefix}${Math.floor(1000 + Math.random() * 9000)}`;
     const newApp: AccommodationApplication = {
       ...data,
       id: `acc-${Date.now()}`,
@@ -745,7 +747,9 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return {
       success: true,
       reference_code: refCode,
-      message: "Listing submitted successfully. A Get Linked concierge will review your property within 24 hours.",
+      message: isEat
+        ? "Eats listing submitted successfully. A Get Linked concierge will review your venue within 24 hours."
+        : "Listing submitted successfully. A Get Linked concierge will review your property within 24 hours.",
     };
   };
 

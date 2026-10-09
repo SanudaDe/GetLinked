@@ -122,7 +122,7 @@ export const HeroSearchWidget: React.FC = () => {
             }`}
           >
             <Building2 className="w-4 h-4 text-teal-600" />
-            <span>Sri Lankan Stays Seeking Creators</span>
+            <span>Stays & Eats Seeking Creators</span>
             <span className="text-[10px] bg-gold-100 text-gold-600 px-2 py-0.5 rounded-full font-bold">
               Free Phase
             </span>
@@ -263,14 +263,14 @@ export const HeroSearchWidget: React.FC = () => {
 
               <div className="lg:col-span-3 bg-sand-100/70 p-3 rounded-xl border border-sand-300">
                 <label className="block text-[10px] font-bold text-ink-500 uppercase tracking-wider mb-1">
-                  Property Category
+                  Venue Type
                 </label>
                 <select
                   value={stayType}
                   onChange={(e) => setStayType(e.target.value)}
                   className="w-full bg-transparent font-serif font-bold text-teal-950 text-sm focus:outline-none"
                 >
-                  <option value="All Types">All Accommodation Types</option>
+                  <option value="All Types">All Stays & Eats</option>
                   {PROPERTY_TYPES.map((t) => (
                     <option key={t} value={t}>
                       {t}
@@ -302,20 +302,20 @@ export const HeroSearchWidget: React.FC = () => {
                   type="submit"
                   className="w-full min-h-[56px] px-6 py-3 rounded-xl bg-teal-900 hover:bg-teal-800 text-sand-50 font-bold text-sm uppercase tracking-wider shadow-warm transition-all flex items-center justify-center gap-2"
                 >
-                  <span>Explore Stays</span>
+                  <span>Explore Stays & Eats</span>
                   <ArrowRight className="w-4 h-4 text-gold-400" />
                 </button>
               </div>
             </div>
 
             <div className="flex items-center justify-between text-xs text-ink-600 border-t border-sand-200/60 pt-2">
-              <span>Looking to list your hotel, villa or retreat?</span>
+              <span>Looking to list your hotel, villa, café, or restaurant?</span>
               <button
                 type="button"
                 onClick={() => router.push("/list-property")}
                 className="font-bold text-teal-900 hover:text-gold-600 underline"
               >
-                List Property for Free (Phase 1) →
+                List Stays or Eats for Free (Phase 1) →
               </button>
             </div>
           </form>

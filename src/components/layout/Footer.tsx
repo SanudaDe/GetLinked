@@ -48,31 +48,31 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Nav Column 2: For Stays */}
+          {/* Nav Column 2: For Stays & Eats */}
           <div className="md:col-span-3 space-y-3">
             <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#336467] dark:text-neutral-200 block">
-              For Stays
+              For Stays & Eats
             </span>
             <ul className="space-y-2.5 text-xs sm:text-sm text-[#336467]/80 dark:text-neutral-400">
               <li>
                 <Link href="/for-accommodations" className="hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors">
-                  Host Program
+                  Stays Program
+                </Link>
+              </li>
+              <li>
+                <Link href="/eats" className="hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors">
+                  Eats Program
                 </Link>
               </li>
               <li>
                 <Link href="/list-property" className="hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors flex items-center gap-1">
-                  <span>List Your Stay</span>
+                  <span>List Stays or Eats</span>
                   <ArrowUpRight className="w-3 h-3 text-[#336467]/60 dark:text-neutral-500" />
                 </Link>
               </li>
               <li>
                 <Link href="/how-it-works" className="hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors">
                   How Introductions Work
-                </Link>
-              </li>
-              <li>
-                <Link href="/faq" className="hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors">
-                  Frequently Asked
                 </Link>
               </li>
             </ul>

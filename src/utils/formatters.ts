@@ -9,11 +9,22 @@ export function formatFollowerCount(count: number): string {
 }
 
 export function formatDateRange(start: string, end: string): string {
-  if (!start || !end) return "Flexible";
+  if (!start && !end) return "Flexible";
+  if (start && !end) {
+    try {
+      return new Date(start).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    } catch {
+      return start;
+    }
+  }
   try {
     const s = new Date(start);
     const e = new Date(end);
     const options: Intl.DateTimeFormatOptions = { month: "short", day: "numeric" };
+    // Single visit date (e.g. dining reservation or same-day event)
+    if (start === end || s.toDateString() === e.toDateString()) {
+      return s.toLocaleDateString("en-US", { ...options, year: "numeric" });
+    }
     const sFormatted = s.toLocaleDateString("en-US", options);
     const eFormatted = e.toLocaleDateString("en-US", { ...options, year: "numeric" });
     return `${sFormatted} - ${eFormatted}`;
@@ -158,7 +169,7 @@ export const CREATOR_NICHES = [
   "Other",
 ] as const;
 
-export const PROPERTY_TYPES = [
+export const STAY_VENUE_TYPES = [
   "Hotel",
   "Villa",
   "Guesthouse",
@@ -167,9 +178,59 @@ export const PROPERTY_TYPES = [
   "Eco Lodge",
 ] as const;
 
-export const OFFER_TYPES = [
+export const EATS_VENUE_TYPES = [
+  "Restaurant",
+  "Café",
+  "Bar",
+  "Bistro",
+  "Bakery / Dessert Bar",
+  "Beach Club / Sunset Bar",
+] as const;
+
+export const PROPERTY_TYPES = [
+  ...STAY_VENUE_TYPES,
+  ...EATS_VENUE_TYPES,
+  "Cafe / Bistro",
+] as const;
+
+export const STAY_OFFER_TYPES = [
   "Free accommodation only",
   "Free accommodation + meals",
   "Paid collaboration",
   "Flexible / open to negotiate",
 ] as const;
+
+export const EATS_OFFER_TYPES = [
+  "Chef's Tasting Menu (Complimentary)",
+  "Dinner for Two",
+  "Lunch for Two",
+  "Signature Dining & Drinks Experience",
+  "Cocktails & Small Plates",
+  "Complimentary Dining + Paid Collaboration",
+  "Flexible / open to negotiate",
+] as const;
+
+export const OFFER_TYPES = [
+  ...STAY_OFFER_TYPES,
+  "Chef's Tasting Menu (Complimentary)",
+  "Dinner for Two",
+  "Lunch for Two",
+  "Signature Dining & Drinks Experience",
+  "Cocktails & Small Plates",
+  "Complimentary Dining + Paid Collaboration",
+] as const;
+
+export function isEatVenue(type?: string): boolean {
+  if (!type) return false;
+  const t = type.toLowerCase();
+  return (
+    t.includes("restaurant") ||
+    t.includes("caf") ||
+    t.includes("bar") ||
+    t.includes("bistro") ||
+    t.includes("bakery") ||
+    t.includes("dessert") ||
+    t.includes("dining") ||
+    t.includes("eats")
+  );
+}

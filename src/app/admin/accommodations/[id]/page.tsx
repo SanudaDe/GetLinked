@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useStore } from "@/data/store";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { Badge } from "@/components/ui/Badge";
-import { formatFollowerCount, formatDateRange } from "@/utils/formatters";
+import { formatFollowerCount, formatDateRange, isEatVenue } from "@/utils/formatters";
 import {
   ArrowLeft,
   CheckCircle2,
@@ -23,6 +23,8 @@ import {
   Sparkles,
   Trash2,
   Camera,
+  Utensils,
+  Bed,
   Eye,
   Image as ImageIcon,
   ExternalLink,
@@ -95,14 +97,14 @@ export default function AdminAccommodationDetailPage({
     <div className="space-y-6 pb-16">
       <AdminHeader
         title={`Review: ${stay.accommodation_name}`}
-        subtitle={`Reference: ${stay.reference_code} • ${stay.property_type} in ${stay.city}`}
+        subtitle={`Reference: ${stay.reference_code} • ${isEatVenue(stay.property_type) ? "Eats" : "Stay"}: ${stay.property_type} in ${stay.city}`}
         action={
           <Link
             href="/admin/accommodations"
             className="inline-flex items-center gap-2 text-xs font-semibold text-teal-900 hover:text-gold-600 border border-sand-300 px-3 py-1.5 rounded-lg bg-white shadow-xs"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Back to Accommodations Queue</span>
+            <span>Back to Stays & Eats Queue</span>
           </Link>
         }
       />
@@ -127,7 +129,9 @@ export default function AdminAccommodationDetailPage({
                   {stay.accommodation_name}
                 </h2>
                 <div className="flex items-center gap-3 text-xs text-ink-600 mt-1">
-                  <span className="font-semibold text-teal-950">{stay.property_type}</span>
+                  <span className="font-semibold text-teal-950">
+                    {isEatVenue(stay.property_type) ? `Eats: ${stay.property_type}` : `Stay: ${stay.property_type}`}
+                  </span>
                   <span>•</span>
                   <span>{stay.city}, Sri Lanka</span>
                 </div>
@@ -173,8 +177,15 @@ export default function AdminAccommodationDetailPage({
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1.5 text-xs font-bold text-teal-950">
-                      <Camera className="w-4 h-4 text-teal-800" />
-                      <span>Property Visuals ({allPhotos.length} {allPhotos.length === 1 ? "photo" : "photos"})</span>
+                      {isEatVenue(stay.property_type) ? (
+                        <Utensils className="w-4 h-4 text-[#D7400B]" />
+                      ) : (
+                        <Camera className="w-4 h-4 text-teal-800" />
+                      )}
+                      <span>
+                        {isEatVenue(stay.property_type) ? "Dining & Eatery Visuals" : "Property Visuals"} ({allPhotos.length}{" "}
+                        {allPhotos.length === 1 ? "photo" : "photos"})
+                      </span>
                     </div>
                     <span className="text-[11px] text-ink-500">Click photo to enlarge</span>
                   </div>
