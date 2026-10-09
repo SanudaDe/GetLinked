@@ -21,6 +21,7 @@ import {
   UploadCloud,
   X,
   Loader2,
+  Sparkles,
 } from "lucide-react";
 import { supabaseService } from "@/services/supabaseService";
 
@@ -33,6 +34,14 @@ export default function ApplyPage() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [isUploadingDoc, setIsUploadingDoc] = useState(false);
+  const [isDetectingSocial, setIsDetectingSocial] = useState(false);
+  const [socialDetectionStatus, setSocialDetectionStatus] = useState<{
+    success?: boolean;
+    platform?: string;
+    handle?: string;
+    followers?: number;
+    message?: string;
+  } | null>(null);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -78,6 +87,58 @@ export default function ApplyPage() {
       setFormData((prev) => ({ ...prev, city: allowedCreatorLocations[0] }));
     }
   }, [allowedCreatorLocations, formData.city]);
+
+  // Automatically detect and grab social profile follower count
+  const detectSocialProfile = async (urlToScan?: string) => {
+    const target = (urlToScan ?? formData.socialUrl).trim();
+    if (!target || !target.startsWith("http")) return;
+
+    setIsDetectingSocial(true);
+    setSocialDetectionStatus(null);
+
+    try {
+      const res = await fetch("/api/social-lookup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: target }),
+      });
+      const data = await res.json();
+
+      if (data.success && data.followerCount) {
+        setFormData((prev) => ({
+          ...prev,
+          followerCount: data.followerCount,
+          avatarUrl: prev.avatarUrl || data.avatarUrl || "",
+          fullName: prev.fullName || data.name || "",
+        }));
+        setSocialDetectionStatus({
+          success: true,
+          platform: data.platform,
+          handle: data.handle,
+          followers: data.followerCount,
+          message: `Verified on ${data.platform}! Auto-grabbed ${data.followerCount.toLocaleString()} followers${
+            data.handle ? ` (@${data.handle})` : ""
+          }.`,
+        });
+      } else {
+        setSocialDetectionStatus({
+          success: false,
+          platform: data.platform,
+          handle: data.handle,
+          message:
+            data.message ||
+            "Could not automatically detect followers for this link. Please confirm below.",
+        });
+      }
+    } catch {
+      setSocialDetectionStatus({
+        success: false,
+        message: "Could not auto-grab followers. Please confirm manually below.",
+      });
+    } finally {
+      setIsDetectingSocial(false);
+    }
+  };
 
   // Step
   const validateStep = (currentStep: number): boolean => {
@@ -486,24 +547,104 @@ export default function ApplyPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-1">
-                  Primary Social Media URL *
-                </label>
-                <input
-                  type="url"
-                  required
-                  placeholder="https://instagram.com/yourhandle or https://tiktok.com/@yourhandle"
-                  value={formData.socialUrl}
-                  onChange={(e) => setFormData({ ...formData, socialUrl: e.target.value })}
-                  className="w-full px-4 py-3 rounded-lg border border-sand-400 bg-sand-50 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
-                />
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider">
+                    Primary Social Media URL *
+                  </label>
+                  <span className="text-[11px] text-teal-800 font-semibold hidden sm:inline">
+                    Instagram • TikTok • Facebook • YouTube
+                  </span>
+                </div>
+                <div className="flex gap-2">
+                  <input
+                    type="url"
+                    required
+                    placeholder="https://instagram.com/yourhandle, tiktok.com/@handle, or facebook.com/page"
+                    value={formData.socialUrl}
+                    onChange={(e) => {
+                      setFormData({ ...formData, socialUrl: e.target.value });
+                      if (socialDetectionStatus) setSocialDetectionStatus(null);
+                    }}
+                    onBlur={(e) => {
+                      const val = e.target.value.trim();
+                      if (val && val.startsWith("http") && !socialDetectionStatus) {
+                        detectSocialProfile(val);
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        detectSocialProfile();
+                      }
+                    }}
+                    className="flex-grow px-4 py-3 rounded-lg border border-sand-400 bg-sand-50 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => detectSocialProfile()}
+                    disabled={isDetectingSocial || !formData.socialUrl.startsWith("http")}
+                    className="px-4 py-3 rounded-lg bg-teal-900 hover:bg-teal-800 disabled:opacity-50 text-sand-50 text-xs font-semibold uppercase tracking-wider transition-colors shrink-0 flex items-center gap-1.5 cursor-pointer shadow-xs"
+                    title="Automatically fetch follower count from link"
+                  >
+                    {isDetectingSocial ? (
+                      <>
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        <span>Grabbing...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="w-3.5 h-3.5 text-gold-400" />
+                        <span>Auto-Grab</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* Auto Detection Feedback Alert */}
+                {isDetectingSocial && (
+                  <div className="mt-2.5 p-3 rounded-lg bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800 flex items-center gap-2 text-xs text-teal-900 dark:text-teal-200 animate-in fade-in">
+                    <Loader2 className="w-4 h-4 animate-spin text-teal-700 dark:text-teal-400 shrink-0" />
+                    <span>Connecting to social profile & auto-grabbing verified follower base...</span>
+                  </div>
+                )}
+
+                {socialDetectionStatus && !isDetectingSocial && (
+                  <div
+                    className={`mt-2.5 p-3 rounded-lg border text-xs flex items-center justify-between gap-2 animate-in fade-in ${
+                      socialDetectionStatus.success
+                        ? "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200"
+                        : "bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-800 text-amber-900 dark:text-amber-200"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      {socialDetectionStatus.success ? (
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                      ) : (
+                        <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+                      )}
+                      <span>{socialDetectionStatus.message}</span>
+                    </div>
+                    {socialDetectionStatus.success && (
+                      <span className="text-[10px] bg-emerald-200/90 dark:bg-emerald-900 text-emerald-950 dark:text-emerald-100 px-2 py-0.5 rounded font-bold uppercase tracking-wider shrink-0">
+                        Grabbed
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-1">
-                    Follower Count (5,000+ Required) *
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-xs font-semibold text-ink-800 dark:text-neutral-300 uppercase tracking-wider">
+                      Follower Count (5,000+ Required) *
+                    </label>
+                    {socialDetectionStatus?.success && (
+                      <span className="text-[10px] text-emerald-700 dark:text-emerald-400 font-bold">
+                        ✓ Auto-filled
+                      </span>
+                    )}
+                  </div>
                   <input
                     type="number"
                     min={5000}
@@ -520,6 +661,11 @@ export default function ApplyPage() {
                       Minimum 5,000 followers required
                     </span>
                   )}
+                  <span className="text-[11px] text-ink-500 mt-1 block">
+                    {socialDetectionStatus?.success
+                      ? `Auto-grabbed from ${socialDetectionStatus.platform}. You can adjust if you have a combined audience.`
+                      : "Automatically grabbed from your social profile link above."}
+                  </span>
                 </div>
 
                 <div>
