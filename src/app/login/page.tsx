@@ -9,9 +9,11 @@ import { supabase } from "@/lib/supabaseClient";
 export default function LoginPage() {
   const [role, setRole] = useState<"creator" | "stay">("creator");
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const handleGoogleSignIn = async () => {
     try {
+      setErrorMsg(null);
       setGoogleLoading(true);
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
@@ -21,10 +23,16 @@ export default function LoginPage() {
       });
       if (error) {
         console.error("Google sign in error:", error.message);
+        if (error.message.toLowerCase().includes("provider is not enabled") || error.message.toLowerCase().includes("unsupported provider")) {
+          setErrorMsg("Google Sign-In is not enabled in your new Supabase project yet. Please go to Supabase Dashboard > Authentication > Providers > Google, enable it, and enter your Google Client ID & Secret.");
+        } else {
+          setErrorMsg(error.message);
+        }
         setGoogleLoading(false);
       }
-    } catch (err) {
-      console.error("Google sign in exception:", err);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Google sign in failed";
+      setErrorMsg(message);
       setGoogleLoading(false);
     }
   };
@@ -70,6 +78,24 @@ export default function LoginPage() {
             <span>Stay Host</span>
           </button>
         </div>
+
+        {/* Error Alert */}
+        {errorMsg && (
+          <div className="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/50 text-rose-800 dark:text-rose-300 text-xs leading-relaxed space-y-1.5">
+            <div className="font-semibold flex items-center gap-1.5 text-rose-900 dark:text-rose-200">
+              <span>⚠️ Configuration Required</span>
+            </div>
+            <p>{errorMsg}</p>
+            <a
+              href="https://supabase.com/dashboard/project/gpkljpnbgnylcekrcluy/auth/providers"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block text-[#D7400B] font-bold hover:underline pt-0.5"
+            >
+              Open Supabase Google Provider Settings ➔
+            </a>
+          </div>
+        )}
 
         {/* Google OAuth Login Button */}
         <div className="space-y-3 pt-2">

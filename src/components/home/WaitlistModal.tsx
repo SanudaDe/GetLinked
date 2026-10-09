@@ -20,11 +20,13 @@ export const WaitlistModal: React.FC<WaitlistModalProps> = ({
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
   const handleGoogleSignIn = async () => {
     try {
+      setErrorMsg(null);
       setGoogleLoading(true);
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
@@ -34,10 +36,16 @@ export const WaitlistModal: React.FC<WaitlistModalProps> = ({
       });
       if (error) {
         console.error("Google sign in error:", error.message);
+        if (error.message.toLowerCase().includes("provider is not enabled") || error.message.toLowerCase().includes("unsupported provider")) {
+          setErrorMsg("Google Sign-In is not enabled in your new Supabase project yet. Please enable Google in Supabase Authentication -> Providers.");
+        } else {
+          setErrorMsg(error.message);
+        }
         setGoogleLoading(false);
       }
-    } catch (err) {
-      console.error("Google sign in exception:", err);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Google sign in failed";
+      setErrorMsg(message);
       setGoogleLoading(false);
     }
   };
@@ -107,6 +115,22 @@ export const WaitlistModal: React.FC<WaitlistModalProps> = ({
                 <span>For Stays</span>
               </button>
             </div>
+
+            {/* Error Alert */}
+            {errorMsg && (
+              <div className="mb-4 p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/50 text-rose-800 dark:text-rose-300 text-xs leading-relaxed space-y-1">
+                <p className="font-semibold text-rose-900 dark:text-rose-200">⚠️ Configuration Required</p>
+                <p>{errorMsg}</p>
+                <a
+                  href="https://supabase.com/dashboard/project/gpkljpnbgnylcekrcluy/auth/providers"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block text-[#D7400B] font-bold hover:underline"
+                >
+                  Configure in Supabase ➔
+                </a>
+              </div>
+            )}
 
             {/* Quick Google Sign In */}
             <button
