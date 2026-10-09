@@ -58,7 +58,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-screen flex flex-col bg-white dark:bg-black text-[#1A3739] dark:text-white antialiased selection:bg-[#D7400B] selection:text-white transition-colors duration-200">
+      <body className="min-h-screen flex flex-col font-serif bg-white dark:bg-black text-[#1A3739] dark:text-white antialiased selection:bg-[#D7400B] selection:text-white transition-colors duration-200">
         <ThemeProvider>
           <StoreProvider>
             <AppShell>{children}</AppShell>

@@ -99,12 +99,12 @@ const config: Config = {
         },
       },
       fontFamily: {
-        serif: ["var(--font-playfair)", "Playfair Display", "Cormorant Garamond", "Georgia", "serif"],
-        display: ["var(--font-cormorant)", "Cormorant Garamond", "Georgia", "serif"],
+        serif: ["var(--font-cormorant)", "Cormorant Garamond", "Garamond", "Georgia", "serif"],
+        display: ["var(--font-cormorant)", "Cormorant Garamond", "Garamond", "Georgia", "serif"],
         script: ["var(--font-caveat)", "Caveat", "cursive"],
-        sans: ["var(--font-plus-jakarta)", "Plus Jakarta Sans", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
-        fraunces: ["var(--font-fraunces)", "Fraunces", "Georgia", "serif"],
-        work: ["var(--font-work-sans)", "Work Sans", "sans-serif"],
+        sans: ["var(--font-cormorant)", "Cormorant Garamond", "Plus Jakarta Sans", "Georgia", "serif"],
+        fraunces: ["var(--font-cormorant)", "Cormorant Garamond", "Georgia", "serif"],
+        work: ["var(--font-cormorant)", "Cormorant Garamond", "Georgia", "serif"],
       },
       boxShadow: {
         'warm': '0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02)',
