@@ -91,6 +91,8 @@ CREATE TABLE IF NOT EXISTS accommodation_applications (
 -- Ensure columns exist if table was already created earlier
 ALTER TABLE accommodation_applications ADD COLUMN IF NOT EXISTS image_url TEXT;
 ALTER TABLE accommodation_applications ADD COLUMN IF NOT EXISTS images JSONB DEFAULT '[]'::jsonb;
+ALTER TABLE accommodation_applications ADD COLUMN IF NOT EXISTS video_url TEXT;
+ALTER TABLE accommodation_applications ADD COLUMN IF NOT EXISTS drive_folder_url TEXT;
 
 -- ------------------------------------------------------------------------------
 -- 4. CREATOR REQUESTS TABLE (Accommodation -> Creator Inbound Requests)

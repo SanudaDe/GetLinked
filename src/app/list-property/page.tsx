@@ -33,7 +33,20 @@ import {
   Wine,
   Clock,
   Bed,
+  Folder,
+  Video as VideoIcon,
+  ExternalLink,
 } from "lucide-react";
+import { GoogleDriveFolderPicker } from "@/components/common/GoogleDriveFolderPicker";
+import { GoogleDrivePlayer } from "@/components/common/GoogleDrivePlayer";
+import {
+  extractGoogleDriveFileId,
+  extractGoogleDriveFolderId,
+  getGoogleDriveImageUrl,
+  getGoogleDrivePreviewUrl,
+  isGoogleDriveUrl,
+  GETLINKED_DRIVE_FOLDER_URL,
+} from "@/utils/googleDrive";
 
 function ListPropertyContent() {
   const searchParams = useSearchParams();
@@ -62,6 +75,8 @@ function ListPropertyContent() {
     offerType: (defaultCategory === "EATS" ? "Dinner for Two" : "Free accommodation + meals") as OfferType,
     minimumFollowers: 20000,
     requirements: "",
+    videoUrl: "",
+    driveFolderUrl: "",
     consentGiven: false,
   });
 
@@ -69,6 +84,7 @@ function ListPropertyContent() {
   const [images, setImages] = useState<string[]>([]);
   const [imageUrlInput, setImageUrlInput] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+  const [showDrivePicker, setShowDrivePicker] = useState(false);
 
   // Sync category changes to default venue and offer types
   const handleCategoryChange = (newCat: VenueCategory) => {
@@ -141,13 +157,33 @@ function ListPropertyContent() {
     e.target.value = "";
   };
 
-  // Handle adding direct image URL
+  // Handle adding direct image URL (supports standard image URLs and Google Drive links)
   const handleAddUrl = () => {
     const trimmed = imageUrlInput.trim();
     if (!trimmed) return;
 
     if (!trimmed.startsWith("http://") && !trimmed.startsWith("https://")) {
       setErrorMsg("Please enter a valid URL starting with https:// or http://");
+      return;
+    }
+
+    // Check if user pasted a Google Drive folder link
+    const folderId = extractGoogleDriveFolderId(trimmed);
+    if (folderId) {
+      setShowDrivePicker(true);
+      setFormData((prev) => ({ ...prev, driveFolderUrl: trimmed }));
+      setImageUrlInput("");
+      setErrorMsg(null);
+      return;
+    }
+
+    // Check if user pasted a Google Drive file link
+    const driveFileId = extractGoogleDriveFileId(trimmed);
+    if (driveFileId) {
+      const cdnUrl = getGoogleDriveImageUrl(driveFileId, 1600);
+      setImages((prev) => [...prev, cdnUrl]);
+      setImageUrlInput("");
+      setErrorMsg(null);
       return;
     }
 
@@ -312,6 +348,8 @@ function ListPropertyContent() {
       requirements: formData.requirements,
       image_url: primaryImage,
       images: images.length > 0 ? images : undefined,
+      video_url: formData.videoUrl.trim() || undefined,
+      drive_folder_url: formData.driveFolderUrl.trim() || undefined,
     });
 
     if (res.success) {
@@ -607,8 +645,8 @@ function ListPropertyContent() {
                 : "Upload photos of your rooms, pool, dining, or property views. High-quality imagery attracts more creators!"}
             </p>
 
-            {/* Upload Controls Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Upload Controls Grid (Device, Web Link, or Google Drive) */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Option A: Upload Files from Device */}
               <label className="p-5 rounded-xl border-2 border-dashed border-sand-400 dark:border-neutral-700 hover:border-teal-700 dark:hover:border-[#D7400B] bg-sand-100/70 dark:bg-neutral-900 hover:bg-sand-100 transition-colors flex flex-col items-center justify-center text-center cursor-pointer group">
                 <UploadCloud className="w-8 h-8 text-teal-900 dark:text-[#D7400B] group-hover:scale-110 transition-transform mb-2" />
@@ -616,7 +654,7 @@ function ListPropertyContent() {
                   {isUploading ? "Processing Photos..." : "Upload from Device"}
                 </span>
                 <span className="text-[11px] text-ink-500 dark:text-neutral-400 mt-1 block">
-                  PNG, JPG, or WebP up to 10MB each (Select multiple)
+                  PNG, JPG, or WebP up to 10MB each
                 </span>
                 <input
                   type="file"
@@ -632,17 +670,17 @@ function ListPropertyContent() {
                 <div className="space-y-1">
                   <div className="flex items-center gap-1.5 text-xs font-bold text-teal-950 dark:text-white">
                     <LinkIcon className="w-3.5 h-3.5 text-teal-800 dark:text-[#D7400B]" />
-                    <span>Paste Image Web Link</span>
+                    <span>Paste Web or Drive Link</span>
                   </div>
                   <p className="text-[11px] text-ink-500 dark:text-neutral-400">
-                    From your Instagram, website, or cloud storage.
+                    Paste any image URL or Google Drive share link.
                   </p>
                 </div>
 
                 <div className="flex gap-2">
                   <input
                     type="url"
-                    placeholder="https://example.com/photos/dish.jpg"
+                    placeholder="https://... or Google Drive link"
                     value={imageUrlInput}
                     onChange={(e) => setImageUrlInput(e.target.value)}
                     onKeyDown={(e) => {
@@ -663,7 +701,59 @@ function ListPropertyContent() {
                   </button>
                 </div>
               </div>
+
+              {/* Option C: Google Drive Media Cloud */}
+              <div className="p-5 rounded-xl border border-amber-300 dark:border-amber-900/60 bg-amber-50/60 dark:bg-amber-950/20 flex flex-col justify-between space-y-3">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-amber-900 dark:text-amber-300">
+                    <Folder className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400" />
+                    <span>Google Drive Cloud</span>
+                  </div>
+                  <p className="text-[11px] text-amber-800/80 dark:text-amber-300/80">
+                    Connect directly to GetLinked_Media or your Drive folder.
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => setShowDrivePicker(!showDrivePicker)}
+                    className="w-full py-2 px-3 rounded-lg bg-amber-600 hover:bg-amber-700 dark:bg-gold-500 dark:hover:bg-gold-600 text-white dark:text-ink-950 text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow-xs"
+                  >
+                    <Folder className="w-3.5 h-3.5" />
+                    <span>{showDrivePicker ? "Hide Drive Cloud" : "Browse Drive Cloud"}</span>
+                  </button>
+                  <a
+                    href={GETLINKED_DRIVE_FOLDER_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[11px] text-center text-amber-900 dark:text-gold-400 hover:underline inline-flex items-center justify-center gap-1 font-semibold"
+                  >
+                    <span>Open Folder in Drive</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
             </div>
+
+            {/* Live Google Drive Cloud Picker */}
+            {showDrivePicker && (
+              <div className="pt-2">
+                <GoogleDriveFolderPicker
+                  selectedUrls={images}
+                  onSelectImage={(url) => {
+                    if (!images.includes(url)) setImages((prev) => [...prev, url]);
+                  }}
+                  onSelectVideo={(videoUrl) => {
+                    setFormData((prev) => ({ ...prev, videoUrl }));
+                  }}
+                  onImportAll={(urls) => {
+                    setImages((prev) => Array.from(new Set([...prev, ...urls])));
+                  }}
+                  onClose={() => setShowDrivePicker(false)}
+                />
+              </div>
+            )}
 
             {/* Quick Sample Photos for Testing */}
             <div className="pt-1">
@@ -744,6 +834,39 @@ function ListPropertyContent() {
                 </div>
               </div>
             )}
+
+            {/* Video Tour / Reel Link (Google Drive / MP4) */}
+            <div className="pt-4 border-t border-sand-200 dark:border-neutral-800 space-y-2">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-bold text-teal-950 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+                  <VideoIcon className="w-4 h-4 text-[#D7400B]" />
+                  <span>Video Tour or Reel Link (Optional — Google Drive or MP4)</span>
+                </label>
+                <span className="text-[11px] text-ink-500 dark:text-neutral-400">
+                  Google Drive video links stream automatically
+                </span>
+              </div>
+              <input
+                type="url"
+                placeholder="https://drive.google.com/file/d/.../view or direct video link"
+                value={formData.videoUrl}
+                onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-sand-400 dark:border-neutral-700 bg-white dark:bg-black text-xs text-teal-950 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-900 dark:focus:ring-[#D7400B]"
+              />
+
+              {formData.videoUrl && (
+                <div className="pt-2 max-w-lg">
+                  <span className="text-[11px] font-semibold text-teal-900 dark:text-gold-400 block mb-1.5">
+                    Live Video Streaming Preview:
+                  </span>
+                  <GoogleDrivePlayer
+                    url={formData.videoUrl}
+                    title={`${formData.accommodationName || "Venue"} Video Reel`}
+                    aspectRatio="16/9"
+                  />
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Section 3: Collaboration Parameters */}

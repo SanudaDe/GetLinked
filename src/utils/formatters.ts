@@ -33,12 +33,41 @@ export function formatDateRange(start: string, end: string): string {
   }
 }
 
+import {
+  extractGoogleDriveFileId,
+  extractGoogleDriveFolderId,
+  getGoogleDriveImageUrl,
+  getGoogleDrivePreviewUrl,
+  isGoogleDriveUrl,
+  GETLINKED_DRIVE_FOLDER_ID,
+  GETLINKED_DRIVE_FOLDER_URL,
+} from "./googleDrive";
+
+export {
+  extractGoogleDriveFileId,
+  extractGoogleDriveFolderId,
+  getGoogleDriveImageUrl,
+  getGoogleDrivePreviewUrl,
+  isGoogleDriveUrl,
+  GETLINKED_DRIVE_FOLDER_ID,
+  GETLINKED_DRIVE_FOLDER_URL,
+};
+
 /**
  * Resolves a storage image reference or URL into a fully-qualified public URL.
- * Handles full URLs (https://...), relative Supabase paths (avatars/..., properties/..., or filename.jpg).
+ * Handles full URLs (https://...), Google Drive file links, and relative Supabase paths (avatars/..., properties/...).
  */
 export function formatStorageUrl(pathOrUrl?: string, defaultFolder: "avatars" | "properties" = "avatars"): string {
   if (!pathOrUrl) return "";
+
+  // Handle Google Drive file URLs and bare IDs
+  if (isGoogleDriveUrl(pathOrUrl)) {
+    const driveFileId = extractGoogleDriveFileId(pathOrUrl);
+    if (driveFileId) {
+      return getGoogleDriveImageUrl(driveFileId, 1600);
+    }
+  }
+
   if (pathOrUrl.startsWith("http://") || pathOrUrl.startsWith("https://") || pathOrUrl.startsWith("data:")) {
     return pathOrUrl;
   }

@@ -29,7 +29,10 @@ import {
   Image as ImageIcon,
   ExternalLink,
   X,
+  Folder,
+  Video as VideoIcon,
 } from "lucide-react";
+import { GoogleDrivePlayer } from "@/components/common/GoogleDrivePlayer";
 
 export default function AdminAccommodationDetailPage({
   params,
@@ -254,6 +257,47 @@ export default function AdminAccommodationDetailPage({
                 </div>
               );
             })()}
+
+            {/* Video Tour / Reel Streaming Player */}
+            {stay.video_url && (
+              <div className="space-y-2 p-5 rounded-2xl bg-sand-100/60 border border-sand-300">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-teal-950">
+                    <VideoIcon className="w-4 h-4 text-[#D7400B]" />
+                    <span>Venue Video Tour & Reel</span>
+                  </div>
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-gold-600 bg-sand-200 px-2 py-0.5 rounded">
+                    Streaming Media
+                  </span>
+                </div>
+                <div className="max-w-xl mx-auto pt-1">
+                  <GoogleDrivePlayer
+                    url={stay.video_url}
+                    title={`${stay.accommodation_name} Visual Reel`}
+                    aspectRatio="16/9"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Connected Google Drive Folder Link */}
+            {stay.drive_folder_url && (
+              <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-between text-xs">
+                <div className="flex items-center gap-2 text-amber-900">
+                  <Folder className="w-4 h-4 text-amber-700" />
+                  <span className="font-semibold">Host Attached Google Drive Folder</span>
+                </div>
+                <a
+                  href={stay.drive_folder_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 font-bold text-amber-800 hover:text-amber-950 underline"
+                >
+                  <span>Open Folder</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            )}
 
             {/* Metrics & Collaboration Requirements */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">

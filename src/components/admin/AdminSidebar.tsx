@@ -20,6 +20,7 @@ import {
   ShieldCheck,
   AlertTriangle,
   MapPin,
+  Folder,
 } from "lucide-react";
 import { useStore } from "@/data/store";
 
@@ -78,6 +79,13 @@ export const AdminSidebar: React.FC = () => {
       label: "Advertising",
       icon: Megaphone,
       badge: null,
+    },
+    {
+      href: "/admin/media",
+      label: "Media Cloud (Drive)",
+      icon: Folder,
+      badge: "Connected",
+      badgeColor: "bg-amber-600 text-white",
     },
     {
       href: "/admin/analytics",

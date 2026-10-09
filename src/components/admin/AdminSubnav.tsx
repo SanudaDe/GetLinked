@@ -19,6 +19,7 @@ import {
   AlertTriangle,
   Layers,
   MapPin,
+  Folder,
 } from "lucide-react";
 
 export const AdminSubnav: React.FC = () => {
@@ -83,6 +84,13 @@ export const AdminSubnav: React.FC = () => {
       label: "Advertisements",
       icon: Megaphone,
       badge: null,
+    },
+    {
+      href: "/admin/media",
+      label: "Media (Drive)",
+      icon: Folder,
+      badge: "Live",
+      badgeColor: "bg-amber-600 text-white",
     },
     {
       href: "/admin/analytics",

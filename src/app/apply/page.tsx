@@ -24,6 +24,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { supabaseService } from "@/services/supabaseService";
+import { extractGoogleDriveFileId, getGoogleDriveImageUrl } from "@/utils/googleDrive";
 
 export default function ApplyPage() {
   const { submitCreatorApplication, authUser, settings } = useStore();
@@ -33,6 +34,7 @@ export default function ApplyPage() {
   const [submittedCode, setSubmittedCode] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const [driveAvatarInput, setDriveAvatarInput] = useState("");
   const [isUploadingDoc, setIsUploadingDoc] = useState(false);
   const [isDetectingSocial, setIsDetectingSocial] = useState(false);
   const [socialDetectionStatus, setSocialDetectionStatus] = useState<{
@@ -748,6 +750,49 @@ export default function ApplyPage() {
                         </span>
                       </div>
                     </div>
+                  </div>
+                )}
+
+                {/* Direct Link / Google Drive Alternative Input */}
+                {!formData.avatarUrl && (
+                  <div className="pt-2">
+                    <div className="flex gap-2">
+                      <input
+                        type="url"
+                        placeholder="Or paste image web link / Google Drive photo link..."
+                        value={driveAvatarInput}
+                        onChange={(e) => setDriveAvatarInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            const val = driveAvatarInput.trim();
+                            if (!val) return;
+                            const driveId = extractGoogleDriveFileId(val);
+                            const finalUrl = driveId ? getGoogleDriveImageUrl(driveId, 800) : val;
+                            setFormData({ ...formData, avatarUrl: finalUrl });
+                            setDriveAvatarInput("");
+                          }
+                        }}
+                        className="flex-grow px-3 py-2 rounded-lg border border-sand-400 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-teal-900"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const val = driveAvatarInput.trim();
+                          if (!val) return;
+                          const driveId = extractGoogleDriveFileId(val);
+                          const finalUrl = driveId ? getGoogleDriveImageUrl(driveId, 800) : val;
+                          setFormData({ ...formData, avatarUrl: finalUrl });
+                          setDriveAvatarInput("");
+                        }}
+                        className="px-3.5 py-2 rounded-lg bg-teal-900 hover:bg-teal-800 text-white text-xs font-semibold shrink-0 transition-colors"
+                      >
+                        Set Photo
+                      </button>
+                    </div>
+                    <span className="text-[10px] text-ink-500 mt-1 block">
+                      Google Drive image links are automatically converted to high-speed CDN photos.
+                    </span>
                   </div>
                 )}
               </div>

@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import { Volume2, VolumeX, Play, Pause, Maximize2, X, Sparkles } from "lucide-react";
+import { GoogleDrivePlayer } from "@/components/common/GoogleDrivePlayer";
 
 interface ReelItem {
   id: string;
@@ -206,11 +207,11 @@ export const VideoReelsSection: React.FC = () => {
             </div>
 
             <div className="relative aspect-[16/9] bg-black">
-              <video
-                src={modalVideo.src}
-                controls
+              <GoogleDrivePlayer
+                url={modalVideo.src}
+                title={`${modalVideo.title} — ${modalVideo.creator}`}
+                aspectRatio="16/9"
                 autoPlay
-                className="w-full h-full object-contain"
               />
             </div>
           </div>

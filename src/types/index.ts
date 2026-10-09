@@ -111,6 +111,8 @@ export interface AccommodationApplication {
   requirements: string;
   image_url?: string; // Primary cover photo URL
   images?: string[];  // Additional property gallery photos
+  video_url?: string; // Google Drive video reel or MP4 tour URL
+  drive_folder_url?: string; // Connected Google Drive folder link
   status: ApplicationStatus;
   is_duplicate?: boolean;
   admin_notes?: string;
@@ -135,6 +137,8 @@ export interface AccommodationListing {
   requirements: string;
   image_url?: string;
   images?: string[];
+  video_url?: string;
+  drive_folder_url?: string;
   is_active: boolean;
   created_at: string;
 }
