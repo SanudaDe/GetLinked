@@ -18,7 +18,7 @@ export const VideoReelsSection: React.FC = () => {
   const reels: ReelItem[] = [
     {
       id: "reel-1",
-      src: "/videos/web-bg-video-optimized.mp4",
+      src: "https://gpkljpnbgnylcekrcluy.supabase.co/storage/v1/object/public/images/web-bg-video-optimized.mp4",
       title: "Coastal Villa Awakening",
       location: "Thalpe, Southern Province",
       creator: "Elena Rostova",
@@ -27,7 +27,7 @@ export const VideoReelsSection: React.FC = () => {
     },
     {
       id: "reel-2",
-      src: "/videos/web-bg-video-optimized.mp4",
+      src: "https://gpkljpnbgnylcekrcluy.supabase.co/storage/v1/object/public/images/web-bg-video-optimized.mp4",
       title: "Heritage Courtyard Escape",
       location: "Galle Fort, Sri Lanka",
       creator: "Marcus Vance",

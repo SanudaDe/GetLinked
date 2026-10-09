@@ -338,7 +338,7 @@ export const initialAccommodations: AccommodationApplication[] = [
       "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80",
       "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1200&q=80"
     ],
-    video_url: "/videos/web-bg-video-optimized.mp4",
+    video_url: "https://gpkljpnbgnylcekrcluy.supabase.co/storage/v1/object/public/images/web-bg-video-optimized.mp4",
     drive_folder_url: "https://drive.google.com/drive/folders/1F2xh_ii87HDSCW3PHFHLXY7DpN_qfkOX?usp=sharing",
     status: "APPROVED",
     created_at: "2026-09-08T09:00:00Z",
@@ -480,7 +480,7 @@ export const initialAccommodations: AccommodationApplication[] = [
       "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=1200&q=80",
       "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80"
     ],
-    video_url: "/videos/web-bg-video-optimized.mp4",
+    video_url: "https://gpkljpnbgnylcekrcluy.supabase.co/storage/v1/object/public/images/web-bg-video-optimized.mp4",
     drive_folder_url: "https://drive.google.com/drive/folders/1F2xh_ii87HDSCW3PHFHLXY7DpN_qfkOX?usp=sharing",
     status: "APPROVED",
     created_at: "2026-09-18T10:00:00Z",

@@ -16,6 +16,7 @@ export const Hero: React.FC = () => {
 
     const tryPlay = () => {
       video.muted = true;
+      video.defaultMuted = true;
       const playPromise = video.play();
       if (playPromise !== undefined) {
         playPromise.catch(() => {
@@ -32,16 +33,20 @@ export const Hero: React.FC = () => {
       }
     };
 
+    video.addEventListener("loadeddata", tryPlay);
+    video.addEventListener("canplay", tryPlay);
+    video.addEventListener("loadedmetadata", tryPlay);
+
     if (video.readyState >= 2) {
       tryPlay();
     } else {
-      video.addEventListener("loadeddata", tryPlay, { once: true });
-      video.addEventListener("canplay", tryPlay, { once: true });
+      video.load();
     }
 
     return () => {
       video.removeEventListener("loadeddata", tryPlay);
       video.removeEventListener("canplay", tryPlay);
+      video.removeEventListener("loadedmetadata", tryPlay);
     };
   }, []);
 
@@ -51,6 +56,7 @@ export const Hero: React.FC = () => {
       <div className="absolute inset-0 z-0 overflow-hidden">
         <video
           ref={videoRef}
+          src="https://gpkljpnbgnylcekrcluy.supabase.co/storage/v1/object/public/images/web-bg-video-optimized.mp4"
           autoPlay
           loop
           muted
@@ -60,6 +66,10 @@ export const Hero: React.FC = () => {
           className="w-full h-full object-cover object-center transition-opacity duration-700"
           style={{ filter: "brightness(0.96)" }}
         >
+          <source
+            src="https://gpkljpnbgnylcekrcluy.supabase.co/storage/v1/object/public/images/web-bg-video-optimized.mp4"
+            type="video/mp4"
+          />
           <source src="/videos/web-bg-video-optimized.mp4" type="video/mp4" />
           <source src="/videos/Web%20BG%20Video.mp4" type="video/mp4" />
         </video>
