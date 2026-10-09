@@ -24,6 +24,10 @@ import {
   Globe,
   Clock,
   Trash2,
+  X,
+  Download,
+  ZoomIn,
+  Image as ImageIcon,
 } from "lucide-react";
 
 export default function AdminCreatorDetailPage({
@@ -41,7 +45,9 @@ export default function AdminCreatorDetailPage({
   );
 
   const [notes, setNotes] = useState(app?.admin_notes || "");
-  const [showDocPreview, setShowDocPreview] = useState(false);
+  const [showDocPreview, setShowDocPreview] = useState(true);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [imgLoadError, setImgLoadError] = useState(false);
   const [actionDone, setActionDone] = useState<string | null>(null);
 
   if (!app) {
@@ -306,33 +312,116 @@ export default function AdminCreatorDetailPage({
             {/* Document Preview Box */}
             {showDocPreview && (
               <div className="p-6 rounded-xl bg-teal-950 text-sand-50 space-y-4 animate-in fade-in-50">
-                <div className="flex items-center justify-between border-b border-teal-800/80 pb-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-teal-800/80 pb-3">
                   <div className="flex items-center gap-2 text-xs font-mono text-gold-400">
-                    <FileText className="w-4 h-4" />
-                    <span>SECURE_STREAM: {app.document_filename}</span>
+                    <FileText className="w-4 h-4 shrink-0" />
+                    <span className="truncate max-w-xs sm:max-w-md">
+                      {app.document_filename || "government_id_document"}
+                    </span>
+                    {app.document_size && (
+                      <span className="text-[10px] bg-teal-900 text-sand-300 px-2 py-0.5 rounded">
+                        {app.document_size}
+                      </span>
+                    )}
                   </div>
-                  <span className="text-[10px] bg-teal-900 text-sand-200 px-2 py-0.5 rounded font-mono">
-                    AUTHENTICATED PREVIEW
-                  </span>
+
+                  <div className="flex items-center gap-2">
+                    {app.document_url && (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => setIsLightboxOpen(true)}
+                          className="px-3 py-1.5 rounded-lg bg-teal-900 hover:bg-teal-800 text-gold-400 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer border border-teal-700"
+                        >
+                          <ZoomIn className="w-3.5 h-3.5" />
+                          <span>Inspect Fullscreen</span>
+                        </button>
+                        <a
+                          href={app.document_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-3 py-1.5 rounded-lg bg-gold-500 hover:bg-gold-400 text-teal-950 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                          <span>Open Original</span>
+                        </a>
+                      </>
+                    )}
+                  </div>
                 </div>
 
-                <div className="bg-sand-900/60 rounded-lg p-6 border border-teal-800 text-center space-y-3">
-                  <ShieldCheck className="w-10 h-10 text-gold-400 mx-auto" />
-                  <p className="font-serif text-base font-bold text-sand-50">
-                    {app.document_type === "PASSPORT"
-                      ? "International Passport Identification"
-                      : "National Identity Card (NIC)"}
-                  </p>
-                  <p className="text-xs text-sand-300 max-w-sm mx-auto">
-                    Verified holder: <strong className="text-white">{app.full_name}</strong> • Document #{" "}
-                    <code className="text-gold-400 font-mono">{app.document_reference}</code>
-                  </p>
-                  <div className="pt-2">
-                    <span className="text-[11px] text-emerald-400 font-mono bg-teal-900/80 px-3 py-1 rounded-full border border-teal-700">
-                      ✓ Authenticated Document Hash Valid
-                    </span>
+                {/* Actual Uploaded File Rendering */}
+                {app.document_url ? (
+                  (() => {
+                    const docUrl = app.document_url.toLowerCase();
+                    const filename = (app.document_filename || "").toLowerCase();
+                    const isPdf = docUrl.endsWith(".pdf") || filename.endsWith(".pdf");
+
+                    if (isPdf) {
+                      return (
+                        <div className="space-y-3">
+                          <div className="w-full h-[600px] rounded-xl overflow-hidden border border-teal-800 bg-white">
+                            <iframe
+                              src={app.document_url}
+                              title="Government ID PDF Preview"
+                              className="w-full h-full"
+                            />
+                          </div>
+                        </div>
+                      );
+                    }
+
+                    // Otherwise render as Image (PNG, JPG, JPEG, WEBP, etc.)
+                    return (
+                      <div className="space-y-3">
+                        <div
+                          onClick={() => setIsLightboxOpen(true)}
+                          className="relative group bg-black/60 rounded-xl overflow-hidden border border-teal-800/80 p-3 flex flex-col items-center justify-center min-h-[320px] max-h-[600px] cursor-pointer"
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={app.document_url}
+                            alt={app.document_filename || "Government ID Document"}
+                            className="max-h-[550px] w-auto max-w-full object-contain rounded shadow-lg transition-transform duration-300 group-hover:scale-[1.01]"
+                          />
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                            <span className="px-4 py-2 rounded-xl bg-teal-950/95 text-gold-400 border border-gold-500/50 text-xs font-bold flex items-center gap-2 shadow-2xl">
+                              <ZoomIn className="w-4 h-4" />
+                              <span>Click to View Full Size</span>
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between text-[11px] text-sand-300 px-1">
+                          <span>
+                            Document # <strong className="text-gold-400 font-mono">{app.document_reference}</strong> ({app.document_type})
+                          </span>
+                          <span className="text-emerald-400 font-mono flex items-center gap-1">
+                            ✓ Verified Document Upload
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })()
+                ) : (
+                  <div className="bg-sand-900/60 rounded-lg p-6 border border-teal-800 text-center space-y-3">
+                    <ShieldCheck className="w-10 h-10 text-gold-400 mx-auto" />
+                    <p className="font-serif text-base font-bold text-sand-50">
+                      {app.document_type === "PASSPORT"
+                        ? "International Passport Identification"
+                        : "National Identity Card (NIC)"}
+                    </p>
+                    <p className="text-xs text-sand-300 max-w-sm mx-auto">
+                      Holder: <strong className="text-white">{app.full_name}</strong> • Document #{" "}
+                      <code className="text-gold-400 font-mono">{app.document_reference}</code>
+                    </p>
+                    <div className="pt-2">
+                      <span className="text-[11px] text-amber-300 font-mono bg-amber-950/50 px-3 py-1 rounded-full border border-amber-800/60">
+                        ℹ️ Sample record without physical file upload
+                      </span>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             )}
           </div>
@@ -411,6 +500,65 @@ export default function AdminCreatorDetailPage({
           </div>
         </div>
       </div>
+
+      {/* Fullscreen Document Inspection Lightbox Modal */}
+      {isLightboxOpen && app.document_url && (
+        <div
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xs flex flex-col items-center justify-center p-3 sm:p-6 animate-in fade-in-50"
+          onClick={() => setIsLightboxOpen(false)}
+        >
+          {/* Header Bar */}
+          <div
+            className="w-full max-w-5xl flex items-center justify-between text-sand-50 mb-3 px-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-2 text-xs">
+              <FileText className="w-4 h-4 text-gold-400 shrink-0" />
+              <span className="font-mono text-sand-200 truncate max-w-xs sm:max-w-md">
+                {app.document_filename || "Government ID Document"}
+              </span>
+              <span className="text-sand-400 hidden sm:inline">•</span>
+              <span className="text-gold-400 font-bold hidden sm:inline">
+                {app.full_name} ({app.document_reference})
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <a
+                href={app.document_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-1.5 rounded-lg bg-teal-900 hover:bg-teal-800 text-gold-400 text-xs font-bold flex items-center gap-1.5 transition-colors"
+                title="Open original image in separate tab"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Open Original</span>
+              </a>
+              <button
+                type="button"
+                onClick={() => setIsLightboxOpen(false)}
+                className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+                title="Close"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Image Container */}
+          <div
+            className="relative max-w-5xl max-h-[85vh] w-full rounded-2xl overflow-hidden bg-neutral-950 border border-teal-800/80 shadow-2xl flex items-center justify-center p-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={app.document_url}
+              alt={app.document_filename || "Government ID Document Full Resolution"}
+              className="max-h-[80vh] w-auto max-w-full object-contain mx-auto rounded"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
