@@ -58,7 +58,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 - `/terms` — Marketplace terms of service
 
 ### Staff Admin Backoffice (`/admin`)
-- `/admin/login` — Staff credentials gateway (Demo passwords: `admin123` or `getlinked2026`)
+- `/admin/login` — Staff credentials gateway (Secured access for authorized administrators only)
 - `/admin` — Operations Dashboard (KPIs, queues, 1,000 capacity gauge)
 - `/admin/creators` — Creator Queue (Tabs: Pending, Approved, Rejected; Duplicate flags; Private document inspection modal; Approve/Reject actions)
 - `/admin/accommodations` — Accommodations Queue (Review property specs, offer types, Approve/Reject)

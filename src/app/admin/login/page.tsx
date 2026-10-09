@@ -35,7 +35,7 @@ export default function AdminLoginPage() {
 
         {error && (
           <div className="p-3 rounded-lg bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/50 text-rose-800 dark:text-rose-300 text-xs font-medium text-center">
-            Invalid credentials. Use demo password: <code className="font-mono font-bold">admin123</code>
+            Invalid credentials. Please check your password and try again.
           </div>
         )}
 
@@ -58,9 +58,6 @@ export default function AdminLoginPage() {
                 className="w-full pl-9 pr-4 py-2.5 rounded-lg border border-gray-200 dark:border-neutral-700 bg-gray-50/50 dark:bg-neutral-900 text-sm text-[#1A3739] dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-[#1A3739] dark:focus:ring-neutral-500"
               />
             </div>
-            <span className="text-[11px] text-[#1A3739]/70 dark:text-neutral-400 mt-1 block">
-              Demo access: use <code className="font-mono text-[#D7400B] font-bold">admin123</code>
-            </span>
           </div>
 
           <button

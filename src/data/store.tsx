@@ -471,7 +471,8 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   ]);
 
   const loginAdmin = (password: string): boolean => {
-    if (password === "admin123" || password === "getlinked2026") {
+    const validPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "getlinked@admin26";
+    if (password === validPassword) {
       const admin = {
         email: "admin@getlinked.today",
         name: "Get Linked Admin",

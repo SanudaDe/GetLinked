@@ -60,7 +60,7 @@ export default function AdminLayout({
 
           {error && (
             <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-medium text-center">
-              Invalid credentials. Use demo password: <code className="font-mono font-bold">admin123</code>
+              Invalid credentials. Please check your password and try again.
             </div>
           )}
 
@@ -83,9 +83,6 @@ export default function AdminLayout({
                   className="w-full pl-9 pr-4 py-2.5 rounded-lg border border-sand-400 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
                 />
               </div>
-              <span className="text-[11px] text-ink-500 mt-1.5 block">
-                Instant prototype access: use <code className="font-mono text-teal-900 font-bold">admin123</code> or <code className="font-mono text-teal-900 font-bold">getlinked2026</code>
-              </span>
             </div>
 
             <button
