@@ -167,13 +167,35 @@ export const MediaUploader: React.FC<MediaUploaderProps> = ({
         return;
       }
 
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("title", title || file.name);
-      formData.append("category", category);
-      formData.append("visibility", visibility);
+      // 2. Request a Google Drive Resumable Upload Session (small JSON request, no 4.5MB limit)
+      const sessionRes = await fetch("/api/drive/resumable-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({
+          filename: file.name,
+          mimeType: file.type || "application/octet-stream",
+          fileSize: file.size,
+          category,
+          visibility,
+        }),
+      });
 
-      // 2. Use XMLHttpRequest for precise upload progress tracking
+      const sessionData = await sessionRes.json();
+      if (!sessionRes.ok || !sessionData.success || !sessionData.sessionUrl) {
+        setIsUploading(false);
+        setErrorMsg(
+          sessionData.error ||
+            "Failed to initiate Google Drive upload session. Please ensure the backend is authorized."
+        );
+        return;
+      }
+
+      const { sessionUrl, storageFilename } = sessionData;
+
+      // 3. Stream file directly to Google Drive session URL via XHR (bypasses server payload limits)
       const xhr = new XMLHttpRequest();
       xhrRef.current = xhr;
 
@@ -184,33 +206,63 @@ export const MediaUploader: React.FC<MediaUploaderProps> = ({
         }
       };
 
-      xhr.onload = () => {
-        setIsUploading(false);
+      xhr.onload = async () => {
         xhrRef.current = null;
         if (xhr.status >= 200 && xhr.status < 300) {
           try {
-            const data = JSON.parse(xhr.responseText);
-            if (data.success) {
+            let driveFileId = "";
+            try {
+              const driveRes = JSON.parse(xhr.responseText);
+              driveFileId = driveRes.id;
+            } catch {
+              // In some Drive resumable endpoints, ID might be in header or empty
+            }
+
+            // 4. Confirm upload and record metadata in Supabase
+            const confirmRes = await fetch("/api/drive/confirm-upload", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${session.access_token}`,
+              },
+              body: JSON.stringify({
+                driveFileId,
+                title: title || file.name,
+                originalFilename: file.name,
+                storageFilename,
+                category,
+                mimeType: file.type || "application/octet-stream",
+                fileSize: file.size,
+                visibility,
+              }),
+            });
+
+            const confirmData = await confirmRes.json();
+            setIsUploading(false);
+
+            if (confirmData.success) {
               setUploadProgress(100);
               setSuccessMsg(`"${file.name}" uploaded successfully to Google Drive!`);
               setFile(null);
               setTitle("");
               if (fileInputRef.current) fileInputRef.current.value = "";
-              if (onSuccess && data.media) {
-                onSuccess(data.media);
+              if (onSuccess && confirmData.media) {
+                onSuccess(confirmData.media);
               }
             } else {
-              setErrorMsg(data.error || "Upload failed. Please try again.");
+              setErrorMsg(confirmData.error || "Failed to record media metadata.");
             }
-          } catch {
-            setErrorMsg("Invalid server response.");
+          } catch (err: any) {
+            setIsUploading(false);
+            setErrorMsg(err.message || "Failed to finalize upload record.");
           }
         } else {
+          setIsUploading(false);
           try {
             const errData = JSON.parse(xhr.responseText);
-            setErrorMsg(errData.error || `Upload failed with HTTP ${xhr.status}`);
+            setErrorMsg(errData.error?.message || `Google Drive error (${xhr.status}).`);
           } catch {
-            setErrorMsg(`Server error (${xhr.status}).`);
+            setErrorMsg(`Google Drive upload failed with HTTP ${xhr.status}.`);
           }
         }
       };
@@ -218,12 +270,12 @@ export const MediaUploader: React.FC<MediaUploaderProps> = ({
       xhr.onerror = () => {
         setIsUploading(false);
         xhrRef.current = null;
-        setErrorMsg("Network error connecting to upload endpoint.");
+        setErrorMsg("Network error during direct upload to Google Drive.");
       };
 
-      xhr.open("POST", "/api/drive/upload");
-      xhr.setRequestHeader("Authorization", `Bearer ${session.access_token}`);
-      xhr.send(formData);
+      xhr.open("PUT", sessionUrl);
+      xhr.setRequestHeader("Content-Type", file.type || "application/octet-stream");
+      xhr.send(file);
     } catch (err: any) {
       setIsUploading(false);
       setErrorMsg(err.message || "Failed to initiate upload.");

@@ -233,17 +233,20 @@ export async function uploadBufferToDrive({
 /**
  * Initializes a Google Drive Resumable Upload session for large files or videos.
  * Returns the resumable upload URI which streams bytes without buffering in memory.
+ * Sets the Origin header so Google Drive accepts direct browser uploads with CORS.
  */
 export async function createResumableUploadSession({
   filename,
   mimeType,
   fileSize,
   parentFolderId = DEFAULT_DRIVE_FOLDER_ID,
+  clientOrigin,
 }: {
   filename: string;
   mimeType: string;
   fileSize: number;
   parentFolderId?: string;
+  clientOrigin?: string;
 }): Promise<{ sessionUrl: string }> {
   const accessToken = await getGoogleDriveAccessToken();
 
@@ -255,14 +258,20 @@ export async function createResumableUploadSession({
   const initUrl =
     "https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable&supportsAllDrives=true";
 
+  const headers: Record<string, string> = {
+    Authorization: `Bearer ${accessToken}`,
+    "Content-Type": "application/json; charset=UTF-8",
+    "X-Upload-Content-Type": mimeType,
+    "X-Upload-Content-Length": String(fileSize),
+  };
+
+  if (clientOrigin) {
+    headers["Origin"] = clientOrigin;
+  }
+
   const response = await fetch(initUrl, {
     method: "POST",
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/json; charset=UTF-8",
-      "X-Upload-Content-Type": mimeType,
-      "X-Upload-Content-Length": String(fileSize),
-    },
+    headers,
     body: JSON.stringify(metadata),
   });
 
@@ -279,6 +288,29 @@ export async function createResumableUploadSession({
   }
 
   return { sessionUrl };
+}
+
+/**
+ * Retrieves file metadata from Google Drive.
+ */
+export async function getFileMetadata(fileId: string): Promise<{ id: string; name: string; size?: string; mimeType?: string }> {
+  const accessToken = await getGoogleDriveAccessToken();
+
+  const response = await fetch(
+    `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(fileId)}?supportsAllDrives=true&fields=id,name,size,mimeType`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(`Failed to get file metadata: ${err}`);
+  }
+
+  return await response.json();
 }
 
 /**
