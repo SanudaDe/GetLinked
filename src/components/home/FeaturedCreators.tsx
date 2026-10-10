@@ -6,6 +6,7 @@ import { ChevronDown, X, CheckCircle2, ArrowRight } from "lucide-react";
 import { useStore } from "@/data/store";
 import { InfluencerProfile } from "@/types";
 import { formatStorageUrl, formatFollowerCount, formatDateRange } from "@/utils/formatters";
+import { PhoneInputWithCountry } from "@/components/ui/PhoneInputWithCountry";
 
 const CATEGORIES = [
   "ALL VOICES",
@@ -538,17 +539,16 @@ export const FeaturedCreators: React.FC = () => {
 
                   <div>
                     <label className="block text-[11px] uppercase tracking-wider font-semibold text-[#336467] dark:text-neutral-300 mb-1">
-                      WhatsApp Number
+                      WhatsApp Number *
                     </label>
-                    <input
-                      type="tel"
-                      required
+                    <PhoneInputWithCountry
                       value={formData.requesterWhatsApp}
-                      onChange={(e) =>
-                        setFormData({ ...formData, requesterWhatsApp: e.target.value })
+                      onChange={(val) =>
+                        setFormData({ ...formData, requesterWhatsApp: val })
                       }
-                      placeholder="+94 77 123 4567"
-                      className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 text-xs text-[#336467] dark:text-white focus:border-[#D7400B] focus:outline-none"
+                      placeholder="e.g. 77 123 4567"
+                      defaultCountryCode="LK"
+                      required
                     />
                   </div>
 

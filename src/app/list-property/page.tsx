@@ -47,6 +47,7 @@ import {
   isGoogleDriveUrl,
   GETLINKED_DRIVE_FOLDER_URL,
 } from "@/utils/googleDrive";
+import { PhoneInputWithCountry } from "@/components/ui/PhoneInputWithCountry";
 
 function ListPropertyContent() {
   const searchParams = useSearchParams();
@@ -533,13 +534,12 @@ function ListPropertyContent() {
               <label className="block text-xs font-semibold text-ink-800 dark:text-neutral-300 uppercase tracking-wider mb-1">
                 WhatsApp Number *
               </label>
-              <input
-                type="tel"
-                required
-                placeholder="e.g. +94771234567"
+              <PhoneInputWithCountry
                 value={formData.whatsapp}
-                onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-sand-400 dark:border-neutral-700 bg-sand-50 dark:bg-neutral-900 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900 dark:focus:ring-[#D7400B]"
+                onChange={(val) => setFormData({ ...formData, whatsapp: val })}
+                placeholder="e.g. 77 123 4567"
+                defaultCountryCode="LK"
+                required
               />
             </div>
 
