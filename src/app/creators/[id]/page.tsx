@@ -12,18 +12,16 @@ import {
   Users,
   ShieldCheck,
   CheckCircle2,
-  Star,
   Sparkles,
   Send,
   ArrowLeft,
   Lock,
   Instagram,
-  Camera,
   Video,
-  Award,
   Clock,
   Building2,
   Check,
+  ExternalLink,
 } from "lucide-react";
 
 export default function CreatorProfilePage({
@@ -150,9 +148,9 @@ export default function CreatorProfilePage({
                 </div>
 
                 {/* Trip.com-Style Score Badge */}
-                <div className="absolute top-4 right-4 bg-gold-500 text-ink-950 px-3 py-1 rounded-full text-xs font-extrabold flex items-center gap-1 shadow-md">
-                  <Star className="w-3.5 h-3.5 fill-ink-950 text-ink-950" />
-                  <span>9.9 / 10 Verified Talent</span>
+                <div className="absolute top-4 right-4 bg-teal-950/80 backdrop-blur-md text-white border border-white/20 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5 shadow-md">
+                  <ShieldCheck className="w-3.5 h-3.5 text-gold-400" />
+                  <span>Verified Creator</span>
                 </div>
 
                 {/* Bottom Overlay Info */}
@@ -187,10 +185,10 @@ export default function CreatorProfilePage({
               <div className="grid grid-cols-3 divide-x divide-sand-200 bg-sand-100/60 border-t border-sand-300 py-3.5 px-4 text-center">
                 <div>
                   <span className="block text-[10px] uppercase tracking-wider text-ink-500 font-bold">
-                    Primary Platform
+                    Content Niche
                   </span>
                   <span className="text-xs sm:text-sm font-bold text-teal-950 mt-0.5 block">
-                    Instagram & Video
+                    {creator.niche}
                   </span>
                 </div>
                 <div>
@@ -218,30 +216,42 @@ export default function CreatorProfilePage({
                 <Sparkles className="w-5 h-5 text-gold-500" />
                 <span>Trip Brief & Content Focus</span>
               </h2>
-              <p className="text-sm text-ink-800 leading-relaxed">
+              <p className="text-sm text-ink-800 leading-relaxed whitespace-pre-wrap">
                 {creator.trip_brief}
               </p>
 
-              <div className="pt-4 border-t border-sand-200 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl bg-sand-50 border border-sand-200 space-y-1">
-                  <div className="flex items-center gap-2 text-xs font-bold text-teal-950">
-                    <Camera className="w-4 h-4 text-teal-800" />
-                    <span>Deliverable Formats</span>
+              {creator.social_url && (
+                <div className="pt-4 border-t border-sand-200 space-y-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-ink-500 block">
+                    Verified Social Channels
+                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    {creator.social_url
+                      .split(/[,|\n]+/)
+                      .map((s) => s.trim())
+                      .filter(Boolean)
+                      .map((link, idx) => {
+                        const isIg = link.includes("instagram.com");
+                        const isTt = link.includes("tiktok.com");
+                        const isFb = link.includes("facebook.com") || link.includes("fb.com");
+                        const platform = isIg ? "Instagram" : isTt ? "TikTok" : isFb ? "Facebook" : "Channel";
+
+                        return (
+                          <a
+                            key={idx}
+                            href={link.startsWith("http") ? link : `https://${link}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sand-100 hover:bg-teal-900 text-teal-950 hover:text-white text-xs font-semibold transition-colors border border-sand-200"
+                          >
+                            <span>{platform} Profile</span>
+                            <ExternalLink className="w-3 h-3 opacity-60" />
+                          </a>
+                        );
+                      })}
                   </div>
-                  <p className="text-xs text-ink-600">
-                    Cinematic 4K Reels, Drone Landscape footage, Stories, High-Resolution Architecture & Hospitality Stills.
-                  </p>
                 </div>
-                <div className="p-4 rounded-xl bg-sand-50 border border-sand-200 space-y-1">
-                  <div className="flex items-center gap-2 text-xs font-bold text-teal-950">
-                    <Award className="w-4 h-4 text-teal-800" />
-                    <span>Audience Demographics</span>
-                  </div>
-                  <p className="text-xs text-ink-600">
-                    High-intent international travelers from Europe, Australia, UK, and Asia interested in Sri Lankan boutique stays.
-                  </p>
-                </div>
-              </div>
+              )}
             </div>
 
             {/* Air-Gapped Privacy & Safety Guarantee */}

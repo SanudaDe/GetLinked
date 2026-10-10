@@ -24,7 +24,6 @@ import {
   SlidersHorizontal,
   RotateCcw,
   ShieldCheck,
-  Star,
   ArrowUpDown,
   ChevronDown,
   X,
@@ -496,10 +495,10 @@ function CreatorDirectoryContent() {
                         </span>
                       </div>
 
-                      {/* Rating Pill */}
-                      <div className="absolute top-2.5 right-2.5 flex items-center gap-1 bg-[#D7400B] text-white text-[11px] font-bold px-2 py-0.5 rounded-full shadow-md">
-                        <Star className="w-3 h-3 fill-white text-white" />
-                        <span>9.9</span>
+                      {/* Verified Status Pill */}
+                      <div className="absolute top-2.5 right-2.5 flex items-center gap-1 bg-emerald-600/90 backdrop-blur-md text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-full shadow-md border border-emerald-400/30">
+                        <CheckCircle2 className="w-3 h-3 text-white" />
+                        <span>Verified</span>
                       </div>
 
                       {/* Follower Metric Pill */}
