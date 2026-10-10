@@ -22,10 +22,31 @@ import {
   X,
   Loader2,
   Sparkles,
+  Instagram,
+  Facebook,
 } from "lucide-react";
 import { supabaseService } from "@/services/supabaseService";
 import { extractGoogleDriveFileId, getGoogleDriveImageUrl } from "@/utils/googleDrive";
 import { PhoneInputWithCountry } from "@/components/ui/PhoneInputWithCountry";
+
+function TikTokIcon({ className = "w-3.5 h-3.5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298-.002.595.042.88.13V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.82 4.49 6.27 6.27 0 0 0 1.86-4.49v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-.86-.09z" />
+    </svg>
+  );
+}
+
+function normalizeSocialLink(raw: string, platform: "instagram" | "tiktok" | "facebook"): string {
+  const val = raw.trim();
+  if (!val) return "";
+  if (val.startsWith("http://") || val.startsWith("https://")) return val;
+  const cleanHandle = val.replace(/^@/, "");
+  if (platform === "instagram") return `https://instagram.com/${cleanHandle}`;
+  if (platform === "tiktok") return `https://tiktok.com/@${cleanHandle}`;
+  if (platform === "facebook") return `https://facebook.com/${cleanHandle}`;
+  return val;
+}
 
 export default function ApplyPage() {
   const { submitCreatorApplication, authUser, settings, applications } = useStore();
@@ -55,6 +76,9 @@ export default function ApplyPage() {
     whatsapp: "",
     country: "United Kingdom",
     // Step 2: Social
+    instagramUrl: "",
+    tiktokUrl: "",
+    facebookUrl: "",
     socialUrl: "",
     avatarUrl: "",
     followerCount: 15000,
@@ -117,8 +141,12 @@ export default function ApplyPage() {
     }
 
     if (currentStep === 2) {
-      if (!formData.socialUrl.trim() || !formData.socialUrl.startsWith("http")) {
-        setErrorMsg("Please enter a valid social media URL (e.g. https://instagram.com/yourhandle).");
+      const ig = formData.instagramUrl.trim();
+      const tt = formData.tiktokUrl.trim();
+      const fb = formData.facebookUrl.trim();
+
+      if (!ig && !tt && !fb) {
+        setErrorMsg("Please add at least one social media profile (Instagram, TikTok, or Facebook) to proceed.");
         return false;
       }
       if (formData.followerCount < 5000) {
@@ -261,6 +289,12 @@ export default function ApplyPage() {
       return;
     }
 
+    const igLink = normalizeSocialLink(formData.instagramUrl, "instagram");
+    const ttLink = normalizeSocialLink(formData.tiktokUrl, "tiktok");
+    const fbLink = normalizeSocialLink(formData.facebookUrl, "facebook");
+    const activeLinks = [igLink, ttLink, fbLink].filter(Boolean);
+    const combinedSocialUrl = activeLinks.join(", ") || formData.socialUrl;
+
     const res = submitCreatorApplication({
       full_name: formData.fullName,
       age: formData.age,
@@ -271,7 +305,7 @@ export default function ApplyPage() {
       document_url: formData.documentUrl || undefined,
       document_filename: formData.documentFileName,
       document_size: formData.documentSize,
-      social_url: formData.socialUrl,
+      social_url: combinedSocialUrl,
       avatar_url: formData.avatarUrl || undefined,
       follower_count: formData.followerCount,
       niche: formData.niche,
@@ -530,31 +564,92 @@ export default function ApplyPage() {
           {step === 2 && (
             <div className="space-y-6 animate-in fade-in">
               <div className="border-b border-sand-200 pb-4">
-                <h2 className="font-serif text-xl font-bold text-teal-950">
-                  Step 2: Social Media & Audience
-                </h2>
-                <p className="text-xs text-ink-600 mt-0.5">
-                  We verify audience authenticity and engagement rate.
+                <div className="flex items-center justify-between">
+                  <h2 className="font-serif text-xl font-bold text-teal-950">
+                    Step 2: Social Media & Audience
+                  </h2>
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-teal-100 text-teal-900 border border-teal-200 shrink-0">
+                    At least 1 required
+                  </span>
+                </div>
+                <p className="text-xs text-ink-600 mt-1">
+                  Connect your active creator channels (Instagram, TikTok, or Facebook). You must provide at least one to register.
                 </p>
               </div>
 
-              <div>
-                <div className="flex items-center justify-between mb-1">
-                  <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider">
-                    Primary Social Media URL *
-                  </label>
-                  <span className="text-[11px] text-teal-800 font-semibold hidden sm:inline">
-                    Instagram • TikTok • Facebook • YouTube
-                  </span>
+              {/* SEPARATE SOCIAL MEDIA CHANNELS */}
+              <div className="space-y-4">
+                {/* 1. INSTAGRAM */}
+                <div className="p-3.5 sm:p-4 rounded-xl border border-sand-300 bg-sand-50/80 focus-within:border-teal-900 focus-within:ring-2 focus-within:ring-teal-900/20 transition-all space-y-1.5 shadow-xs">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-bold text-teal-950 flex items-center gap-2">
+                      <span className="w-5 h-5 rounded-md bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 flex items-center justify-center text-white shadow-xs">
+                        <Instagram className="w-3.5 h-3.5" />
+                      </span>
+                      <span>Instagram Profile</span>
+                    </label>
+                    {formData.instagramUrl.trim() && (
+                      <span className="text-[10px] font-semibold text-emerald-700 flex items-center gap-1">
+                        <CheckCircle2 className="w-3 h-3" /> Added
+                      </span>
+                    )}
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="https://instagram.com/yourhandle or @yourhandle"
+                    value={formData.instagramUrl}
+                    onChange={(e) => setFormData({ ...formData, instagramUrl: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-lg border border-sand-400 bg-white text-sm text-teal-950 placeholder:text-ink-400 focus:outline-none focus:ring-1 focus:ring-teal-900"
+                  />
                 </div>
-                <input
-                  type="url"
-                  required
-                  placeholder="https://instagram.com/yourhandle, tiktok.com/@handle, or facebook.com/page"
-                  value={formData.socialUrl}
-                  onChange={(e) => setFormData({ ...formData, socialUrl: e.target.value })}
-                  className="w-full px-4 py-3 rounded-lg border border-sand-400 bg-sand-50 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900"
-                />
+
+                {/* 2. TIKTOK */}
+                <div className="p-3.5 sm:p-4 rounded-xl border border-sand-300 bg-sand-50/80 focus-within:border-teal-900 focus-within:ring-2 focus-within:ring-teal-900/20 transition-all space-y-1.5 shadow-xs">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-bold text-teal-950 flex items-center gap-2">
+                      <span className="w-5 h-5 rounded-md bg-black flex items-center justify-center text-white shadow-xs">
+                        <TikTokIcon className="w-3.5 h-3.5" />
+                      </span>
+                      <span>TikTok Profile</span>
+                    </label>
+                    {formData.tiktokUrl.trim() && (
+                      <span className="text-[10px] font-semibold text-emerald-700 flex items-center gap-1">
+                        <CheckCircle2 className="w-3 h-3" /> Added
+                      </span>
+                    )}
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="https://tiktok.com/@yourhandle or @yourhandle"
+                    value={formData.tiktokUrl}
+                    onChange={(e) => setFormData({ ...formData, tiktokUrl: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-lg border border-sand-400 bg-white text-sm text-teal-950 placeholder:text-ink-400 focus:outline-none focus:ring-1 focus:ring-teal-900"
+                  />
+                </div>
+
+                {/* 3. FACEBOOK */}
+                <div className="p-3.5 sm:p-4 rounded-xl border border-sand-300 bg-sand-50/80 focus-within:border-teal-900 focus-within:ring-2 focus-within:ring-teal-900/20 transition-all space-y-1.5 shadow-xs">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-bold text-teal-950 flex items-center gap-2">
+                      <span className="w-5 h-5 rounded-md bg-[#1877F2] flex items-center justify-center text-white shadow-xs">
+                        <Facebook className="w-3.5 h-3.5" />
+                      </span>
+                      <span>Facebook Profile or Page</span>
+                    </label>
+                    {formData.facebookUrl.trim() && (
+                      <span className="text-[10px] font-semibold text-emerald-700 flex items-center gap-1">
+                        <CheckCircle2 className="w-3 h-3" /> Added
+                      </span>
+                    )}
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="https://facebook.com/yourhandle or your page URL"
+                    value={formData.facebookUrl}
+                    onChange={(e) => setFormData({ ...formData, facebookUrl: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-lg border border-sand-400 bg-white text-sm text-teal-950 placeholder:text-ink-400 focus:outline-none focus:ring-1 focus:ring-teal-900"
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -955,6 +1050,18 @@ export default function ApplyPage() {
                   <div>
                     <span className="text-ink-500 block">Dates:</span>
                     <strong className="text-teal-950">{formData.visitStart} to {formData.visitEnd}</strong>
+                  </div>
+                  <div className="col-span-2">
+                    <span className="text-ink-500 block">Connected Social Channels:</span>
+                    <span className="font-mono text-ink-700">
+                      {[
+                        formData.instagramUrl.trim() && `Instagram: ${formData.instagramUrl.trim()}`,
+                        formData.tiktokUrl.trim() && `TikTok: ${formData.tiktokUrl.trim()}`,
+                        formData.facebookUrl.trim() && `Facebook: ${formData.facebookUrl.trim()}`,
+                      ]
+                        .filter(Boolean)
+                        .join(" • ")}
+                    </span>
                   </div>
                   <div className="col-span-2">
                     <span className="text-ink-500 block">ID Reference:</span>

@@ -234,21 +234,44 @@ export default function AdminCreatorDetailPage({
             {/* Social Profile Inspection */}
             <div className="space-y-2">
               <label className="text-xs font-bold text-teal-950 uppercase tracking-wider block">
-                Primary Social Profile URL
+                Connected Social Profiles
               </label>
-              <div className="flex items-center justify-between p-3.5 rounded-xl bg-sand-50 border border-sand-200">
-                <span className="text-xs font-mono text-ink-800 truncate max-w-md">
-                  {app.social_url}
-                </span>
-                <a
-                  href={app.social_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-teal-900 hover:text-gold-600 ml-4 shrink-0"
-                >
-                  <span>Open Profile</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
+              <div className="space-y-2">
+                {app.social_url
+                  .split(/[,|\n]+/)
+                  .map((s) => s.trim())
+                  .filter(Boolean)
+                  .map((link, idx) => {
+                    const isIg = link.includes("instagram.com");
+                    const isTt = link.includes("tiktok.com");
+                    const isFb = link.includes("facebook.com") || link.includes("fb.com");
+                    const platformName = isIg ? "Instagram" : isTt ? "TikTok" : isFb ? "Facebook" : "Profile";
+
+                    return (
+                      <div
+                        key={idx}
+                        className="flex items-center justify-between p-3.5 rounded-xl bg-sand-50 border border-sand-200"
+                      >
+                        <div className="flex items-center gap-2 truncate mr-3">
+                          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-sand-200 text-teal-950 shrink-0">
+                            {platformName}
+                          </span>
+                          <span className="text-xs font-mono text-ink-800 truncate max-w-md">
+                            {link}
+                          </span>
+                        </div>
+                        <a
+                          href={link.startsWith("http") ? link : `https://${link}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-xs font-bold text-teal-900 hover:text-gold-600 shrink-0 ml-2"
+                        >
+                          <span>Open</span>
+                          <ExternalLink className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
+                    );
+                  })}
               </div>
             </div>
 

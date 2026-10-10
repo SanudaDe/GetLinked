@@ -366,16 +366,32 @@ export default function AdminCreatorsPage() {
               </div>
 
               <div>
-                <span className="text-ink-500 block">Social Media Profile:</span>
-                <a
-                  href={selectedApp.social_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-teal-900 hover:text-gold-600 font-semibold mt-0.5 underline"
-                >
-                  <span>Open Profile</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
+                <span className="text-ink-500 block mb-1">Connected Social Profiles:</span>
+                <div className="flex flex-wrap gap-2">
+                  {selectedApp.social_url
+                    .split(/[,|\n]+/)
+                    .map((s) => s.trim())
+                    .filter(Boolean)
+                    .map((link, idx) => {
+                      const isIg = link.includes("instagram.com");
+                      const isTt = link.includes("tiktok.com");
+                      const isFb = link.includes("facebook.com") || link.includes("fb.com");
+                      const platform = isIg ? "Instagram" : isTt ? "TikTok" : isFb ? "Facebook" : "Profile";
+
+                      return (
+                        <a
+                          key={idx}
+                          href={link.startsWith("http") ? link : `https://${link}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-sand-200/80 hover:bg-teal-900 text-teal-950 hover:text-white text-xs font-semibold transition-colors"
+                        >
+                          <span>{platform}</span>
+                          <ExternalLink className="w-3 h-3 opacity-70" />
+                        </a>
+                      );
+                    })}
+                </div>
               </div>
 
               <div>
