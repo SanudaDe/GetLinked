@@ -6,12 +6,12 @@
 
 :root {
   --font-cormorant: 'Cormorant Garamond', Garamond, Georgia, serif;
-  --font-playfair: 'Cormorant Garamond', Garamond, Georgia, serif;
+  --font-playfair: 'Playfair Display', Georgia, serif;
   --font-editorial: 'Cormorant Garamond', Garamond, Georgia, serif;
   --font-caveat: 'Caveat', cursive;
-  --font-plus-jakarta: 'Cormorant Garamond', Garamond, Georgia, serif;
-  --font-fraunces: 'Cormorant Garamond', Garamond, Georgia, serif;
-  --font-work-sans: 'Cormorant Garamond', Garamond, Georgia, serif;
+  --font-plus-jakarta: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-fraunces: 'Fraunces', Georgia, serif;
+  --font-work-sans: 'Work Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 body {

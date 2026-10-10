@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabaseClient";
+import { extractGoogleDriveFileId } from "@/utils/googleDrive";
 import {
   InfluencerApplication,
   InfluencerProfile,
@@ -699,6 +700,20 @@ export const supabaseService = {
   async uploadPropertyImage(file: File): Promise<{ url: string | null; error?: string }> {
     const res = await this.uploadFileToDrive(file, "DOCUMENT", "property");
     return { url: res.thumbnailUrl || res.url, error: res.error };
+  },
+
+  async deleteDriveFile(fileIdOrUrl: string): Promise<boolean> {
+    try {
+      const fileId = extractGoogleDriveFileId(fileIdOrUrl) || fileIdOrUrl;
+      if (!fileId || fileId.length < 5) return false;
+      const res = await fetch(`/api/drive/upload-document?fileId=${encodeURIComponent(fileId)}`, {
+        method: "DELETE",
+      });
+      return res.ok;
+    } catch (e) {
+      console.warn("Failed to delete drive file:", e);
+      return false;
+    }
   },
 };
 

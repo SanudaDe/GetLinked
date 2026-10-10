@@ -4,6 +4,7 @@ import {
   uploadBufferToDrive,
   createResumableUploadSession,
   getFileMetadata,
+  deleteDriveFile,
 } from "@/lib/googleDriveAuth";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
@@ -191,6 +192,39 @@ export async function POST(request: NextRequest) {
         success: false,
         error: err.message || "Failed to upload document to Google Drive.",
       },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const fileId = searchParams.get("fileId") || searchParams.get("id");
+
+    if (!fileId) {
+      return NextResponse.json(
+        { success: false, error: "fileId is required to delete" },
+        { status: 400 }
+      );
+    }
+
+    await deleteDriveFile(fileId);
+
+    // Also remove from user_media table if tracked in Supabase
+    if (supabaseAdmin) {
+      try {
+        await supabaseAdmin.from("user_media").delete().eq("drive_file_id", fileId);
+      } catch (e) {
+        console.warn("user_media record delete notice:", e);
+      }
+    }
+
+    return NextResponse.json({ success: true, message: "File deleted from Google Drive" });
+  } catch (err: any) {
+    console.error("Delete document from Drive error:", err);
+    return NextResponse.json(
+      { success: false, error: err.message || "Failed to delete file from Google Drive" },
       { status: 500 }
     );
   }

@@ -20,16 +20,32 @@ export function formatDateRange(start: string, end: string): string {
   try {
     const s = new Date(start);
     const e = new Date(end);
-    const options: Intl.DateTimeFormatOptions = { month: "short", day: "numeric" };
-    // Single visit date (e.g. dining reservation or same-day event)
+    if (isNaN(s.getTime()) || isNaN(e.getTime())) return `${start} – ${end}`;
+
+    // Same day visit
     if (start === end || s.toDateString() === e.toDateString()) {
-      return s.toLocaleDateString("en-US", { ...options, year: "numeric" });
+      return s.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
     }
-    const sFormatted = s.toLocaleDateString("en-US", options);
-    const eFormatted = e.toLocaleDateString("en-US", { ...options, year: "numeric" });
-    return `${sFormatted} - ${eFormatted}`;
+
+    // Same month and same year: "Oct 11 – 14, 2026"
+    if (s.getFullYear() === e.getFullYear() && s.getMonth() === e.getMonth()) {
+      const month = s.toLocaleDateString("en-US", { month: "short" });
+      return `${month} ${s.getDate()} – ${e.getDate()}, ${s.getFullYear()}`;
+    }
+
+    // Same year different month: "Oct 28 – Nov 4, 2026"
+    if (s.getFullYear() === e.getFullYear()) {
+      const sFormatted = s.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+      const eFormatted = e.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+      return `${sFormatted} – ${eFormatted}, ${s.getFullYear()}`;
+    }
+
+    // Different year: "Dec 28, 2026 – Jan 5, 2027"
+    const sFull = s.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    const eFull = e.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    return `${sFull} – ${eFull}`;
   } catch {
-    return `${start} to ${end}`;
+    return `${start} – ${end}`;
   }
 }
 
