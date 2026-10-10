@@ -6,7 +6,13 @@ import { useRouter } from "next/navigation";
 import { useStore } from "@/data/store";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { Badge } from "@/components/ui/Badge";
-import { formatFollowerCount, formatDateRange } from "@/utils/formatters";
+import { formatFollowerCount, formatDateRange, formatStorageUrl } from "@/utils/formatters";
+import {
+  extractGoogleDriveFileId,
+  getGoogleDriveImageUrl,
+  getGoogleDrivePreviewUrl,
+  isGoogleDriveUrl,
+} from "@/utils/googleDrive";
 import {
   ArrowLeft,
   CheckCircle2,
@@ -28,6 +34,7 @@ import {
   Download,
   ZoomIn,
   Image as ImageIcon,
+  Folder,
 } from "lucide-react";
 
 export default function AdminCreatorDetailPage({
@@ -144,7 +151,7 @@ export default function AdminCreatorDetailPage({
               <div className="flex items-center gap-4">
                 {app.avatar_url ? (
                   <img
-                    src={app.avatar_url}
+                    src={formatStorageUrl(app.avatar_url)}
                     alt={app.full_name}
                     className="w-16 h-16 rounded-full object-cover border-2 border-teal-900 shadow-sm shrink-0"
                   />
@@ -326,27 +333,41 @@ export default function AdminCreatorDetailPage({
                   </div>
 
                   <div className="flex items-center gap-2">
-                    {app.document_url && (
-                      <>
-                        <button
-                          type="button"
-                          onClick={() => setIsLightboxOpen(true)}
-                          className="px-3 py-1.5 rounded-lg bg-teal-900 hover:bg-teal-800 text-gold-400 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer border border-teal-700"
-                        >
-                          <ZoomIn className="w-3.5 h-3.5" />
-                          <span>Inspect Fullscreen</span>
-                        </button>
-                        <a
-                          href={app.document_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="px-3 py-1.5 rounded-lg bg-gold-500 hover:bg-gold-400 text-teal-950 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
-                        >
-                          <ExternalLink className="w-3.5 h-3.5" />
-                          <span>Open Original</span>
-                        </a>
-                      </>
-                    )}
+                    {app.document_url && (() => {
+                      const driveFileId = extractGoogleDriveFileId(app.document_url);
+                      const isDrive = isGoogleDriveUrl(app.document_url) || !!driveFileId;
+                      const driveLink = driveFileId
+                        ? `https://drive.google.com/file/d/${driveFileId}/view`
+                        : app.document_url;
+
+                      return (
+                        <>
+                          {isDrive && (
+                            <span className="text-[10px] bg-teal-900/90 text-emerald-300 border border-emerald-500/30 px-2 py-1 rounded flex items-center gap-1 font-mono">
+                              <Folder className="w-3 h-3 text-gold-400" />
+                              <span>Google Drive</span>
+                            </span>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => setIsLightboxOpen(true)}
+                            className="px-3 py-1.5 rounded-lg bg-teal-900 hover:bg-teal-800 text-gold-400 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer border border-teal-700"
+                          >
+                            <ZoomIn className="w-3.5 h-3.5" />
+                            <span>Inspect Fullscreen</span>
+                          </button>
+                          <a
+                            href={driveLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-3 py-1.5 rounded-lg bg-gold-500 hover:bg-gold-400 text-teal-950 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
+                            <span>{isDrive ? "Open in Drive" : "Open Original"}</span>
+                          </a>
+                        </>
+                      );
+                    })()}
                   </div>
                 </div>
 
@@ -355,14 +376,18 @@ export default function AdminCreatorDetailPage({
                   (() => {
                     const docUrl = app.document_url.toLowerCase();
                     const filename = (app.document_filename || "").toLowerCase();
-                    const isPdf = docUrl.endsWith(".pdf") || filename.endsWith(".pdf");
+                    const isPdf = docUrl.endsWith(".pdf") || filename.endsWith(".pdf") || docUrl.includes(".pdf");
+                    const driveFileId = extractGoogleDriveFileId(app.document_url);
+                    const isDrive = isGoogleDriveUrl(app.document_url) || !!driveFileId;
+                    const previewSrc = driveFileId ? getGoogleDrivePreviewUrl(driveFileId) : app.document_url;
+                    const imageSrc = driveFileId ? getGoogleDriveImageUrl(driveFileId, 1600) : app.document_url;
 
                     if (isPdf) {
                       return (
                         <div className="space-y-3">
                           <div className="w-full h-[600px] rounded-xl overflow-hidden border border-teal-800 bg-white">
                             <iframe
-                              src={app.document_url}
+                              src={previewSrc}
                               title="Government ID PDF Preview"
                               className="w-full h-full"
                             />
@@ -380,7 +405,7 @@ export default function AdminCreatorDetailPage({
                         >
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
-                            src={app.document_url}
+                            src={imageSrc}
                             alt={app.document_filename || "Government ID Document"}
                             className="max-h-[550px] w-auto max-w-full object-contain rounded shadow-lg transition-transform duration-300 group-hover:scale-[1.01]"
                           />
@@ -397,7 +422,7 @@ export default function AdminCreatorDetailPage({
                             Document # <strong className="text-gold-400 font-mono">{app.document_reference}</strong> ({app.document_type})
                           </span>
                           <span className="text-emerald-400 font-mono flex items-center gap-1">
-                            ✓ Verified Document Upload
+                            ✓ {isDrive ? "Stored in Google Drive (Folder: GetLinked_Media)" : "Verified Document Upload"}
                           </span>
                         </div>
                       </div>
@@ -552,7 +577,10 @@ export default function AdminCreatorDetailPage({
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={app.document_url}
+              src={(() => {
+                const driveId = extractGoogleDriveFileId(app.document_url);
+                return driveId ? getGoogleDriveImageUrl(driveId, 1600) : app.document_url;
+              })()}
               alt={app.document_filename || "Government ID Document Full Resolution"}
               className="max-h-[80vh] w-auto max-w-full object-contain mx-auto rounded"
             />

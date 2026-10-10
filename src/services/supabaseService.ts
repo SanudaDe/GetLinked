@@ -562,37 +562,143 @@ export const supabaseService = {
    * the shared Google Drive folder (GetLinked_Media: 1F2xh_ii87HDSCW3PHFHLXY7DpN_qfkOX).
    *
    * For document verification uploads, local files are converted to secure client DataURLs.
+  /**
+   * Uploads verification documents and avatars directly to the GetLinked Google Drive folder.
+   * Seamlessly handles both small (< 4MB) and large (> 4MB) files via resumable sessions.
    */
-  async uploadImage(
+  async uploadFileToDrive(
     file: File,
-    _folder: "properties" | "avatars" | "documents" = "properties"
-  ): Promise<{ url: string | null; error?: string }> {
+    docType: "AVATAR" | "PASSPORT" | "NATIONAL_ID" | "DOCUMENT" = "DOCUMENT",
+    applicantName: string = "applicant"
+  ): Promise<{
+    url: string | null;
+    fileId?: string;
+    fileName?: string;
+    fileSize?: string;
+    previewUrl?: string;
+    thumbnailUrl?: string;
+    webViewLink?: string;
+    error?: string;
+  }> {
     try {
-      return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          resolve({ url: reader.result as string });
+      // 1. If file is <= 4MB, direct multipart upload
+      if (file.size <= 4 * 1024 * 1024) {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("docType", docType);
+        formData.append("applicantName", applicantName);
+
+        const res = await fetch("/api/drive/upload-document", {
+          method: "POST",
+          body: formData,
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          throw new Error(data.error || "Failed to upload file to Google Drive.");
+        }
+        return {
+          url: data.thumbnailUrl || data.previewUrl || data.webViewLink,
+          fileId: data.driveFileId,
+          fileName: data.fileName,
+          fileSize: data.fileSize,
+          previewUrl: data.previewUrl,
+          thumbnailUrl: data.thumbnailUrl,
+          webViewLink: data.webViewLink,
         };
-        reader.onerror = () => {
-          resolve({ url: null, error: "Failed to read local file into preview data" });
-        };
-        reader.readAsDataURL(file);
+      }
+
+      // 2. If file > 4MB, use resumable upload session (bypass Vercel 4.5MB limit)
+      const initRes = await fetch("/api/drive/upload-document", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          filename: file.name,
+          mimeType: file.type || "application/octet-stream",
+          fileSize: file.size,
+          docType,
+          applicantName,
+        }),
       });
+      const initData = await initRes.json();
+      if (!initRes.ok || !initData.success || !initData.sessionUrl) {
+        throw new Error(initData.error || "Failed to initialize Drive upload session.");
+      }
+
+      // Upload directly from browser to Google Drive
+      const driveUploadRes = await fetch(initData.sessionUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": file.type || "application/octet-stream",
+        },
+        body: file,
+      });
+
+      if (!driveUploadRes.ok && driveUploadRes.status !== 200 && driveUploadRes.status !== 201) {
+        throw new Error(`Google Drive streaming failed (${driveUploadRes.status})`);
+      }
+
+      const driveData = await driveUploadRes.json();
+      const driveFileId = driveData.id;
+
+      // Confirm with backend
+      const confirmRes = await fetch("/api/drive/upload-document", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          confirmFileId: driveFileId,
+          filename: initData.storageFilename || file.name,
+          fileSize: file.size,
+          mimeType: file.type,
+          docType,
+        }),
+      });
+      const confirmData = await confirmRes.json();
+
+      const formattedSize = `${(file.size / (1024 * 1024)).toFixed(1)} MB`;
+      return {
+        url: confirmData.thumbnailUrl || confirmData.previewUrl || `https://drive.google.com/thumbnail?id=${driveFileId}&sz=w1600`,
+        fileId: driveFileId,
+        fileName: confirmData.fileName || initData.storageFilename || file.name,
+        fileSize: formattedSize,
+        previewUrl: `https://drive.google.com/file/d/${driveFileId}/preview`,
+        thumbnailUrl: `https://drive.google.com/thumbnail?id=${driveFileId}&sz=w1600`,
+        webViewLink: `https://drive.google.com/file/d/${driveFileId}/view`,
+      };
     } catch (err: any) {
-      console.warn("Media file processing error:", err);
-      return { url: null, error: err?.message || "File processing failed" };
+      console.error("Google Drive document upload error:", err);
+      return { url: null, error: err.message || "Failed to upload to Google Drive." };
     }
   },
 
+  async uploadAvatar(file: File, applicantName?: string): Promise<{ url: string | null; error?: string }> {
+    const res = await this.uploadFileToDrive(file, "AVATAR", applicantName || "creator");
+    return { url: res.thumbnailUrl || res.url, error: res.error };
+  },
+
+  async uploadDocument(
+    file: File,
+    docType: "PASSPORT" | "NATIONAL_ID" = "PASSPORT",
+    applicantName?: string
+  ): Promise<{
+    url: string | null;
+    fileName?: string;
+    fileSize?: string;
+    fileId?: string;
+    error?: string;
+  }> {
+    const res = await this.uploadFileToDrive(file, docType, applicantName || "creator");
+    return {
+      url: res.previewUrl || res.thumbnailUrl || res.url,
+      fileName: res.fileName,
+      fileSize: res.fileSize,
+      fileId: res.fileId,
+      error: res.error,
+    };
+  },
+
   async uploadPropertyImage(file: File): Promise<{ url: string | null; error?: string }> {
-    return this.uploadImage(file, "properties");
-  },
-
-  async uploadAvatar(file: File): Promise<{ url: string | null; error?: string }> {
-    return this.uploadImage(file, "avatars");
-  },
-
-  async uploadDocument(file: File): Promise<{ url: string | null; error?: string }> {
-    return this.uploadImage(file, "documents");
+    const res = await this.uploadFileToDrive(file, "DOCUMENT", "property");
+    return { url: res.thumbnailUrl || res.url, error: res.error };
   },
 };
+

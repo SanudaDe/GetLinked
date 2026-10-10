@@ -79,12 +79,6 @@ export default function StatusLookupPage() {
 
             <div className="flex items-center gap-2 w-full sm:w-auto justify-end shrink-0">
               <Link
-                href="/my-uploads"
-                className="px-4 py-2 rounded-xl bg-[#D7400B] hover:bg-[#bd3607] text-white text-xs font-semibold transition-colors shadow-xs"
-              >
-                My Media
-              </Link>
-              <Link
                 href="/apply"
                 className="px-4 py-2 rounded-xl bg-[#1A3739] dark:bg-neutral-800 hover:bg-[#132A2B] dark:hover:bg-neutral-700 text-white text-xs font-semibold transition-colors"
               >

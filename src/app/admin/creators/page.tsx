@@ -7,7 +7,13 @@ import { useStore } from "@/data/store";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
-import { formatFollowerCount, formatDateRange, SRI_LANKA_CITIES } from "@/utils/formatters";
+import { formatFollowerCount, formatDateRange, SRI_LANKA_CITIES, formatStorageUrl } from "@/utils/formatters";
+import {
+  extractGoogleDriveFileId,
+  getGoogleDriveImageUrl,
+  getGoogleDrivePreviewUrl,
+  isGoogleDriveUrl,
+} from "@/utils/googleDrive";
 import { generateWhatsAppLink } from "@/utils/whatsapp";
 import { ApplicationStatus, InfluencerApplication } from "@/types";
 import {
@@ -26,6 +32,8 @@ import {
   Eye,
   Lock,
   Trash2,
+  Folder,
+  ZoomIn,
 } from "lucide-react";
 
 export default function AdminCreatorsPage() {
@@ -167,7 +175,7 @@ export default function AdminCreatorsPage() {
                   <div className="flex items-start gap-3.5 flex-grow">
                     {app.avatar_url ? (
                       <img
-                        src={app.avatar_url}
+                        src={formatStorageUrl(app.avatar_url)}
                         alt={app.full_name}
                         className="w-12 h-12 rounded-full object-cover border border-sand-300 shadow-xs shrink-0 mt-0.5"
                       />
@@ -458,45 +466,108 @@ export default function AdminCreatorsPage() {
           isOpen={showDocModal}
           onClose={() => setShowDocModal(false)}
           title="Private Document Inspection Vault"
-          subtitle={`Confidential document for ${selectedApp.full_name} (${selectedApp.reference_code})`}
+          subtitle={`Confidential verification document for ${selectedApp.full_name} (${selectedApp.reference_code})`}
+          maxWidth="lg"
         >
           <div className="space-y-4">
-            <div className="p-3 bg-amber-50 border border-amber-300 rounded-lg text-amber-900 text-xs flex items-center gap-2">
-              <Lock className="w-4 h-4 text-amber-700 shrink-0" />
-              <span>
-                Simulated secure stream from private object storage. In production, documents are accessed via expiring signed URLs and never exposed publicly.
-              </span>
-            </div>
+            {(() => {
+              const driveFileId = selectedApp.document_url ? extractGoogleDriveFileId(selectedApp.document_url) : null;
+              const isDrive = selectedApp.document_url ? (isGoogleDriveUrl(selectedApp.document_url) || !!driveFileId) : false;
+              const docUrl = (selectedApp.document_url || "").toLowerCase();
+              const filename = (selectedApp.document_filename || "").toLowerCase();
+              const isPdf = docUrl.endsWith(".pdf") || filename.endsWith(".pdf") || docUrl.includes(".pdf");
+              const previewSrc = driveFileId ? getGoogleDrivePreviewUrl(driveFileId) : selectedApp.document_url;
+              const imageSrc = driveFileId ? getGoogleDriveImageUrl(driveFileId, 1600) : selectedApp.document_url;
+              const driveViewLink = driveFileId ? `https://drive.google.com/file/d/${driveFileId}/view` : selectedApp.document_url;
 
-            {/* Simulated Passport / NIC Graphic Display */}
-            <div className="border border-sand-400 rounded-xl p-6 bg-sand-200/60 text-center space-y-4 shadow-inner">
-              <div className="w-16 h-16 rounded-2xl bg-teal-900 text-gold-400 flex items-center justify-center mx-auto shadow-warm">
-                <FileText className="w-8 h-8" />
-              </div>
-              <div className="space-y-1">
-                <h4 className="font-serif text-lg font-bold text-teal-950">
-                  {selectedApp.document_type === "PASSPORT" ? "Official Passport Scan" : "National Identity Card (NIC)"}
-                </h4>
-                <p className="font-mono text-xs text-ink-600">
-                  Document Reference: <strong>{selectedApp.document_reference}</strong>
-                </p>
-                <p className="text-[11px] text-ink-500">
-                  File: {selectedApp.document_filename || "passport_scan.pdf"} ({selectedApp.document_size || "2.4 MB"})
-                </p>
-              </div>
+              return (
+                <div className="space-y-4">
+                  {/* Google Drive Status Banner */}
+                  <div className="p-3 bg-teal-900/10 border border-teal-900/30 rounded-xl text-teal-950 text-xs flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2">
+                      <Folder className="w-4 h-4 text-gold-600 shrink-0" />
+                      <span>
+                        {isDrive
+                          ? "Stored permanently in designated Google Drive folder (GetLinked_Media)"
+                          : "Government identity verification file"}
+                      </span>
+                    </div>
+                    {driveViewLink && (
+                      <a
+                        href={driveViewLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-2.5 py-1 rounded bg-teal-900 text-gold-400 hover:bg-teal-800 text-[11px] font-bold shrink-0 flex items-center gap-1"
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                        <span>Open in Drive</span>
+                      </a>
+                    )}
+                  </div>
 
-              <div className="p-4 bg-sand-50 rounded-lg border border-sand-300 max-w-sm mx-auto text-left text-xs space-y-1.5 font-mono">
-                <div><span className="text-ink-400">Bearer:</span> {selectedApp.full_name}</div>
-                <div><span className="text-ink-400">Citizenship:</span> {selectedApp.country}</div>
-                <div><span className="text-ink-400">Age Check:</span> {selectedApp.age} (Verified 18+)</div>
-                <div><span className="text-ink-400">Checksum:</span> SHA-256 Verified</div>
-              </div>
-            </div>
+                  {/* Document Display */}
+                  {selectedApp.document_url ? (
+                    <div className="rounded-xl overflow-hidden border border-sand-300 bg-sand-100 p-2">
+                      {isPdf ? (
+                        <div className="w-full h-[480px] rounded-lg overflow-hidden bg-white border border-sand-200">
+                          <iframe
+                            src={previewSrc}
+                            title="Government ID PDF"
+                            className="w-full h-full"
+                          />
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-center min-h-[300px] max-h-[500px] bg-black/80 rounded-lg p-2">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={imageSrc}
+                            alt={selectedApp.document_filename || "Government ID Document"}
+                            className="max-h-[460px] w-auto max-w-full object-contain rounded"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="border border-sand-400 rounded-xl p-6 bg-sand-200/60 text-center space-y-3">
+                      <ShieldCheck className="w-12 h-12 text-teal-900 mx-auto" />
+                      <h4 className="font-serif text-base font-bold text-teal-950">
+                        {selectedApp.document_type === "PASSPORT" ? "Passport Verification Record" : "National ID Card (NIC) Record"}
+                      </h4>
+                      <p className="text-xs text-ink-600 font-mono">
+                        Document Reference: <strong>{selectedApp.document_reference}</strong>
+                      </p>
+                    </div>
+                  )}
 
-            <div className="flex justify-end">
+                  {/* Document Metadata Details */}
+                  <div className="p-3.5 bg-sand-50 rounded-xl border border-sand-300 grid grid-cols-2 gap-3 text-xs">
+                    <div>
+                      <span className="text-ink-500 block text-[10px] uppercase font-bold">Document Type</span>
+                      <strong className="text-teal-950">{selectedApp.document_type}</strong>
+                    </div>
+                    <div>
+                      <span className="text-ink-500 block text-[10px] uppercase font-bold">Document # / Reference</span>
+                      <strong className="font-mono text-teal-950">{selectedApp.document_reference}</strong>
+                    </div>
+                    <div>
+                      <span className="text-ink-500 block text-[10px] uppercase font-bold">Filename</span>
+                      <span className="font-mono text-teal-900 truncate block text-[11px]">
+                        {selectedApp.document_filename || "id_document"}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-ink-500 block text-[10px] uppercase font-bold">File Size</span>
+                      <span className="font-mono text-ink-700">{selectedApp.document_size || "Verified"}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+
+            <div className="flex justify-end pt-2">
               <button
                 onClick={() => setShowDocModal(false)}
-                className="px-5 py-2 rounded-lg bg-teal-900 text-sand-50 text-xs font-semibold"
+                className="px-5 py-2 rounded-lg bg-teal-900 text-sand-50 text-xs font-semibold cursor-pointer"
               >
                 Done Inspecting
               </button>

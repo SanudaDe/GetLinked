@@ -236,48 +236,63 @@ export default function ApplyPage() {
       setErrorMsg("Please upload a valid image file (JPG, PNG, WebP).");
       return;
     }
-    if (file.size > 5 * 1024 * 1024) {
-      setErrorMsg("Profile photo must be under 5MB.");
+    if (file.size > 10 * 1024 * 1024) {
+      setErrorMsg("Profile photo must be under 10MB.");
       return;
     }
 
     setIsUploadingAvatar(true);
     setErrorMsg(null);
 
-    const reader = new FileReader();
-    reader.onload = (evt) => {
-      setFormData((prev) => ({ ...prev, avatarUrl: evt.target?.result as string }));
+    try {
+      const res = await supabaseService.uploadAvatar(file, formData.fullName || "creator");
+      if (res.error || !res.url) {
+        setErrorMsg(res.error || "Failed to upload profile photo to Google Drive.");
+      } else {
+        setFormData((prev) => ({ ...prev, avatarUrl: res.url || "" }));
+      }
+    } catch (uploadErr: any) {
+      setErrorMsg(uploadErr.message || "Failed to upload photo to Google Drive.");
+    } finally {
       setIsUploadingAvatar(false);
-    };
-    reader.onerror = () => {
-      setIsUploadingAvatar(false);
-      setErrorMsg("Failed to read image file.");
-    };
-    reader.readAsDataURL(file);
-    e.target.value = "";
+      e.target.value = "";
+    }
   };
 
   const handleDocumentUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 10 * 1024 * 1024) {
-      setErrorMsg("File size must be under 10MB.");
+    if (file.size > 25 * 1024 * 1024) {
+      setErrorMsg("File size must be under 25MB.");
       return;
     }
 
     setIsUploadingDoc(true);
     setErrorMsg(null);
 
-    const res = await supabaseService.uploadDocument(file);
-    setFormData((prev) => ({
-      ...prev,
-      documentFileName: file.name,
-      documentSize: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
-      documentUrl: res.url || "",
-    }));
-    setIsUploadingDoc(false);
-    e.target.value = "";
+    try {
+      const res = await supabaseService.uploadDocument(
+        file,
+        formData.documentType,
+        formData.fullName || "creator"
+      );
+      if (res.error || !res.url) {
+        setErrorMsg(res.error || "Failed to upload verification document to Google Drive.");
+      } else {
+        setFormData((prev) => ({
+          ...prev,
+          documentFileName: res.fileName || file.name,
+          documentSize: res.fileSize || `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
+          documentUrl: res.url || "",
+        }));
+      }
+    } catch (uploadErr: any) {
+      setErrorMsg(uploadErr.message || "Failed to upload document to Google Drive.");
+    } finally {
+      setIsUploadingDoc(false);
+      e.target.value = "";
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -704,10 +719,10 @@ export default function ApplyPage() {
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-semibold text-teal-950 flex items-center gap-1.5">
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                        Profile Photo Loaded
+                        <span>Photo Saved to Google Drive</span>
                       </p>
                       <p className="text-[11px] text-ink-500 truncate mt-0.5 font-mono">
-                        {formData.avatarUrl.startsWith("data:") ? "Image loaded from device" : formData.avatarUrl}
+                        {formData.avatarUrl}
                       </p>
                     </div>
                     <button
@@ -738,10 +753,10 @@ export default function ApplyPage() {
                       </div>
                       <div>
                         <span className="text-xs font-bold text-teal-950 block">
-                          {isUploadingAvatar ? "Processing photo..." : "Click or drag profile photo here"}
+                          {isUploadingAvatar ? "Saving photo to Google Drive..." : "Click or drag profile photo here"}
                         </span>
                         <span className="text-[11px] text-ink-500 block mt-0.5">
-                          JPG, PNG, or WebP up to 5MB (or paste Google Drive photo link below)
+                          JPG, PNG, or WebP up to 10MB (automatically saved to Google Drive)
                         </span>
                       </div>
                     </div>
@@ -930,12 +945,12 @@ export default function ApplyPage() {
               {/* Upload Dropzone */}
               <div>
                 <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-2">
-                  Upload Scanned Document / Photo (PDF, PNG, JPG - max 10MB) *
+                  Upload Scanned Document / Photo (PDF, PNG, JPG - max 25MB) *
                 </label>
                 <div className="border-2 border-dashed border-sand-400 rounded-xl p-6 text-center bg-sand-100/60 hover:bg-sand-100 transition-colors cursor-pointer relative">
                   <input
                     type="file"
-                    accept=".pdf,.png,.jpg,.jpeg"
+                    accept=".pdf,.png,.jpg,.jpeg,.webp"
                     disabled={isUploadingDoc}
                     onChange={handleDocumentUpload}
                     className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
@@ -954,17 +969,17 @@ export default function ApplyPage() {
                           <CheckCircle2 className="w-4 h-4 text-emerald-600 inline" />
                           {formData.documentFileName}
                         </span>
-                        <span className="text-xs text-ink-500">
-                          {formData.documentSize} • Stored securely
+                        <span className="text-xs text-ink-500 font-mono">
+                          {formData.documentSize} • Saved securely to Google Drive
                         </span>
                       </div>
                     ) : (
                       <div>
                         <span className="text-sm font-semibold text-teal-950 block">
-                          {isUploadingDoc ? "Uploading document to vault..." : "Click or drag ID document to upload"}
+                          {isUploadingDoc ? "Saving document to Google Drive..." : "Click or drag ID document to upload"}
                         </span>
                         <span className="text-xs text-ink-500">
-                          High resolution photo or PDF scan
+                          High resolution photo or PDF scan (automatically saved to Google Drive)
                         </span>
                       </div>
                     )}
