@@ -9,30 +9,9 @@ import { checkDateOverlap, calculateOverlapDays } from "@/utils/dateOverlap";
 import { InfluencerProfile, NicheType } from "@/types";
 import { Modal } from "@/components/ui/Modal";
 import { AdBanner } from "@/components/home/AdBanner";
-import { PinContainer } from "@/components/ui/3d-pin";
 import { DateRangeCalendarPicker } from "@/components/ui/DateRangeCalendarPicker";
 
-function getSocialDisplay(url?: string, name?: string) {
-  if (!url) return name ? `@${name.toLowerCase().replace(/\s+/g, "")}` : "instagram.com";
-  try {
-    const clean = url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
-    if (clean.includes("instagram.com/")) {
-      const handle = clean.split("instagram.com/")[1];
-      return handle ? `@${handle}` : "instagram.com";
-    }
-    if (clean.includes("tiktok.com/@")) {
-      const handle = clean.split("tiktok.com/@")[1];
-      return handle ? `@${handle}` : "tiktok.com";
-    }
-    if (clean.includes("twitter.com/") || clean.includes("x.com/")) {
-      const handle = clean.split(/twitter\.com\/|x\.com\//)[1];
-      return handle ? `@${handle}` : "x.com";
-    }
-    return clean.slice(0, 24);
-  } catch {
-    return "Social Profile";
-  }
-}
+
 import {
   Search,
   Filter,
@@ -478,7 +457,7 @@ function CreatorDirectoryContent() {
             </button>
           </div>
         ) : (
-          <div className="relative z-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProfiles.map((creator) => {
               const stayDays = calculateOverlapDays(
                 creator.visit_start,
@@ -486,109 +465,97 @@ function CreatorDirectoryContent() {
                 creator.visit_start,
                 creator.visit_end
               );
-              const socialTitle = getSocialDisplay(creator.social_url, creator.display_name);
 
               return (
                 <div
                   key={creator.id}
-                  className="h-[36rem] w-full flex items-center justify-center py-4"
+                  className="bg-[#152E30] dark:bg-neutral-900 rounded-2xl p-4 sm:p-5 border border-[#336467]/50 dark:border-neutral-800 shadow-warm hover:shadow-xl hover:border-[#D7400B]/60 transition-all duration-300 flex flex-col justify-between group"
                 >
-                  <PinContainer
-                    title={socialTitle}
-                    href={creator.social_url || "https://instagram.com"}
-                    containerClassName="w-full h-full flex items-center justify-center"
-                    className="w-[20rem] sm:w-[22rem] flex flex-col justify-between"
-                  >
-                    <div className="space-y-3.5">
-                      {/* Futuristic Image Frame */}
-                      <div className="relative h-56 w-full rounded-xl overflow-hidden bg-[#1A3739]">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={
-                            formatStorageUrl(creator.avatar_url) ||
-                            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80"
-                          }
-                          alt={creator.display_name}
-                          className="w-full h-full object-cover group-hover/pin:scale-105 transition-transform duration-700 ease-out"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#152E30] via-black/20 to-transparent pointer-events-none" />
+                  <div className="space-y-3.5">
+                    {/* Image Frame */}
+                    <div className="relative h-56 w-full rounded-xl overflow-hidden bg-[#1A3739]">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={
+                          formatStorageUrl(creator.avatar_url) ||
+                          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80"
+                        }
+                        alt={creator.display_name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#152E30] via-black/20 to-transparent pointer-events-none" />
 
-                        {/* Top Niche Pill */}
-                        <div className="absolute top-2.5 left-2.5">
-                          <span className="text-[11px] font-bold tracking-wider uppercase bg-[#1A3739]/90 text-white px-2.5 py-1 rounded-full backdrop-blur-md border border-white/10 shadow-sm">
-                            {creator.niche}
-                          </span>
-                        </div>
-
-                        {/* Rating Pill */}
-                        <div className="absolute top-2.5 right-2.5 flex items-center gap-1 bg-[#D7400B] text-white text-[11px] font-bold px-2 py-0.5 rounded-full shadow-md">
-                          <Star className="w-3 h-3 fill-white text-white" />
-                          <span>9.9</span>
-                        </div>
-
-                        {/* Follower Metric Pill */}
-                        <div className="absolute bottom-2.5 left-2.5 flex items-center gap-1.5 text-white text-xs font-semibold bg-black/50 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10">
-                          <Users className="w-3.5 h-3.5 text-[#D7400B]" />
-                          <span>{formatFollowerCount(creator.follower_count)} Followers</span>
-                        </div>
-
-                        {/* Duration Tag */}
-                        <div className="absolute bottom-2.5 right-2.5 text-[10px] font-semibold tracking-wider uppercase text-white/90 bg-[#152E30]/80 backdrop-blur-md px-2 py-0.5 rounded border border-white/10">
-                          {stayDays} Days Visit
-                        </div>
+                      {/* Top Niche Pill */}
+                      <div className="absolute top-2.5 left-2.5">
+                        <span className="text-[11px] font-bold tracking-wider uppercase bg-[#1A3739]/90 text-white px-2.5 py-1 rounded-full backdrop-blur-md border border-white/10 shadow-sm">
+                          {creator.niche}
+                        </span>
                       </div>
 
-                      {/* Card Body */}
-                      <div className="space-y-2.5">
-                        <div className="flex items-center justify-between gap-2">
-                          <h3 className="font-serif text-xl font-medium text-white group-hover/pin:text-[#D7400B] transition-colors truncate">
-                            {creator.display_name}
-                          </h3>
-                          <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-500/30 shrink-0">
-                            <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                            <span>ID Verified</span>
-                          </span>
-                        </div>
+                      {/* Rating Pill */}
+                      <div className="absolute top-2.5 right-2.5 flex items-center gap-1 bg-[#D7400B] text-white text-[11px] font-bold px-2 py-0.5 rounded-full shadow-md">
+                        <Star className="w-3 h-3 fill-white text-white" />
+                        <span>9.9</span>
+                      </div>
 
-                        <div className="space-y-1 text-xs text-white/80">
-                          <div className="flex items-center gap-1.5">
-                            <MapPin className="w-3.5 h-3.5 text-[#D7400B] shrink-0" />
-                            <span className="font-medium text-white">{creator.city}, Sri Lanka</span>
-                          </div>
-                          <div className="flex items-center gap-1.5">
-                            <Calendar className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                            <span className="text-white/75">{formatDateRange(creator.visit_start, creator.visit_end)}</span>
-                          </div>
-                        </div>
+                      {/* Follower Metric Pill */}
+                      <div className="absolute bottom-2.5 left-2.5 flex items-center gap-1.5 text-white text-xs font-semibold bg-black/50 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10">
+                        <Users className="w-3.5 h-3.5 text-[#D7400B]" />
+                        <span>{formatFollowerCount(creator.follower_count)} Followers</span>
+                      </div>
 
-                        <p className="text-xs text-white/70 line-clamp-2 leading-relaxed pt-0.5 font-light">
-                          {creator.trip_brief}
-                        </p>
+                      {/* Duration Tag */}
+                      <div className="absolute bottom-2.5 right-2.5 text-[10px] font-semibold tracking-wider uppercase text-white/90 bg-[#152E30]/80 backdrop-blur-md px-2 py-0.5 rounded border border-white/10">
+                        {stayDays} Days Visit
                       </div>
                     </div>
 
-                    {/* Futuristic Action Buttons */}
-                    <div className="pt-4 grid grid-cols-2 gap-2 relative z-50">
-                      <Link
-                        href={`/creators/${creator.id}`}
-                        onClick={(e) => e.stopPropagation()}
-                        className="py-2.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold uppercase tracking-wider border border-white/15 text-center transition-all flex items-center justify-center cursor-pointer"
-                      >
-                        View Profile
-                      </Link>
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedCreator(creator);
-                        }}
-                        className="py-2.5 px-3 rounded-xl bg-[#D7400B] hover:bg-[#BD3607] text-white text-xs font-semibold uppercase tracking-wider shadow-md hover:shadow-[0_0_15px_rgba(215,64,11,0.5)] transition-all flex items-center justify-center gap-1.5 cursor-pointer"
-                      >
-                        <Send className="w-3 h-3" />
-                        <span>Request</span>
-                      </button>
+                    {/* Card Body */}
+                    <div className="space-y-2.5">
+                      <div className="flex items-center justify-between gap-2">
+                        <h3 className="font-serif text-xl font-medium text-white group-hover:text-[#D7400B] transition-colors truncate">
+                          {creator.display_name}
+                        </h3>
+                        <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-500/30 shrink-0">
+                          <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                          <span>ID Verified</span>
+                        </span>
+                      </div>
+
+                      <div className="space-y-1 text-xs text-white/80">
+                        <div className="flex items-center gap-1.5">
+                          <MapPin className="w-3.5 h-3.5 text-[#D7400B] shrink-0" />
+                          <span className="font-medium text-white">{creator.city}, Sri Lanka</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <Calendar className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                          <span className="text-white/75 font-sans font-medium">{formatDateRange(creator.visit_start, creator.visit_end)}</span>
+                        </div>
+                      </div>
+
+                      <p className="text-xs text-white/70 line-clamp-2 leading-relaxed pt-0.5 font-light">
+                        {creator.trip_brief}
+                      </p>
                     </div>
-                  </PinContainer>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="pt-4 grid grid-cols-2 gap-2 mt-auto">
+                    <Link
+                      href={`/creators/${creator.id}`}
+                      className="py-2.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold uppercase tracking-wider border border-white/15 text-center transition-all flex items-center justify-center cursor-pointer"
+                    >
+                      View Profile
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedCreator(creator)}
+                      className="py-2.5 px-3 rounded-xl bg-[#D7400B] hover:bg-[#BD3607] text-white text-xs font-semibold uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                    >
+                      <Send className="w-3 h-3" />
+                      <span>Request</span>
+                    </button>
+                  </div>
                 </div>
               );
             })}
