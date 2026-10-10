@@ -372,24 +372,41 @@ export const FeaturedAccommodations: React.FC = () => {
                       : "opacity-15 scale-[0.86] pointer-events-none"
                   }`}
                 >
-                  {/* Photo Frame (COMO Landscape Ratio) */}
-                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl sm:rounded-2xl bg-neutral-100 dark:bg-neutral-900 shadow-warm dark:shadow-none">
+                  {/* Photo Frame (Clickable) */}
+                  <Link
+                    href={`/apply?stay=${encodeURIComponent(stay.accommodation_name)}`}
+                    tabIndex={isActive ? 0 : -1}
+                    onClick={(e) => {
+                      if (!isActive) e.preventDefault();
+                    }}
+                    className="block relative aspect-[16/10] w-full overflow-hidden rounded-xl sm:rounded-2xl bg-neutral-100 dark:bg-neutral-900 shadow-warm dark:shadow-none cursor-pointer group/photo"
+                    title={`Propose collaboration with ${stay.accommodation_name}`}
+                  >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={photo}
                       alt={stay.accommodation_name}
                       className={`w-full h-full object-cover object-center transition-transform duration-700 ease-out ${
-                        isActive ? "hover:scale-103" : ""
+                        isActive ? "group-hover/photo:scale-105" : ""
                       }`}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
-                  </div>
+                  </Link>
 
                   {/* Editorial Content Below Image (Pure COMO Minimalist Luxury) */}
                   <div className="pt-8 sm:pt-10 px-1 sm:px-2 space-y-3">
-                    <h3 className="font-serif text-3xl sm:text-4xl lg:text-[44px] font-light uppercase tracking-[0.14em] text-[#336467] dark:text-white leading-[1.1]">
-                      {stay.accommodation_name}
-                    </h3>
+                    <Link
+                      href={`/apply?stay=${encodeURIComponent(stay.accommodation_name)}`}
+                      tabIndex={isActive ? 0 : -1}
+                      onClick={(e) => {
+                        if (!isActive) e.preventDefault();
+                      }}
+                      className="block group/title"
+                    >
+                      <h3 className="font-serif text-3xl sm:text-4xl lg:text-[44px] font-light uppercase tracking-[0.14em] text-[#336467] dark:text-white group-hover/title:text-[#D7400B] transition-colors leading-[1.1]">
+                        {stay.accommodation_name}
+                      </h3>
+                    </Link>
 
                     <p className="text-[11px] sm:text-xs uppercase tracking-[0.24em] font-semibold text-[#D7400B]">
                       {stay.city || "Sri Lanka"}

@@ -472,8 +472,12 @@ function CreatorDirectoryContent() {
                   className="bg-[#152E30] dark:bg-neutral-900 rounded-2xl p-4 sm:p-5 border border-[#336467]/50 dark:border-neutral-800 shadow-warm hover:shadow-xl hover:border-[#D7400B]/60 transition-all duration-300 flex flex-col justify-between group"
                 >
                   <div className="space-y-3.5">
-                    {/* Image Frame */}
-                    <div className="relative h-56 w-full rounded-xl overflow-hidden bg-[#1A3739]">
+                    {/* Image Frame (Clickable to Creator Profile) */}
+                    <Link
+                      href={`/creators/${creator.id}`}
+                      className="block relative h-56 w-full rounded-xl overflow-hidden bg-[#1A3739] cursor-pointer group/cardImg"
+                      title={`View ${creator.display_name}'s profile`}
+                    >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={
@@ -481,7 +485,7 @@ function CreatorDirectoryContent() {
                           "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80"
                         }
                         alt={creator.display_name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                        className="w-full h-full object-cover group-hover/cardImg:scale-105 transition-transform duration-500 ease-out"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#152E30] via-black/20 to-transparent pointer-events-none" />
 
@@ -508,14 +512,16 @@ function CreatorDirectoryContent() {
                       <div className="absolute bottom-2.5 right-2.5 text-[10px] font-semibold tracking-wider uppercase text-white/90 bg-[#152E30]/80 backdrop-blur-md px-2 py-0.5 rounded border border-white/10">
                         {stayDays} Days Visit
                       </div>
-                    </div>
+                    </Link>
 
                     {/* Card Body */}
                     <div className="space-y-2.5">
                       <div className="flex items-center justify-between gap-2">
-                        <h3 className="font-serif text-xl font-medium text-white group-hover:text-[#D7400B] transition-colors truncate">
-                          {creator.display_name}
-                        </h3>
+                        <Link href={`/creators/${creator.id}`} className="truncate">
+                          <h3 className="font-serif text-xl font-medium text-white hover:text-[#D7400B] transition-colors truncate">
+                            {creator.display_name}
+                          </h3>
+                        </Link>
                         <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-500/30 shrink-0">
                           <CheckCircle2 className="w-3 h-3 text-emerald-400" />
                           <span>ID Verified</span>
