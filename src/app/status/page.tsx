@@ -347,44 +347,50 @@ export default function StatusLookupPage() {
                   </span>
                 </div>
 
-                {/* 4 Clean Stats Grid (Matching Main Page Typography) */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                  <div className="p-3.5 rounded-xl bg-white dark:bg-neutral-950/80 border border-sand-200/90 dark:border-neutral-800 shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-all">
-                    <span className="font-sans text-[10px] font-bold uppercase tracking-[0.16em] text-ink-500 dark:text-neutral-400 block mb-1">
-                      Content Niche
-                    </span>
-                    <strong className="font-sans text-xs sm:text-sm font-semibold text-teal-950 dark:text-white block">
+                {/* Clear Structured Details List */}
+                <div className="rounded-xl bg-white dark:bg-neutral-950/80 border border-sand-200/90 dark:border-neutral-800 divide-y divide-sand-200/70 dark:divide-neutral-800/80 overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
+                  {/* Row 1: Content Niche */}
+                  <div className="p-3.5 sm:px-5 flex items-center justify-between gap-4 hover:bg-sand-50/50 dark:hover:bg-neutral-900/50 transition-colors">
+                    <div className="flex items-center gap-2.5 text-xs text-ink-500 dark:text-neutral-400 font-sans font-medium">
+                      <Sparkles className="w-4 h-4 text-[#D7400B] shrink-0" />
+                      <span>Content Niche</span>
+                    </div>
+                    <span className="font-sans text-xs sm:text-sm font-bold text-teal-950 dark:text-white text-right">
                       {creatorApp.niche}
-                    </strong>
+                    </span>
                   </div>
 
-                  <div className="p-3.5 rounded-xl bg-white dark:bg-neutral-950/80 border border-sand-200/90 dark:border-neutral-800 shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-all">
-                    <span className="font-sans text-[10px] font-bold uppercase tracking-[0.16em] text-ink-500 dark:text-neutral-400 block mb-1">
-                      Destination City
+                  {/* Row 2: Destination City */}
+                  <div className="p-3.5 sm:px-5 flex items-center justify-between gap-4 hover:bg-sand-50/50 dark:hover:bg-neutral-900/50 transition-colors">
+                    <div className="flex items-center gap-2.5 text-xs text-ink-500 dark:text-neutral-400 font-sans font-medium">
+                      <MapPin className="w-4 h-4 text-[#336467] dark:text-teal-400 shrink-0" />
+                      <span>Destination City</span>
+                    </div>
+                    <span className="font-sans text-xs sm:text-sm font-bold text-teal-950 dark:text-white text-right">
+                      {creatorApp.city}, Sri Lanka
                     </span>
-                    <strong className="font-sans text-xs sm:text-sm font-semibold text-teal-950 dark:text-white flex items-center gap-1.5 truncate">
-                      <MapPin className="w-3.5 h-3.5 text-[#D7400B] shrink-0" />
-                      <span className="truncate">{creatorApp.city}</span>
-                    </strong>
                   </div>
 
-                  <div className="p-3.5 rounded-xl bg-white dark:bg-neutral-950/80 border border-sand-200/90 dark:border-neutral-800 shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-all">
-                    <span className="font-sans text-[10px] font-bold uppercase tracking-[0.16em] text-ink-500 dark:text-neutral-400 block mb-1">
-                      Follower Reach
+                  {/* Row 3: Follower Reach */}
+                  <div className="p-3.5 sm:px-5 flex items-center justify-between gap-4 hover:bg-sand-50/50 dark:hover:bg-neutral-900/50 transition-colors">
+                    <div className="flex items-center gap-2.5 text-xs text-ink-500 dark:text-neutral-400 font-sans font-medium">
+                      <Users className="w-4 h-4 text-[#336467] dark:text-teal-400 shrink-0" />
+                      <span>Follower Reach</span>
+                    </div>
+                    <span className="font-sans text-xs sm:text-sm font-bold text-teal-950 dark:text-white text-right">
+                      {formatFollowerCount(creatorApp.follower_count)} Followers
                     </span>
-                    <strong className="font-sans text-xs sm:text-sm font-semibold text-teal-950 dark:text-white block">
-                      {formatFollowerCount(creatorApp.follower_count)} Reach
-                    </strong>
                   </div>
 
-                  <div className="p-3.5 rounded-xl bg-white dark:bg-neutral-950/80 border border-sand-200/90 dark:border-neutral-800 shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-all">
-                    <span className="font-sans text-[10px] font-bold uppercase tracking-[0.16em] text-ink-500 dark:text-neutral-400 block mb-1">
-                      Travel Dates
+                  {/* Row 4: Travel Dates */}
+                  <div className="p-3.5 sm:px-5 flex items-center justify-between gap-4 hover:bg-sand-50/50 dark:hover:bg-neutral-900/50 transition-colors">
+                    <div className="flex items-center gap-2.5 text-xs text-ink-500 dark:text-neutral-400 font-sans font-medium">
+                      <Calendar className="w-4 h-4 text-[#D7400B] shrink-0" />
+                      <span>Confirmed Travel Dates</span>
+                    </div>
+                    <span className="font-sans text-xs sm:text-sm font-bold text-teal-950 dark:text-white text-right">
+                      {formatDateRange(creatorApp.visit_start, creatorApp.visit_end)}
                     </span>
-                    <strong className="font-sans text-xs sm:text-sm font-semibold text-teal-950 dark:text-white flex items-center gap-1.5">
-                      <Calendar className="w-3.5 h-3.5 text-[#336467] dark:text-teal-400 shrink-0" />
-                      <span className="truncate">{formatDateRange(creatorApp.visit_start, creatorApp.visit_end)}</span>
-                    </strong>
                   </div>
                 </div>
 
@@ -463,34 +469,39 @@ export default function StatusLookupPage() {
                   </span>
                 </div>
 
-                {/* Property Stats Grid */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                  <div className="p-3.5 rounded-xl bg-white dark:bg-neutral-950/80 border border-sand-200/90 dark:border-neutral-800 shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-all">
-                    <span className="font-sans text-[10px] font-bold uppercase tracking-[0.16em] text-ink-500 dark:text-neutral-400 block mb-1">
-                      Venue Type
-                    </span>
-                    <strong className="font-sans text-xs sm:text-sm font-semibold text-teal-950 dark:text-white block">
+                {/* Clear Structured Details List */}
+                <div className="rounded-xl bg-white dark:bg-neutral-950/80 border border-sand-200/90 dark:border-neutral-800 divide-y divide-sand-200/70 dark:divide-neutral-800/80 overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
+                  {/* Row 1: Venue Type */}
+                  <div className="p-3.5 sm:px-5 flex items-center justify-between gap-4 hover:bg-sand-50/50 dark:hover:bg-neutral-900/50 transition-colors">
+                    <div className="flex items-center gap-2.5 text-xs text-ink-500 dark:text-neutral-400 font-sans font-medium">
+                      <Building2 className="w-4 h-4 text-[#336467] dark:text-teal-400 shrink-0" />
+                      <span>Venue Type</span>
+                    </div>
+                    <span className="font-sans text-xs sm:text-sm font-bold text-teal-950 dark:text-white text-right">
                       {accApp.property_type}
-                    </strong>
+                    </span>
                   </div>
 
-                  <div className="p-3.5 rounded-xl bg-white dark:bg-neutral-950/80 border border-sand-200/90 dark:border-neutral-800 shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-all">
-                    <span className="font-sans text-[10px] font-bold uppercase tracking-[0.16em] text-ink-500 dark:text-neutral-400 block mb-1">
-                      Location
+                  {/* Row 2: Location */}
+                  <div className="p-3.5 sm:px-5 flex items-center justify-between gap-4 hover:bg-sand-50/50 dark:hover:bg-neutral-900/50 transition-colors">
+                    <div className="flex items-center gap-2.5 text-xs text-ink-500 dark:text-neutral-400 font-sans font-medium">
+                      <MapPin className="w-4 h-4 text-[#D7400B] shrink-0" />
+                      <span>Location</span>
+                    </div>
+                    <span className="font-sans text-xs sm:text-sm font-bold text-teal-950 dark:text-white text-right">
+                      {accApp.city}, Sri Lanka
                     </span>
-                    <strong className="font-sans text-xs sm:text-sm font-semibold text-teal-950 dark:text-white flex items-center gap-1.5 truncate">
-                      <MapPin className="w-3.5 h-3.5 text-[#D7400B] shrink-0" />
-                      <span className="truncate">{accApp.city}</span>
-                    </strong>
                   </div>
 
-                  <div className="p-3.5 rounded-xl bg-white dark:bg-neutral-950/80 border border-sand-200/90 dark:border-neutral-800 shadow-[0_2px_8px_rgba(0,0,0,0.02)] col-span-2 transition-all">
-                    <span className="font-sans text-[10px] font-bold uppercase tracking-[0.16em] text-ink-500 dark:text-neutral-400 block mb-1">
-                      Collaboration Offer
-                    </span>
-                    <strong className="font-sans text-xs sm:text-sm font-semibold text-teal-950 dark:text-white block truncate">
+                  {/* Row 3: Collaboration Offer */}
+                  <div className="p-3.5 sm:px-5 flex items-center justify-between gap-4 hover:bg-sand-50/50 dark:hover:bg-neutral-900/50 transition-colors">
+                    <div className="flex items-center gap-2.5 text-xs text-ink-500 dark:text-neutral-400 font-sans font-medium">
+                      <Utensils className="w-4 h-4 text-[#336467] dark:text-teal-400 shrink-0" />
+                      <span>Collaboration Offer</span>
+                    </div>
+                    <span className="font-sans text-xs sm:text-sm font-bold text-teal-950 dark:text-white text-right">
                       {accApp.offer_type}
-                    </strong>
+                    </span>
                   </div>
                 </div>
 
