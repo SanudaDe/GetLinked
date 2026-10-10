@@ -51,6 +51,31 @@ export async function GET(request: NextRequest) {
     const tokens = await exchangeAuthCodeForTokens(code, redirectUri);
     const refreshToken = tokens.refresh_token;
 
+    let autoUpdatedEnv = false;
+    if (refreshToken) {
+      try {
+        const fs = await import("fs");
+        const path = await import("path");
+        const envPath = path.join(process.cwd(), ".env.local");
+        if (fs.existsSync(envPath)) {
+          let envContent = fs.readFileSync(envPath, "utf-8");
+          if (envContent.includes("GOOGLE_DRIVE_REFRESH_TOKEN")) {
+            envContent = envContent.replace(
+              /GOOGLE_DRIVE_REFRESH_TOKEN=.*/,
+              `GOOGLE_DRIVE_REFRESH_TOKEN=${refreshToken}`
+            );
+          } else {
+            envContent += `\nGOOGLE_DRIVE_REFRESH_TOKEN=${refreshToken}\n`;
+          }
+          fs.writeFileSync(envPath, envContent, "utf-8");
+          autoUpdatedEnv = true;
+          console.log("Successfully auto-updated .env.local with new GOOGLE_DRIVE_REFRESH_TOKEN!");
+        }
+      } catch (fsErr) {
+        console.warn("Could not auto-write to .env.local:", fsErr);
+      }
+    }
+
     const html = `
       <!DOCTYPE html>
       <html>
@@ -74,13 +99,21 @@ export async function GET(request: NextRequest) {
           <p>The GetLinked backend has successfully established OAuth communication with your designated Google Drive folder.</p>
           
           ${
+            autoUpdatedEnv
+              ? `<div style="background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;padding:12px;border-radius:10px;font-size:13px;font-weight:600;margin:16px 0;">
+                  ✓ Your <code>.env.local</code> was automatically updated with the new refresh token!
+                </div>`
+              : ""
+          }
+
+          ${
             refreshToken
               ? `
-              <p>Add this refresh token to your <code>.env.local</code> file as <strong>GOOGLE_DRIVE_REFRESH_TOKEN</strong>:</p>
+              <p>Your active refresh token:</p>
               <div class="code-box">GOOGLE_DRIVE_REFRESH_TOKEN=${refreshToken}</div>
               `
               : `
-              <p>Access token granted! (If a refresh token was not returned because you previously authorized this app, the existing refresh token in your environment remains active).</p>
+              <p>Access token granted! (Your existing refresh token in environment remains active).</p>
               `
           }
 

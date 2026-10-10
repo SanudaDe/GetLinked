@@ -94,6 +94,30 @@ export async function getGoogleDriveAccessToken(): Promise<string> {
   cachedAccessToken = tokenData.access_token;
   tokenExpiresAt = now + (tokenData.expires_in || 3600);
 
+  // If Google issues a new or rotated refresh token, auto-persist to .env.local
+  if (tokenData.refresh_token && tokenData.refresh_token !== refreshToken) {
+    try {
+      const fs = await import("fs");
+      const path = await import("path");
+      const envPath = path.join(process.cwd(), ".env.local");
+      if (fs.existsSync(envPath)) {
+        let envContent = fs.readFileSync(envPath, "utf-8");
+        if (envContent.includes("GOOGLE_DRIVE_REFRESH_TOKEN")) {
+          envContent = envContent.replace(
+            /GOOGLE_DRIVE_REFRESH_TOKEN=.*/,
+            `GOOGLE_DRIVE_REFRESH_TOKEN=${tokenData.refresh_token}`
+          );
+        } else {
+          envContent += `\nGOOGLE_DRIVE_REFRESH_TOKEN=${tokenData.refresh_token}\n`;
+        }
+        fs.writeFileSync(envPath, envContent, "utf-8");
+        console.log("Auto-persisted rotated refresh token to .env.local");
+      }
+    } catch (fsErr) {
+      console.warn("Could not auto-write rotated refresh token to .env.local:", fsErr);
+    }
+  }
+
   return tokenData.access_token;
 }
 
