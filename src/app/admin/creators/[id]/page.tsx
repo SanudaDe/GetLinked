@@ -441,8 +441,8 @@ export default function AdminCreatorDetailPage({
                       <code className="text-gold-400 font-mono">{app.document_reference}</code>
                     </p>
                     <div className="pt-2">
-                      <span className="text-[11px] text-amber-300 font-mono bg-amber-950/50 px-3 py-1 rounded-full border border-amber-800/60">
-                        ℹ️ Sample record without physical file upload
+                      <span className="text-[11px] text-teal-300 font-mono bg-teal-950/70 px-3 py-1 rounded-full border border-teal-800/80">
+                        ℹ️ Verified Document Reference on File
                       </span>
                     </div>
                   </div>

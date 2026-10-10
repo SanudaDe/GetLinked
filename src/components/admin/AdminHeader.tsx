@@ -3,7 +3,7 @@
 import React from "react";
 import { useStore } from "@/data/store";
 import { Badge } from "@/components/ui/Badge";
-import { Sparkles, RotateCcw, Database, RefreshCw } from "lucide-react";
+import { Sparkles, Database, RefreshCw } from "lucide-react";
 
 interface AdminHeaderProps {
   title: string;
@@ -16,7 +16,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
   subtitle,
   action,
 }) => {
-  const { settings, resetDemoData, isConnectedToSupabase, isLoadingSupabase, refreshData } = useStore();
+  const { settings, isConnectedToSupabase, isLoadingSupabase, refreshData } = useStore();
 
   return (
     <div className="bg-sand-50 border-b border-sand-300 px-6 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -63,19 +63,6 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
         >
           <RefreshCw className={`w-3 h-3 ${isLoadingSupabase ? "animate-spin" : ""}`} />
           <span className="hidden sm:inline">Sync DB</span>
-        </button>
-
-        <button
-          onClick={() => {
-            if (confirm("Reset all test data back to initial demo state?")) {
-              resetDemoData();
-            }
-          }}
-          className="text-xs text-ink-500 hover:text-teal-900 border border-sand-400/80 px-2.5 py-1.5 rounded-md hover:bg-sand-200 transition-colors flex items-center gap-1.5"
-          title="Reset to default demo records"
-        >
-          <RotateCcw className="w-3 h-3" />
-          <span className="hidden sm:inline">Reset Demo Data</span>
         </button>
       </div>
     </div>

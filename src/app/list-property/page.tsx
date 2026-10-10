@@ -201,53 +201,6 @@ function ListPropertyContent() {
     });
   };
 
-  // Sample photo presets tailored for Stays and Eats
-  const stayPresets = [
-    {
-      name: "Luxury Villa Pool",
-      url: "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80",
-    },
-    {
-      name: "Colonial Tea Estate",
-      url: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=80",
-    },
-    {
-      name: "Coastal Surf Hotel",
-      url: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
-    },
-    {
-      name: "Highland Eco Lodge",
-      url: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=80",
-    },
-  ];
-
-  const eatsPresets = [
-    {
-      name: "Fine Dining Ambience",
-      url: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80",
-    },
-    {
-      name: "Chef's Tasting Plate",
-      url: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=80",
-    },
-    {
-      name: "Cocktail Bar Lounge",
-      url: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=1200&q=80",
-    },
-    {
-      name: "Artisan Café / Bakery",
-      url: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1200&q=80",
-    },
-  ];
-
-  const samplePhotoPresets = category === "EATS" ? eatsPresets : stayPresets;
-
-  const handleAddPreset = (url: string) => {
-    if (!images.includes(url)) {
-      setImages((prev) => [...prev, url]);
-    }
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
@@ -773,24 +726,6 @@ function ListPropertyContent() {
               </div>
             )}
 
-            {/* Quick Sample Photos for Testing */}
-            <div className="pt-1">
-              <span className="text-[11px] text-ink-500 dark:text-neutral-400 mr-2">
-                Or try a sample {isEats ? "dining" : "luxury"} photo:
-              </span>
-              <div className="inline-flex flex-wrap gap-1.5 mt-1">
-                {samplePhotoPresets.map((preset) => (
-                  <button
-                    key={preset.name}
-                    type="button"
-                    onClick={() => handleAddPreset(preset.url)}
-                    className="text-[11px] px-2.5 py-1 rounded-md bg-sand-200 dark:bg-neutral-800 hover:bg-teal-900 hover:text-white dark:hover:bg-[#D7400B] text-teal-950 dark:text-neutral-300 border border-sand-300 dark:border-neutral-700 transition-colors cursor-pointer"
-                  >
-                    + {preset.name}
-                  </button>
-                ))}
-              </div>
-            </div>
 
             {/* Gallery Preview Grid */}
             {images.length > 0 && (

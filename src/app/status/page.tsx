@@ -533,7 +533,7 @@ export default function StatusLookupPage() {
             <input
               type="tel"
               required
-              placeholder="e.g. +447911123456 or +94771234567"
+              placeholder="e.g. +94 77 123 4567 or international format"
               value={whatsapp}
               onChange={(e) => setWhatsapp(e.target.value)}
               className="w-full px-4 py-3 rounded-lg border border-sand-400 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-teal-950 dark:text-white placeholder:text-ink-400 dark:placeholder:text-neutral-500 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900 dark:focus:ring-white"
@@ -547,7 +547,7 @@ export default function StatusLookupPage() {
             <input
               type="text"
               required
-              placeholder="e.g. GL-C-7741 or GL-A-4102"
+              placeholder="e.g. GL-C-XXXX or GL-A-XXXX"
               value={refCode}
               onChange={(e) => setRefCode(e.target.value)}
               className="w-full px-4 py-3 rounded-lg border border-sand-400 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-teal-950 dark:text-white placeholder:text-ink-400 dark:placeholder:text-neutral-500 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-teal-900 dark:focus:ring-white uppercase"
@@ -637,13 +637,6 @@ export default function StatusLookupPage() {
           </div>
         )}
 
-        {/* Demo Reference Helper */}
-        <div className="mt-8 p-4 bg-sand-200/50 dark:bg-neutral-900/60 rounded-xl border border-sand-300/80 dark:border-neutral-800 text-xs text-ink-700 dark:text-neutral-300 space-y-1">
-          <span className="font-semibold text-teal-950 dark:text-white block">Quick Demo References:</span>
-          <div>Creator (Approved): WhatsApp <code className="bg-sand-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded text-teal-900 dark:text-teal-300 font-mono">+447911123456</code>, Code <code className="bg-sand-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded text-teal-900 dark:text-teal-300 font-mono">GL-C-7741</code></div>
-          <div>Stay (Approved): WhatsApp <code className="bg-sand-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded text-teal-900 dark:text-teal-300 font-mono">+94773829102</code>, Code <code className="bg-sand-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded text-teal-900 dark:text-teal-300 font-mono">GL-A-4102</code></div>
-          <div>Pending: WhatsApp <code className="bg-sand-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded text-teal-900 dark:text-teal-300 font-mono">+94771234567</code>, Code <code className="bg-sand-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded text-teal-900 dark:text-teal-300 font-mono">GL-C-1094</code></div>
-        </div>
       </div>
     </div>
   );

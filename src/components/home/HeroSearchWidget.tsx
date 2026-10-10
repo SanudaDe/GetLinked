@@ -346,7 +346,7 @@ export const HeroSearchWidget: React.FC = () => {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. GL-C-7741"
+                  placeholder="e.g. GL-C-XXXX"
                   value={statusRefCode}
                   onChange={(e) => setStatusRefCode(e.target.value)}
                   className="w-full bg-transparent font-mono font-bold text-teal-950 text-sm focus:outline-none uppercase"
