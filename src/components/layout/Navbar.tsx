@@ -79,6 +79,14 @@ export const Navbar: React.FC = () => {
             {authUser ? (
               <div className="flex items-center gap-3">
                 <Link
+                  href="/my-uploads"
+                  className="text-xs font-bold text-[#336467] dark:text-neutral-300 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors py-1.5 px-3 rounded-full border border-gray-200 dark:border-neutral-800 bg-sand-50 dark:bg-neutral-900 shadow-xs"
+                  title="My Google Drive Media"
+                >
+                  My Media
+                </Link>
+
+                <Link
                   href="/status"
                   className="flex items-center gap-2.5 p-1.5 pr-3.5 rounded-full hover:bg-black/5 dark:hover:bg-white/5 border border-gray-200 dark:border-neutral-800 transition-all bg-gray-50 dark:bg-neutral-900 shadow-xs group"
                   title="View My Application Status"
@@ -220,6 +228,15 @@ export const Navbar: React.FC = () => {
                 >
                   Check Application Status
                 </Link>
+                {authUser && (
+                  <Link
+                    href="/my-uploads"
+                    onClick={() => setIsOpen(false)}
+                    className="block text-sm uppercase tracking-wider text-[#D7400B] font-bold py-1.5"
+                  >
+                    My Google Drive Media &rarr;
+                  </Link>
+                )}
                 {!authUser && (
                   <Link
                     href="/login"

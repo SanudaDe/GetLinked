@@ -218,3 +218,25 @@ export interface AdminAuditLog {
   details: string;
   timestamp: string;
 }
+
+export type MediaCategory = "PHOTO" | "VIDEO" | "DOCUMENT" | "AVATAR" | "OTHER";
+export type MediaVisibility = "PRIVATE" | "PUBLIC";
+export type UploadStatus = "PENDING" | "COMPLETED" | "FAILED";
+
+export interface UserMedia {
+  id: string;
+  owner_user_id: string;
+  title: string;
+  original_filename: string;
+  storage_filename: string;
+  category: MediaCategory;
+  mime_type: string;
+  file_size: number;
+  drive_file_id: string;
+  drive_parent_folder_id: string;
+  visibility: MediaVisibility;
+  upload_status: UploadStatus;
+  metadata?: Record<string, any>;
+  created_at: string;
+  updated_at: string;
+}
