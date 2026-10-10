@@ -27,8 +27,17 @@ import { supabaseService } from "@/services/supabaseService";
 import { extractGoogleDriveFileId, getGoogleDriveImageUrl } from "@/utils/googleDrive";
 
 export default function ApplyPage() {
-  const { submitCreatorApplication, authUser, settings } = useStore();
+  const { submitCreatorApplication, authUser, settings, applications } = useStore();
   const allowedCreatorLocations = settings.allowed_creator_locations ?? DEFAULT_ALLOWED_LOCATIONS;
+
+  const existingApprovedApp = React.useMemo(() => {
+    if (!authUser) return null;
+    return applications.find(
+      (a) =>
+        a.full_name.toLowerCase().trim() === authUser.name.toLowerCase().trim() &&
+        a.status === "APPROVED"
+    );
+  }, [authUser, applications]);
 
   const [step, setStep] = useState<number>(1);
   const [submittedCode, setSubmittedCode] = useState<string | null>(null);
@@ -333,6 +342,9 @@ export default function ApplyPage() {
 
     if (res.success) {
       setSubmittedCode(res.reference_code);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("getlinked_my_active_ref", res.reference_code);
+      }
     } else {
       setErrorMsg(res.message || "Failed to submit application.");
     }
@@ -421,6 +433,35 @@ export default function ApplyPage() {
             Connect with Sri Lanka&apos;s finest hotels, villas, and boutique stays. 18+ age & 5,000+ authentic followers required.
           </p>
         </div>
+
+        {/* Banner if already an approved creator */}
+        {existingApprovedApp && (
+          <div className="mb-8 p-5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 text-emerald-950 dark:text-emerald-200 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm animate-in fade-in">
+            <div className="flex items-center gap-3.5">
+              <div className="w-11 h-11 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 flex items-center justify-center shrink-0 shadow-xs">
+                <CheckCircle2 className="w-6 h-6" />
+              </div>
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 block">
+                  Approved Creator
+                </span>
+                <h3 className="font-serif text-base font-bold text-emerald-950 dark:text-white">
+                  You are already a Verified GetLinked Creator!
+                </h3>
+                <p className="text-xs text-emerald-800 dark:text-emerald-300 mt-0.5">
+                  Reference: <span className="font-mono font-bold">{existingApprovedApp.reference_code}</span> • Destination: {existingApprovedApp.city}
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/status"
+              className="px-4 py-2.5 rounded-xl bg-teal-900 hover:bg-teal-800 text-sand-50 text-xs font-semibold shrink-0 transition-colors shadow-xs flex items-center gap-1.5"
+            >
+              <span>View My Profile</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        )}
 
         {/* Multi-step Stepper Progress Tracker per Modern Web Guidance */}
         <nav aria-label="Application Progress" className="mb-8">

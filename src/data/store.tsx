@@ -168,6 +168,7 @@ interface StoreContextType {
   loginAdmin: (password: string) => boolean;
   logoutAdmin: () => void;
   signOutUser: () => Promise<void>;
+  updateUserProfilePhoto: (photoUrl: string) => Promise<boolean>;
   refreshData: () => Promise<void>;
 
   // Creator actions
@@ -365,6 +366,47 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       console.warn("Sign out exception:", err);
     }
     setAuthUser(null);
+  };
+
+  const updateUserProfilePhoto = async (photoUrl: string): Promise<boolean> => {
+    if (!authUser) return false;
+
+    // 1. Update authUser in local React state
+    setAuthUser((prev) => (prev ? { ...prev, avatar_url: photoUrl } : null));
+
+    // 2. Update Supabase Auth user_metadata
+    try {
+      await supabase.auth.updateUser({
+        data: {
+          avatar_url: photoUrl,
+          picture: photoUrl,
+        },
+      });
+    } catch (authErr) {
+      console.warn("Supabase auth updateUser metadata notice:", authErr);
+    }
+
+    // 3. Update in applications state & Supabase influencer_applications
+    const matchedApp = applications.find(
+      (a) => a.full_name.toLowerCase().trim() === authUser.name.toLowerCase().trim()
+    );
+    if (matchedApp) {
+      setApplications((prev) =>
+        prev.map((a) => (a.id === matchedApp.id ? { ...a, avatar_url: photoUrl } : a))
+      );
+      supabaseService.updateApplication(matchedApp.id, { avatar_url: photoUrl }).catch(console.warn);
+
+      // 4. Update in profiles state & Supabase influencer_profiles
+      const matchedProf = profiles.find((p) => p.application_id === matchedApp.id);
+      if (matchedProf) {
+        setProfiles((prev) =>
+          prev.map((p) => (p.id === matchedProf.id ? { ...p, avatar_url: photoUrl } : p))
+        );
+        supabaseService.upsertProfile({ ...matchedProf, avatar_url: photoUrl }).catch(console.warn);
+      }
+    }
+
+    return true;
   };
 
   // Load data from Supabase, with graceful fallback to localStorage / mockStore
@@ -1147,6 +1189,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         toggleAdStatus,
         deleteAdvertisement,
         lookupStatus,
+        updateUserProfilePhoto,
         resetDemoData,
       }}
     >
