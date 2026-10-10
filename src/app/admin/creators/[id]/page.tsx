@@ -35,6 +35,9 @@ import {
   ZoomIn,
   Image as ImageIcon,
   Folder,
+  Star,
+  Sparkles,
+  Award,
 } from "lucide-react";
 
 export default function AdminCreatorDetailPage({
@@ -45,17 +48,35 @@ export default function AdminCreatorDetailPage({
   const resolvedParams = use(params);
   const { id } = resolvedParams;
   const router = useRouter();
-  const { applications, approveCreator, rejectCreator, deleteApplication } = useStore();
+  const {
+    applications,
+    approveCreator,
+    rejectCreator,
+    deleteApplication,
+    getCreatorRatingStats,
+    addCreatorRating,
+    deleteCreatorRating,
+  } = useStore();
 
   const app = applications.find(
     (a) => a.id === id || a.reference_code === id
   );
+
+  const ratingStats = getCreatorRatingStats(app?.id || id);
 
   const [notes, setNotes] = useState(app?.admin_notes || "");
   const [showDocPreview, setShowDocPreview] = useState(true);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [imgLoadError, setImgLoadError] = useState(false);
   const [actionDone, setActionDone] = useState<string | null>(null);
+
+  // Admin Rating Evaluation Form state
+  const [adminScore, setAdminScore] = useState<number>(ratingStats.adminRating?.rating || 9.8);
+  const [adminReviewText, setAdminReviewText] = useState<string>(
+    ratingStats.adminRating?.comment || "Verified content quality, authentic follower metrics, and professional collaboration history."
+  );
+  const [isSavingRating, setIsSavingRating] = useState(false);
+  const [ratingSavedMsg, setRatingSavedMsg] = useState(false);
 
   if (!app) {
     return (
@@ -472,6 +493,173 @@ export default function AdminCreatorDetailPage({
                 )}
               </div>
             )}
+
+            {/* Official Admin Evaluation & Community Ratings Management */}
+            <div className="bg-white rounded-2xl border border-sand-300 p-6 sm:p-7 space-y-6 shadow-warm">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-sand-200 pb-4">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-full bg-[#D7400B]/10 text-[#D7400B] flex items-center justify-center">
+                    <Star className="w-4 h-4 fill-[#D7400B]" />
+                  </div>
+                  <div>
+                    <h3 className="font-serif text-lg font-bold text-teal-950">
+                      Official Admin Evaluation & Rating
+                    </h3>
+                    <p className="text-xs text-ink-600">
+                      Rate this creator and manage transparent community reviews
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-sand-100 border border-sand-200 text-xs font-bold text-teal-950">
+                    <Star className="w-3.5 h-3.5 fill-[#D7400B] text-[#D7400B]" />
+                    <span>Current Score: {ratingStats.average > 0 ? `${ratingStats.average} / 10` : "Unrated"}</span>
+                    <span className="text-ink-500 font-normal">({ratingStats.count} total)</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Admin Rating Form */}
+              <div className="bg-sand-50 rounded-xl p-5 border border-sand-200 space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-teal-950 uppercase tracking-wider">
+                    Set Official Admin Score (/ 10)
+                  </span>
+                  <span className="text-sm font-bold text-[#D7400B] font-serif">
+                    ★ {adminScore.toFixed(1)} / 10
+                  </span>
+                </div>
+
+                {/* Score Selector Chips */}
+                <div className="grid grid-cols-6 sm:grid-cols-11 gap-1.5">
+                  {[6, 7, 7.5, 8, 8.5, 9, 9.3, 9.5, 9.7, 9.8, 10].map((sc) => (
+                    <button
+                      key={sc}
+                      type="button"
+                      onClick={() => setAdminScore(sc)}
+                      className={`py-1.5 rounded-lg text-xs font-bold transition-all ${
+                        adminScore === sc
+                          ? "bg-[#D7400B] text-white shadow-xs scale-105"
+                          : "bg-white text-ink-700 hover:bg-sand-200 border border-sand-300"
+                      }`}
+                    >
+                      {sc}
+                    </button>
+                  ))}
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-teal-950 uppercase tracking-wider mb-1">
+                    Official Admin Evaluation Note
+                  </label>
+                  <textarea
+                    rows={2}
+                    placeholder="Provide professional evaluation notes on creator quality, deliverables, or brand fit..."
+                    value={adminReviewText}
+                    onChange={(e) => setAdminReviewText(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-lg border border-sand-300 bg-white text-xs text-ink-800 focus:outline-none focus:ring-2 focus:ring-teal-900 resize-none"
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  {ratingSavedMsg && (
+                    <span className="text-xs text-emerald-700 font-semibold flex items-center gap-1">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Official Admin rating saved and published to creator profile!</span>
+                    </span>
+                  )}
+                  <button
+                    type="button"
+                    disabled={isSavingRating}
+                    onClick={async () => {
+                      setIsSavingRating(true);
+                      await addCreatorRating({
+                        creator_id: app.id,
+                        rating: adminScore,
+                        reviewer_name: "GetLinked Editorial Admin",
+                        reviewer_role: "Platform Admin",
+                        comment: adminReviewText || "Verified creator profile and portfolio metrics.",
+                        is_admin: true,
+                      });
+                      setIsSavingRating(false);
+                      setRatingSavedMsg(true);
+                      setTimeout(() => setRatingSavedMsg(false), 3000);
+                    }}
+                    className="ml-auto px-4 py-2.5 rounded-xl bg-teal-900 hover:bg-teal-800 text-sand-50 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                    <span>{isSavingRating ? "Saving..." : "Save Admin Rating"}</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Submitted Community Reviews Management */}
+              <div className="space-y-3">
+                <span className="text-xs font-bold text-teal-950 uppercase tracking-wider block">
+                  Community & Host Reviews ({ratingStats.ratings.length})
+                </span>
+
+                {ratingStats.ratings.length > 0 ? (
+                  <div className="space-y-2.5">
+                    {ratingStats.ratings.map((rev) => (
+                      <div
+                        key={rev.id}
+                        className="p-3.5 rounded-xl border border-sand-200 bg-sand-50/70 flex items-start justify-between gap-3"
+                      >
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-xs font-bold text-teal-950">
+                              {rev.reviewer_name}
+                            </span>
+                            <span className="text-[10px] px-2 py-0.5 rounded bg-sand-200 text-ink-600 font-semibold">
+                              {rev.reviewer_role}
+                            </span>
+                            {rev.is_admin && (
+                              <span className="text-[10px] px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-bold flex items-center gap-1 border border-amber-300">
+                                <ShieldCheck className="w-3 h-3 text-amber-600" />
+                                <span>Official Admin</span>
+                              </span>
+                            )}
+                            <span className="text-xs font-bold text-[#D7400B] ml-1">
+                              ★ {rev.rating.toFixed(1)} / 10
+                            </span>
+                          </div>
+                          {rev.property_name && (
+                            <span className="text-[11px] text-ink-500 block">
+                              Property: {rev.property_name}
+                            </span>
+                          )}
+                          <p className="text-xs text-ink-700 italic">
+                            &ldquo;{rev.comment}&rdquo;
+                          </p>
+                          <span className="text-[10px] text-ink-400 font-mono block">
+                            {new Date(rev.created_at).toLocaleString()}
+                          </span>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (confirm(`Delete review from ${rev.reviewer_name}?`)) {
+                              deleteCreatorRating(rev.id);
+                            }
+                          }}
+                          className="p-1.5 rounded-lg text-ink-400 hover:text-rose-600 hover:bg-rose-50 transition-colors shrink-0"
+                          title="Delete / Moderate Review"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-xs text-ink-500 py-3 text-center border border-dashed border-sand-300 rounded-xl">
+                    No community reviews posted yet for this creator.
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 

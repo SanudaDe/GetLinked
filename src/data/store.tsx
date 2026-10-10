@@ -13,6 +13,7 @@ import {
   ApplicationStatus,
   MatchStatus,
   RequestStatus,
+  CreatorRating,
 } from "@/types";
 import {
   initialApplications,
@@ -23,6 +24,7 @@ import {
   initialPlatformSettings,
   initialAds,
   initialAuditLogs,
+  initialRatings,
 } from "./mockStore";
 import { cleanWhatsAppNumber } from "@/utils/whatsapp";
 import { DEFAULT_ALLOWED_LOCATIONS, isEatVenue } from "@/utils/formatters";
@@ -160,6 +162,7 @@ interface StoreContextType {
   settings: PlatformSettings;
   ads: Advertisement[];
   auditLogs: AdminAuditLog[];
+  ratings: CreatorRating[];
   adminUser: { email: string; name: string; role: string } | null;
   authUser: AuthUser | null;
   isAuthLoading: boolean;
@@ -228,6 +231,18 @@ interface StoreContextType {
     submittedAt?: string;
   };
 
+  // Ratings actions
+  addCreatorRating: (
+    rating: Omit<CreatorRating, "id" | "created_at">
+  ) => Promise<CreatorRating>;
+  deleteCreatorRating: (ratingId: string) => Promise<void>;
+  getCreatorRatingStats: (creatorId: string) => {
+    average: number;
+    count: number;
+    adminRating?: CreatorRating;
+    ratings: CreatorRating[];
+  };
+
   // Reset demo data
   resetDemoData: () => void;
 }
@@ -249,6 +264,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [settings, setSettings] = useState<PlatformSettings>(initialPlatformSettings);
   const [ads, setAds] = useState<Advertisement[]>(initialAds);
   const [auditLogs, setAuditLogs] = useState<AdminAuditLog[]>(initialAuditLogs);
+  const [ratings, setRatings] = useState<CreatorRating[]>(initialRatings);
   const [adminUser, setAdminUser] = useState<{ email: string; name: string; role: string } | null>(null);
   const [authUser, setAuthUser] = useState<AuthUser | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
@@ -431,6 +447,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         if (data.settings) setSettings((prev) => normalizeSettings(data.settings!, prev));
         if (data.ads) setAds(data.ads);
         if (data.auditLogs) setAuditLogs(data.auditLogs);
+        if (data.ratings && data.ratings.length > 0) setRatings(data.ratings);
       } else {
         // Fall back to localStorage if available
         const saved = typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
@@ -444,6 +461,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           if (parsed.settings) setSettings((prev) => normalizeSettings(parsed.settings, prev));
           if (parsed.ads?.length) setAds(parsed.ads);
           if (parsed.auditLogs?.length) setAuditLogs(parsed.auditLogs);
+          if (parsed.ratings?.length) setRatings(parsed.ratings);
         }
       }
     } catch (err) {
@@ -495,6 +513,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           settings,
           ads,
           auditLogs,
+          ratings,
         })
       );
     } catch {
@@ -510,6 +529,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     settings,
     ads,
     auditLogs,
+    ratings,
   ]);
 
   const loginAdmin = (password: string): boolean => {
@@ -1145,9 +1165,70 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setSettings(initialPlatformSettings);
     setAds(initialAds);
     setAuditLogs(initialAuditLogs);
+    setRatings(initialRatings);
     if (typeof window !== "undefined") {
       localStorage.removeItem(STORAGE_KEY);
     }
+  };
+
+  const getCreatorRatingStats = useCallback((creatorId: string) => {
+    // Match by creator profile id or application id
+    const matchedProfile = profiles.find((p) => p.id === creatorId || p.application_id === creatorId);
+    const validIds = new Set<string>([creatorId]);
+    if (matchedProfile) {
+      validIds.add(matchedProfile.id);
+      validIds.add(matchedProfile.application_id);
+    }
+
+    const matchedRatings = ratings.filter((r) => validIds.has(r.creator_id));
+    const count = matchedRatings.length;
+    if (count === 0) {
+      return { average: 0, count: 0, ratings: [] };
+    }
+    const sum = matchedRatings.reduce((acc, curr) => acc + curr.rating, 0);
+    const average = Number((sum / count).toFixed(1));
+    const adminRating = matchedRatings.find((r) => r.is_admin);
+    return { average, count, adminRating, ratings: matchedRatings };
+  }, [ratings, profiles]);
+
+  const addCreatorRating = async (
+    ratingData: Omit<CreatorRating, "id" | "created_at">
+  ): Promise<CreatorRating> => {
+    const newRating: CreatorRating = {
+      ...ratingData,
+      id: `rate-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+      created_at: new Date().toISOString(),
+    };
+
+    setRatings((prev) => [newRating, ...prev]);
+
+    // Persist to Supabase
+    supabaseService.upsertRating(newRating).catch(console.warn);
+
+    addAuditLog(
+      newRating.is_admin ? "ADMIN_CREATOR_RATED" : "CREATOR_RATED",
+      "CreatorRating",
+      newRating.id,
+      undefined,
+      `${newRating.rating}/10`,
+      `${newRating.reviewer_name} (${newRating.reviewer_role}) rated creator ${newRating.creator_id}: ${newRating.rating}/10`
+    );
+
+    return newRating;
+  };
+
+  const deleteCreatorRating = async (ratingId: string) => {
+    setRatings((prev) => prev.filter((r) => r.id !== ratingId));
+    supabaseService.deleteRating(ratingId).catch(console.warn);
+
+    addAuditLog(
+      "CREATOR_RATING_DELETED",
+      "CreatorRating",
+      ratingId,
+      undefined,
+      undefined,
+      `Removed rating ${ratingId}`
+    );
   };
 
   return (
@@ -1161,6 +1242,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         settings,
         ads,
         auditLogs,
+        ratings,
         adminUser,
         authUser,
         isAuthLoading,
@@ -1191,6 +1273,9 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         lookupStatus,
         updateUserProfilePhoto,
         resetDemoData,
+        addCreatorRating,
+        deleteCreatorRating,
+        getCreatorRatingStats,
       }}
     >
       {children}

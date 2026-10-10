@@ -24,6 +24,7 @@ import {
   SlidersHorizontal,
   RotateCcw,
   ShieldCheck,
+  Star,
   ArrowUpDown,
   ChevronDown,
   X,
@@ -31,7 +32,7 @@ import {
 
 function CreatorDirectoryContent() {
   const searchParams = useSearchParams();
-  const { profiles, submitCreatorRequest } = useStore();
+  const { profiles, submitCreatorRequest, getCreatorRatingStats } = useStore();
 
   // Read URL query params from homepage search widget
   const paramCity = searchParams.get("city") || "All Sri Lanka";
@@ -464,6 +465,7 @@ function CreatorDirectoryContent() {
                 creator.visit_start,
                 creator.visit_end
               );
+              const cStats = getCreatorRatingStats(creator.id);
 
               return (
                 <div
@@ -495,10 +497,10 @@ function CreatorDirectoryContent() {
                         </span>
                       </div>
 
-                      {/* Verified Status Pill */}
-                      <div className="absolute top-2.5 right-2.5 flex items-center gap-1 bg-emerald-600/90 backdrop-blur-md text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-full shadow-md border border-emerald-400/30">
-                        <CheckCircle2 className="w-3 h-3 text-white" />
-                        <span>Verified</span>
+                      {/* Rating / Verified Status Pill */}
+                      <div className="absolute top-2.5 right-2.5 flex items-center gap-1 bg-[#D7400B] text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-md backdrop-blur-md">
+                        <Star className="w-3 h-3 fill-white text-white" />
+                        <span>{cStats.average > 0 ? cStats.average : "Verified"}</span>
                       </div>
 
                       {/* Follower Metric Pill */}

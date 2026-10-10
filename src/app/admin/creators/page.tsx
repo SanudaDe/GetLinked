@@ -34,6 +34,7 @@ import {
   Trash2,
   Folder,
   ZoomIn,
+  Star,
 } from "lucide-react";
 
 export default function AdminCreatorsPage() {
@@ -41,7 +42,7 @@ export default function AdminCreatorsPage() {
   const initialTab = (searchParams.get("tab") as ApplicationStatus) || "PENDING";
   const initialId = searchParams.get("id");
 
-  const { applications, approveCreator, rejectCreator, deleteApplication } = useStore();
+  const { applications, approveCreator, rejectCreator, deleteApplication, getCreatorRatingStats } = useStore();
 
   const [activeTab, setActiveTab] = useState<ApplicationStatus>(initialTab);
   const [searchQuery, setSearchQuery] = useState("");
@@ -213,6 +214,15 @@ export default function AdminCreatorsPage() {
                         >
                           {app.status}
                         </Badge>
+                        {(() => {
+                          const rStats = getCreatorRatingStats(app.id);
+                          return (
+                            <span className="flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-300 shadow-2xs">
+                              <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
+                              <span>{rStats.average > 0 ? `${rStats.average} / 10 (${rStats.count})` : "Unrated"}</span>
+                            </span>
+                          );
+                        })()}
                       </div>
 
                       <div className="flex items-center gap-4 text-xs text-ink-700 flex-wrap">

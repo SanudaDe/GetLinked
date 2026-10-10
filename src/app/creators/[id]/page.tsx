@@ -2,10 +2,15 @@
 
 import React, { useState, use } from "react";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import { useStore } from "@/data/store";
-import { formatFollowerCount, formatDateRange, formatStorageUrl } from "@/utils/formatters";
+import {
+  formatFollowerCount,
+  formatDateRange,
+  formatStorageUrl,
+} from "@/utils/formatters";
 import { calculateOverlapDays } from "@/utils/dateOverlap";
+import { PhoneInputWithCountry } from "@/components/ui/PhoneInputWithCountry";
+import { RateCreatorModal } from "@/components/creators/RateCreatorModal";
 import {
   MapPin,
   Calendar,
@@ -16,12 +21,11 @@ import {
   Send,
   ArrowLeft,
   Lock,
-  Instagram,
-  Video,
-  Clock,
-  Building2,
-  Check,
   ExternalLink,
+  Check,
+  Star,
+  MessageSquare,
+  Award,
 } from "lucide-react";
 
 export default function CreatorProfilePage({
@@ -31,12 +35,8 @@ export default function CreatorProfilePage({
 }) {
   const resolvedParams = use(params);
   const { id } = resolvedParams;
-  const { profiles, submitCreatorRequest } = useStore();
 
-  // Match by profile id (prof-...) or application id (app-...)
-  const creator = profiles.find(
-    (p) => p.id === id || p.application_id === id
-  );
+  const { profiles, applications, submitCreatorRequest, getCreatorRatingStats } = useStore();
 
   const [formData, setFormData] = useState({
     accommodationName: "",
@@ -46,21 +46,48 @@ export default function CreatorProfilePage({
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedSuccess, setSubmittedSuccess] = useState<string | null>(null);
+  const [isRateModalOpen, setIsRateModalOpen] = useState(false);
+
+  // Find profile by ID or match by application_id
+  const profile = profiles.find((p) => p.id === id || p.application_id === id);
+  const application = applications.find(
+    (a) => a.id === id || a.reference_code === id
+  );
+
+  const creator = profile || (application ? {
+    id: application.id,
+    application_id: application.id,
+    display_name: application.full_name,
+    niche: application.niche,
+    city: application.city,
+    visit_start: application.visit_start,
+    visit_end: application.visit_end,
+    follower_count: application.follower_count,
+    social_url: application.social_url,
+    avatar_url: application.avatar_url,
+    trip_brief: application.trip_brief,
+    is_active: application.status === "APPROVED",
+    created_at: application.created_at,
+  } : null);
+
+  const ratingStats = getCreatorRatingStats(creator?.id || id);
 
   if (!creator) {
     return (
-      <div className="min-h-[70vh] flex items-center justify-center p-4 bg-sand-50">
-        <div className="max-w-md w-full text-center space-y-4 bg-white p-8 rounded-2xl border border-sand-300 shadow-warm">
-          <ShieldCheck className="w-12 h-12 text-teal-900 mx-auto" />
-          <h2 className="font-serif text-2xl font-bold text-teal-950">
+      <div className="min-h-screen bg-[#FAFAF8] dark:bg-black text-[#152E30] dark:text-white flex items-center justify-center p-4 transition-colors">
+        <div className="bg-white dark:bg-[#121212] rounded-3xl border border-neutral-200 dark:border-neutral-800 p-8 sm:p-12 text-center max-w-md mx-auto space-y-5 shadow-xl">
+          <div className="w-14 h-14 rounded-full bg-[#D7400B]/10 text-[#D7400B] flex items-center justify-center mx-auto">
+            <Users className="w-7 h-7" />
+          </div>
+          <h2 className="font-serif text-2xl sm:text-3xl font-light tracking-wide text-neutral-900 dark:text-white">
             Creator Profile Not Found
           </h2>
-          <p className="text-xs text-ink-600">
-            This creator profile is either pending review, not currently active, or the link has expired.
+          <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+            The creator profile you are trying to view does not exist or may still be pending verification.
           </p>
           <Link
             href="/creators"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-teal-900 text-sand-50 text-xs font-semibold uppercase tracking-wider hover:bg-teal-800 transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#D7400B] text-white text-xs font-semibold uppercase tracking-widest hover:bg-[#BD3607] transition-all shadow-md"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Return to Directory</span>
@@ -99,32 +126,34 @@ export default function CreatorProfilePage({
   };
 
   return (
-    <div className="bg-sand-50 min-h-screen pb-24">
-      {/* Top Breadcrumb Navigation */}
-      <div className="bg-white border-b border-sand-300 py-3.5 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#FAFAF8] dark:bg-black text-[#152E30] dark:text-neutral-100 transition-colors duration-200 pb-28">
+      {/* Top Minimal Breadcrumb Navigation */}
+      <div className="sticky top-0 z-30 border-b border-neutral-200/80 dark:border-neutral-900 bg-white/80 dark:bg-black/80 backdrop-blur-md py-3.5 px-4 sm:px-6 lg:px-8 transition-colors">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link
             href="/creators"
-            className="inline-flex items-center gap-2 text-xs font-semibold text-teal-900 hover:text-gold-600 transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-neutral-600 dark:text-neutral-300 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to Creator Directory</span>
           </Link>
 
-          <span className="text-[11px] font-mono text-ink-500 hidden sm:inline">
-            Verified Profile • {creator.id}
-          </span>
+          <div className="flex items-center gap-3">
+            <span className="text-[11px] font-mono text-neutral-400 dark:text-neutral-500 hidden sm:inline uppercase tracking-widest">
+              Verified Creator ID • {creator.id}
+            </span>
+          </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12">
         {/* Main 2-Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Column: Creator Information & Trip Details */}
-          <div className="lg:col-span-8 space-y-6">
-            {/* Creator Header Profile Card */}
-            <div className="bg-white rounded-2xl border border-sand-300 overflow-hidden shadow-warm">
-              <div className="relative h-72 sm:h-96 w-full bg-sand-200">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+          {/* Left Column: Creator Portfolio, Details, and Reviews */}
+          <div className="lg:col-span-8 space-y-8">
+            {/* Creator Hero Card (COMO Signature Editorial Frame) */}
+            <div className="bg-white dark:bg-[#121212] rounded-3xl border border-neutral-200/80 dark:border-neutral-800 overflow-hidden shadow-xl dark:shadow-none transition-colors">
+              <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full bg-neutral-100 dark:bg-neutral-900 overflow-hidden group">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={
@@ -132,48 +161,65 @@ export default function CreatorProfilePage({
                     "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80"
                   }
                   alt={creator.display_name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-102"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink-950/90 via-ink-950/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none" />
 
-                {/* Top Badges */}
-                <div className="absolute top-4 left-4 flex items-center gap-2">
-                  <span className="px-3.5 py-1 rounded-full bg-teal-900/90 text-sand-50 text-xs font-bold uppercase tracking-wider backdrop-blur-md border border-teal-700/60 shadow-sm">
+                {/* Top Floating Badges */}
+                <div className="absolute top-4 sm:top-6 left-4 sm:left-6 flex items-center gap-2 flex-wrap">
+                  <span className="text-[11px] font-bold tracking-widest uppercase bg-black/60 dark:bg-black/80 text-white px-3.5 py-1.5 rounded-full backdrop-blur-md border border-white/20 shadow-sm">
                     {creator.niche}
                   </span>
-                  <span className="px-3 py-1 rounded-full bg-emerald-900/90 text-emerald-100 text-xs font-bold backdrop-blur-md border border-emerald-700/60 flex items-center gap-1 shadow-sm">
+                  <span className="text-[11px] font-semibold text-emerald-400 bg-emerald-950/80 backdrop-blur-md border border-emerald-500/30 px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
                     <span>ID Verified</span>
                   </span>
                 </div>
 
-                {/* Trip.com-Style Score Badge */}
-                <div className="absolute top-4 right-4 bg-teal-950/80 backdrop-blur-md text-white border border-white/20 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5 shadow-md">
-                  <ShieldCheck className="w-3.5 h-3.5 text-gold-400" />
-                  <span>Verified Creator</span>
-                </div>
+                {/* Top Right Clickable Rating Pill */}
+                <button
+                  type="button"
+                  onClick={() => setIsRateModalOpen(true)}
+                  className="absolute top-4 sm:top-6 right-4 sm:right-6 flex items-center gap-1.5 bg-[#D7400B] hover:bg-[#BD3607] text-white text-xs font-bold px-3.5 py-1.5 rounded-full shadow-lg border border-white/25 backdrop-blur-md transition-all hover:scale-105 cursor-pointer group/rate"
+                  title="Click to view ratings or submit a review"
+                >
+                  <Star className="w-3.5 h-3.5 fill-white text-white" />
+                  <span>
+                    {ratingStats.average > 0
+                      ? `${ratingStats.average} / 10 Verified Talent`
+                      : "Rate Creator"}
+                  </span>
+                  {ratingStats.count > 0 && (
+                    <span className="text-[10px] opacity-80 font-normal ml-0.5">
+                      ({ratingStats.count})
+                    </span>
+                  )}
+                </button>
 
                 {/* Bottom Overlay Info */}
-                <div className="absolute bottom-6 left-6 right-6 text-sand-50 space-y-2">
-                  <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight">
+                <div className="absolute bottom-6 sm:bottom-8 left-6 sm:left-8 right-6 sm:right-8 text-white space-y-3">
+                  <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light uppercase tracking-[0.12em] text-white leading-tight">
                     {creator.display_name}
                   </h1>
-                  <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-sand-200">
+
+                  <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm text-neutral-200 font-light">
                     <div className="flex items-center gap-1.5">
-                      <MapPin className="w-4 h-4 text-gold-400 shrink-0" />
-                      <span className="font-semibold text-white">
+                      <MapPin className="w-4 h-4 text-[#D7400B] shrink-0" />
+                      <span className="font-medium text-white">
                         {creator.city}, Sri Lanka
                       </span>
                     </div>
-                    <span>•</span>
+                    <span className="text-white/30">•</span>
                     <div className="flex items-center gap-1.5">
-                      <Calendar className="w-4 h-4 text-gold-400 shrink-0" />
-                      <span>{formatDateRange(creator.visit_start, creator.visit_end)}</span>
+                      <Calendar className="w-4 h-4 text-amber-400 shrink-0" />
+                      <span className="font-medium">
+                        {formatDateRange(creator.visit_start, creator.visit_end)}
+                      </span>
                     </div>
-                    <span>•</span>
+                    <span className="text-white/30">•</span>
                     <div className="flex items-center gap-1.5">
-                      <Users className="w-4 h-4 text-gold-400 shrink-0" />
-                      <span className="font-bold text-gold-400">
+                      <Users className="w-4 h-4 text-[#D7400B] shrink-0" />
+                      <span className="font-medium text-white">
                         {formatFollowerCount(creator.follower_count)} Followers
                       </span>
                     </div>
@@ -182,50 +228,60 @@ export default function CreatorProfilePage({
               </div>
 
               {/* Quick Specs Strip */}
-              <div className="grid grid-cols-3 divide-x divide-sand-200 bg-sand-100/60 border-t border-sand-300 py-3.5 px-4 text-center">
+              <div className="grid grid-cols-3 divide-x divide-neutral-200/80 dark:divide-neutral-800/80 bg-neutral-50/70 dark:bg-neutral-900/50 border-t border-neutral-200/80 dark:border-neutral-800 py-4 px-4 sm:px-6 text-center transition-colors">
                 <div>
-                  <span className="block text-[10px] uppercase tracking-wider text-ink-500 font-bold">
+                  <span className="block text-[10px] uppercase tracking-[0.2em] text-neutral-500 dark:text-neutral-400 font-bold">
                     Content Niche
                   </span>
-                  <span className="text-xs sm:text-sm font-bold text-teal-950 mt-0.5 block">
+                  <span className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-white mt-1 block">
                     {creator.niche}
                   </span>
                 </div>
                 <div>
-                  <span className="block text-[10px] uppercase tracking-wider text-ink-500 font-bold">
+                  <span className="block text-[10px] uppercase tracking-[0.2em] text-neutral-500 dark:text-neutral-400 font-bold">
                     Scheduled Visit
                   </span>
-                  <span className="text-xs sm:text-sm font-bold text-teal-950 mt-0.5 block">
+                  <span className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-white mt-1 block">
                     {stayDays} Total Days
                   </span>
                 </div>
                 <div>
-                  <span className="block text-[10px] uppercase tracking-wider text-ink-500 font-bold">
-                    Verification
+                  <span className="block text-[10px] uppercase tracking-[0.2em] text-neutral-500 dark:text-neutral-400 font-bold">
+                    Authentication
                   </span>
-                  <span className="text-xs sm:text-sm font-bold text-emerald-800 mt-0.5 block">
-                    Govt ID Authenticated
+                  <span className="text-xs sm:text-sm font-semibold text-emerald-600 dark:text-emerald-400 mt-1 block">
+                    Govt ID Verified
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* About / Trip Brief Section */}
-            <div className="bg-white rounded-2xl border border-sand-300 p-6 sm:p-8 space-y-4 shadow-warm">
-              <h2 className="font-serif text-xl sm:text-2xl font-bold text-teal-950 flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-gold-500" />
-                <span>Trip Brief & Content Focus</span>
-              </h2>
-              <p className="text-sm text-ink-800 leading-relaxed whitespace-pre-wrap">
+            {/* Trip Brief & Content Focus Section */}
+            <div className="bg-white dark:bg-[#121212] rounded-3xl border border-neutral-200/80 dark:border-neutral-800 p-6 sm:p-9 space-y-6 shadow-sm transition-colors">
+              <div className="flex items-center justify-between border-b border-neutral-100 dark:border-neutral-800 pb-4">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-full bg-[#D7400B]/10 flex items-center justify-center text-[#D7400B]">
+                    <Sparkles className="w-4 h-4" />
+                  </div>
+                  <h2 className="font-serif text-xl sm:text-2xl font-light uppercase tracking-wider text-neutral-900 dark:text-white">
+                    Trip Brief & Content Focus
+                  </h2>
+                </div>
+                <span className="text-[11px] uppercase tracking-widest text-neutral-400 dark:text-neutral-500 font-medium">
+                  Verified Statement
+                </span>
+              </div>
+
+              <p className="text-sm sm:text-base text-neutral-700 dark:text-neutral-300 leading-relaxed font-light whitespace-pre-wrap">
                 {creator.trip_brief}
               </p>
 
               {creator.social_url && (
-                <div className="pt-4 border-t border-sand-200 space-y-2">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-ink-500 block">
+                <div className="pt-6 border-t border-neutral-100 dark:border-neutral-800 space-y-3">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-neutral-500 dark:text-neutral-400 block">
                     Verified Social Channels
                   </span>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2.5">
                     {creator.social_url
                       .split(/[,|\n]+/)
                       .map((s) => s.trim())
@@ -242,10 +298,10 @@ export default function CreatorProfilePage({
                             href={link.startsWith("http") ? link : `https://${link}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sand-100 hover:bg-teal-900 text-teal-950 hover:text-white text-xs font-semibold transition-colors border border-sand-200"
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-100 dark:bg-neutral-900 hover:bg-[#D7400B] dark:hover:bg-[#D7400B] text-neutral-800 dark:text-neutral-200 hover:text-white dark:hover:text-white text-xs font-semibold tracking-wide transition-all border border-neutral-200 dark:border-neutral-800"
                           >
                             <span>{platform} Profile</span>
-                            <ExternalLink className="w-3 h-3 opacity-60" />
+                            <ExternalLink className="w-3.5 h-3.5 opacity-60" />
                           </a>
                         );
                       })}
@@ -254,59 +310,203 @@ export default function CreatorProfilePage({
               )}
             </div>
 
+            {/* Ratings & Community Reviews Section */}
+            <div className="bg-white dark:bg-[#121212] rounded-3xl border border-neutral-200/80 dark:border-neutral-800 p-6 sm:p-9 space-y-6 shadow-sm transition-colors">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-neutral-100 dark:border-neutral-800 pb-5">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-full bg-amber-500/10 text-amber-500 flex items-center justify-center">
+                    <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+                  </div>
+                  <div>
+                    <h2 className="font-serif text-xl sm:text-2xl font-light uppercase tracking-wider text-neutral-900 dark:text-white">
+                      Host & Admin Ratings
+                    </h2>
+                    <p className="text-xs text-neutral-500 dark:text-neutral-400 font-light mt-0.5">
+                      Transparent evaluations from property hosts and the GetLinked curation team
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setIsRateModalOpen(true)}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#D7400B] hover:bg-[#BD3607] text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all shrink-0 cursor-pointer self-start sm:self-auto"
+                >
+                  <Star className="w-3.5 h-3.5 fill-white text-white" />
+                  <span>Rate This Creator</span>
+                </button>
+              </div>
+
+              {/* Score Summary Banner */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-5 rounded-2xl bg-neutral-50 dark:bg-neutral-900/60 border border-neutral-200/80 dark:border-neutral-800">
+                <div className="sm:border-r border-neutral-200 dark:border-neutral-800 sm:pr-4 text-center sm:text-left space-y-1">
+                  <span className="text-[10px] uppercase tracking-widest text-neutral-500 dark:text-neutral-400 font-bold block">
+                    Composite Rating
+                  </span>
+                  <div className="flex items-baseline justify-center sm:justify-start gap-1.5">
+                    <span className="font-serif text-3xl sm:text-4xl font-light text-neutral-900 dark:text-white">
+                      {ratingStats.average > 0 ? ratingStats.average : "—"}
+                    </span>
+                    <span className="text-xs text-neutral-400 font-medium">/ 10</span>
+                  </div>
+                  <span className="text-[11px] text-[#D7400B] font-semibold block">
+                    {ratingStats.count > 0 ? `Based on ${ratingStats.count} verified reviews` : "Be the first to review"}
+                  </span>
+                </div>
+
+                <div className="sm:border-r border-neutral-200 dark:border-neutral-800 sm:px-4 text-center sm:text-left space-y-1">
+                  <span className="text-[10px] uppercase tracking-widest text-neutral-500 dark:text-neutral-400 font-bold block">
+                    Editorial Vetting
+                  </span>
+                  <div className="flex items-center justify-center sm:justify-start gap-1.5 pt-1">
+                    <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                    <span className="text-xs font-semibold text-neutral-800 dark:text-neutral-200">
+                      {ratingStats.adminRating ? "Official Admin Evaluated" : "Platform Verified"}
+                    </span>
+                  </div>
+                  <span className="text-[11px] text-neutral-500 dark:text-neutral-400 block">
+                    Govt ID & Social Metrics Confirmed
+                  </span>
+                </div>
+
+                <div className="sm:pl-4 text-center sm:text-left space-y-1">
+                  <span className="text-[10px] uppercase tracking-widest text-neutral-500 dark:text-neutral-400 font-bold block">
+                    Host Recommendation
+                  </span>
+                  <div className="flex items-center justify-center sm:justify-start gap-1.5 pt-1">
+                    <Award className="w-4 h-4 text-amber-500" />
+                    <span className="text-xs font-semibold text-neutral-800 dark:text-neutral-200">
+                      High-Tier Hospitality Talent
+                    </span>
+                  </div>
+                  <span className="text-[11px] text-neutral-500 dark:text-neutral-400 block">
+                    Strict Zero-Spam Air Gap Protection
+                  </span>
+                </div>
+              </div>
+
+              {/* Reviews Feed */}
+              {ratingStats.ratings.length > 0 ? (
+                <div className="space-y-4 pt-2">
+                  {ratingStats.ratings.map((rev) => (
+                    <div
+                      key={rev.id}
+                      className="p-5 rounded-2xl border border-neutral-200/80 dark:border-neutral-800/80 bg-white dark:bg-neutral-900/40 space-y-2.5 transition-colors"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-serif text-base font-normal text-neutral-900 dark:text-white">
+                              {rev.reviewer_name}
+                            </span>
+                            <span className="text-[11px] px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 font-medium">
+                              {rev.reviewer_role}
+                            </span>
+                            {rev.is_admin && (
+                              <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold flex items-center gap-1 border border-amber-500/20">
+                                <ShieldCheck className="w-3 h-3 text-amber-500" />
+                                <span>Admin Evaluation</span>
+                              </span>
+                            )}
+                          </div>
+                          {rev.property_name && (
+                            <span className="text-[11px] text-neutral-500 dark:text-neutral-400 block font-light">
+                              {rev.property_name}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Rating Score Badge */}
+                        <div className="flex items-center gap-1 bg-[#D7400B]/10 dark:bg-[#D7400B]/20 text-[#D7400B] px-2.5 py-1 rounded-full text-xs font-bold shrink-0">
+                          <Star className="w-3 h-3 fill-[#D7400B] text-[#D7400B]" />
+                          <span>{rev.rating.toFixed(1)}</span>
+                        </div>
+                      </div>
+
+                      <p className="text-xs sm:text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed font-light">
+                        &ldquo;{rev.comment}&rdquo;
+                      </p>
+
+                      <span className="text-[10px] text-neutral-400 dark:text-neutral-500 block pt-1 font-mono">
+                        {new Date(rev.created_at).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8 space-y-3 border border-dashed border-neutral-200 dark:border-neutral-800 rounded-2xl">
+                  <MessageSquare className="w-8 h-8 text-neutral-300 dark:text-neutral-600 mx-auto" />
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                    No community reviews posted yet for this creator.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setIsRateModalOpen(true)}
+                    className="text-xs font-bold text-[#D7400B] hover:underline"
+                  >
+                    Click here to be the first to leave a rating
+                  </button>
+                </div>
+              )}
+            </div>
+
             {/* Air-Gapped Privacy & Safety Guarantee */}
-            <div className="bg-teal-950 text-sand-50 rounded-2xl p-6 sm:p-8 space-y-4 shadow-warm border border-teal-900">
+            <div className="bg-[#152E30] dark:bg-[#111C1D] text-white rounded-3xl p-6 sm:p-8 space-y-4 shadow-lg border border-[#214749] dark:border-neutral-800">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-teal-900 flex items-center justify-center text-gold-400 shrink-0 border border-teal-800">
+                <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center text-amber-400 shrink-0 border border-white/10">
                   <Lock className="w-5 h-5" />
                 </div>
-                <div className="space-y-1.5">
-                  <h3 className="font-serif text-lg font-bold text-sand-50">
+                <div className="space-y-2">
+                  <h3 className="font-serif text-lg sm:text-xl font-light uppercase tracking-wider text-white">
                     Get Linked Air-Gapped Privacy Protection
                   </h3>
-                  <p className="text-xs text-sand-300 leading-relaxed">
+                  <p className="text-xs text-white/80 leading-relaxed font-light">
                     To prevent spam, unauthorized solicitations, and privacy violations, this creator&apos;s direct WhatsApp number and identity documents are strictly air-gapped and protected.
                   </p>
-                  <p className="text-xs text-sand-300 leading-relaxed">
-                    When you request this creator, our local team reviews your property requirements, checks date compatibility, and curates a mutual WhatsApp concierge introduction.
+                  <p className="text-xs text-white/80 leading-relaxed font-light">
+                    When you request this creator, our local concierge team reviews your property requirements, checks date compatibility, and curates a personalized WhatsApp introduction.
                   </p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Right Column: Sticky Action Card (Trip.com Booking Pattern) */}
-          <div className="lg:col-span-4 sticky top-24 space-y-4">
-            <div className="bg-white rounded-2xl border border-sand-300 p-6 sm:p-7 shadow-elevated space-y-5">
-              <div className="border-b border-sand-200 pb-4">
-                <span className="text-[11px] font-bold text-gold-700 uppercase tracking-wider block">
+          {/* Right Column: Sticky Request Card (COMO Luxury Booking Architecture) */}
+          <div className="lg:col-span-4 sticky top-20 space-y-5">
+            <div className="bg-white dark:bg-[#121212] rounded-3xl border border-neutral-200/80 dark:border-neutral-800 p-6 sm:p-8 shadow-xl dark:shadow-none space-y-6 transition-colors">
+              <div className="border-b border-neutral-100 dark:border-neutral-800 pb-4 space-y-1">
+                <span className="text-[10px] font-bold text-[#D7400B] uppercase tracking-[0.25em] block">
                   Curated Collaboration
                 </span>
-                <h3 className="font-serif text-xl font-bold text-teal-950 mt-1">
+                <h3 className="font-serif text-2xl font-light uppercase tracking-wide text-neutral-900 dark:text-white">
                   Request {creator.display_name}
                 </h3>
-                <p className="text-xs text-ink-600 mt-1">
+                <p className="text-xs text-neutral-500 dark:text-neutral-400 font-light">
                   Visiting {creator.city} ({formatDateRange(creator.visit_start, creator.visit_end)})
                 </p>
               </div>
 
               {submittedSuccess ? (
-                <div className="bg-emerald-50 border border-emerald-300 rounded-xl p-5 text-center space-y-3">
-                  <div className="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center mx-auto shadow-sm">
-                    <Check className="w-5 h-5" />
+                <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-6 text-center space-y-3.5">
+                  <div className="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center mx-auto shadow-md">
+                    <Check className="w-6 h-6" />
                   </div>
-                  <h4 className="font-serif text-lg font-bold text-emerald-950">
+                  <h4 className="font-serif text-xl font-light text-neutral-900 dark:text-white">
                     Request Received!
                   </h4>
-                  <p className="text-xs text-emerald-800 leading-relaxed">
+                  <p className="text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed font-light">
                     {submittedSuccess}
                   </p>
-                  <p className="text-[11px] text-emerald-700">
+                  <p className="text-[11px] text-neutral-500 dark:text-neutral-400">
                     Our team will verify date overlap and initiate a WhatsApp concierge introduction shortly.
                   </p>
                   <button
                     onClick={() => setSubmittedSuccess(null)}
-                    className="text-xs font-semibold text-emerald-900 underline mt-2"
+                    className="text-xs font-semibold text-[#D7400B] underline mt-2 block mx-auto cursor-pointer"
                   >
                     Submit another request
                   </button>
@@ -314,7 +514,7 @@ export default function CreatorProfilePage({
               ) : (
                 <form onSubmit={handleSubmitRequest} className="space-y-4">
                   <div>
-                    <label className="block text-xs font-bold text-teal-950 uppercase tracking-wider mb-1">
+                    <label className="block text-[11px] font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-1.5">
                       Your Property / Stay Name *
                     </label>
                     <input
@@ -325,12 +525,12 @@ export default function CreatorProfilePage({
                       onChange={(e) =>
                         setFormData({ ...formData, accommodationName: e.target.value })
                       }
-                      className="w-full px-3.5 py-2.5 rounded-lg border border-sand-400 bg-sand-50 text-xs focus:outline-none focus:ring-2 focus:ring-teal-900"
+                      className="w-full px-4 py-3 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 text-neutral-900 dark:text-white text-xs placeholder-neutral-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#D7400B] dark:focus:border-[#D7400B] transition-colors"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-teal-950 uppercase tracking-wider mb-1">
+                    <label className="block text-[11px] font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-1.5">
                       Contact Person Name *
                     </label>
                     <input
@@ -341,31 +541,29 @@ export default function CreatorProfilePage({
                       onChange={(e) =>
                         setFormData({ ...formData, requesterName: e.target.value })
                       }
-                      className="w-full px-3.5 py-2.5 rounded-lg border border-sand-400 bg-sand-50 text-xs focus:outline-none focus:ring-2 focus:ring-teal-900"
+                      className="w-full px-4 py-3 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 text-neutral-900 dark:text-white text-xs placeholder-neutral-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#D7400B] dark:focus:border-[#D7400B] transition-colors"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-teal-950 uppercase tracking-wider mb-1">
+                    <label className="block text-[11px] font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-1.5">
                       Host WhatsApp Number *
                     </label>
-                    <input
-                      type="tel"
-                      required
-                      placeholder="e.g. 077 123 4567"
+                    <PhoneInputWithCountry
                       value={formData.requesterWhatsApp}
-                      onChange={(e) =>
-                        setFormData({ ...formData, requesterWhatsApp: e.target.value })
+                      onChange={(phone) =>
+                        setFormData({ ...formData, requesterWhatsApp: phone })
                       }
-                      className="w-full px-3.5 py-2.5 rounded-lg border border-sand-400 bg-sand-50 text-xs focus:outline-none focus:ring-2 focus:ring-teal-900"
+                      placeholder="e.g. 77 123 4567"
+                      required
                     />
-                    <span className="text-[10px] text-ink-500 mt-1 block">
+                    <span className="text-[10px] text-neutral-400 dark:text-neutral-500 mt-1.5 block">
                       Used only for Get Linked concierge staff introductions.
                     </span>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-teal-950 uppercase tracking-wider mb-1">
+                    <label className="block text-[11px] font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-1.5">
                       Message & Proposed Stay Dates
                     </label>
                     <textarea
@@ -375,14 +573,14 @@ export default function CreatorProfilePage({
                       onChange={(e) =>
                         setFormData({ ...formData, message: e.target.value })
                       }
-                      className="w-full px-3.5 py-2.5 rounded-lg border border-sand-400 bg-sand-50 text-xs focus:outline-none focus:ring-2 focus:ring-teal-900"
+                      className="w-full px-4 py-3 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 text-neutral-900 dark:text-white text-xs placeholder-neutral-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#D7400B] dark:focus:border-[#D7400B] transition-colors resize-none"
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-3.5 px-4 rounded-xl bg-teal-900 hover:bg-teal-800 text-sand-50 text-xs font-bold uppercase tracking-wider shadow-warm transition-all flex items-center justify-center gap-2 hover:bg-gold-500 hover:text-ink-950"
+                    className="w-full py-4 px-6 rounded-2xl bg-[#D7400B] hover:bg-[#BD3607] text-white text-xs font-semibold uppercase tracking-[0.2em] shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                   >
                     <Send className="w-3.5 h-3.5" />
                     <span>{isSubmitting ? "Submitting..." : "Send Request to Get Linked"}</span>
@@ -390,16 +588,23 @@ export default function CreatorProfilePage({
                 </form>
               )}
 
-              <div className="pt-3 border-t border-sand-200 text-center">
-                <span className="text-[11px] text-ink-500 flex items-center justify-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-teal-900" />
-                  <span>100% Free during Phase 1 Launch</span>
+              <div className="pt-2 text-center border-t border-neutral-100 dark:border-neutral-800">
+                <span className="text-[10px] uppercase tracking-widest text-neutral-400 dark:text-neutral-500 font-semibold">
+                  100% Free During Phase 1 Launch
                 </span>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Interactive Rate Creator Modal */}
+      <RateCreatorModal
+        isOpen={isRateModalOpen}
+        onClose={() => setIsRateModalOpen(false)}
+        creatorId={creator.id}
+        creatorName={creator.display_name}
+      />
     </div>
   );
 }

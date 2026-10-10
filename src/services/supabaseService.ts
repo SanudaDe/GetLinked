@@ -9,6 +9,7 @@ import {
   PlatformSettings,
   Advertisement,
   AdminAuditLog,
+  CreatorRating,
 } from "@/types";
 
 export interface FetchedData {
@@ -20,6 +21,7 @@ export interface FetchedData {
   settings: PlatformSettings | null;
   ads: Advertisement[] | null;
   auditLogs: AdminAuditLog[] | null;
+  ratings: CreatorRating[] | null;
 }
 
 export const supabaseService = {
@@ -38,6 +40,7 @@ export const supabaseService = {
         settingsRes,
         adsRes,
         auditRes,
+        ratingsRes,
       ] = await Promise.all([
         supabase
           .from("influencer_applications")
@@ -73,6 +76,10 @@ export const supabaseService = {
           .select("*")
           .order("timestamp", { ascending: false })
           .limit(100),
+        supabase
+          .from("creator_ratings")
+          .select("*")
+          .order("created_at", { ascending: false }),
       ]);
 
       let loadedSettings: PlatformSettings | null =
@@ -146,6 +153,7 @@ export const supabaseService = {
         settings: loadedSettings,
         ads: adsRes.error ? null : (adsRes.data as Advertisement[]),
         auditLogs: auditRes.error ? null : (auditRes.data as AdminAuditLog[]),
+        ratings: ratingsRes.error ? null : (ratingsRes.data as CreatorRating[]),
       };
     } catch (err) {
       console.warn("Error fetching data from Supabase:", err);
@@ -158,6 +166,7 @@ export const supabaseService = {
         settings: null,
         ads: null,
         auditLogs: null,
+        ratings: null,
       };
     }
   },
@@ -712,6 +721,34 @@ export const supabaseService = {
       return res.ok;
     } catch (e) {
       console.warn("Failed to delete drive file:", e);
+      return false;
+    }
+  },
+
+  async upsertRating(rating: CreatorRating): Promise<boolean> {
+    try {
+      const { error } = await supabase.from("creator_ratings").upsert(rating);
+      if (error) {
+        console.warn("Notice: creator_ratings upsert error in Supabase:", error.message);
+        return false;
+      }
+      return true;
+    } catch (e) {
+      console.warn("Supabase upsertRating exception:", e);
+      return false;
+    }
+  },
+
+  async deleteRating(ratingId: string): Promise<boolean> {
+    try {
+      const { error } = await supabase.from("creator_ratings").delete().eq("id", ratingId);
+      if (error) {
+        console.warn("Notice: creator_ratings delete error in Supabase:", error.message);
+        return false;
+      }
+      return true;
+    } catch (e) {
+      console.warn("Supabase deleteRating exception:", e);
       return false;
     }
   },

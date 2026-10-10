@@ -436,3 +436,43 @@ AS $$
   WHERE owner_user_id = user_id AND upload_status = 'COMPLETED';
 $$;
 
+-- ------------------------------------------------------------------------------
+-- 10. CREATOR RATINGS TABLE (Community & Admin Reviews)
+-- ------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS public.creator_ratings (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  creator_id TEXT NOT NULL,
+  rating NUMERIC(3,1) NOT NULL CHECK (rating >= 1.0 AND rating <= 10.0),
+  reviewer_name TEXT NOT NULL,
+  reviewer_role TEXT NOT NULL,
+  property_name TEXT,
+  comment TEXT NOT NULL,
+  is_admin BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_creator_ratings_creator_id ON public.creator_ratings(creator_id);
+CREATE INDEX IF NOT EXISTS idx_creator_ratings_is_admin ON public.creator_ratings(is_admin);
+CREATE INDEX IF NOT EXISTS idx_creator_ratings_created ON public.creator_ratings(created_at DESC);
+
+ALTER TABLE public.creator_ratings ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public can view ratings" ON public.creator_ratings;
+CREATE POLICY "Public can view ratings"
+ON public.creator_ratings
+FOR SELECT
+USING (true);
+
+DROP POLICY IF EXISTS "Anyone can insert ratings" ON public.creator_ratings;
+CREATE POLICY "Anyone can insert ratings"
+ON public.creator_ratings
+FOR INSERT
+WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Admins can delete ratings" ON public.creator_ratings;
+CREATE POLICY "Admins can delete ratings"
+ON public.creator_ratings
+FOR DELETE
+USING (true);
+
+

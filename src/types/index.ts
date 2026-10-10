@@ -240,3 +240,22 @@ export interface UserMedia {
   created_at: string;
   updated_at: string;
 }
+
+export type ReviewerRole =
+  | "Host / Property Owner"
+  | "Fellow Creator"
+  | "Traveler / Guest"
+  | "Platform Admin";
+
+export interface CreatorRating {
+  id: string;
+  creator_id: string; // targets creator profile ID (e.g. prof-101) or application ID
+  rating: number; // 1.0 to 10.0 scale (e.g. 9.8)
+  reviewer_name: string;
+  reviewer_role: ReviewerRole;
+  property_name?: string;
+  comment: string;
+  is_admin: boolean;
+  created_at: string;
+}
+
