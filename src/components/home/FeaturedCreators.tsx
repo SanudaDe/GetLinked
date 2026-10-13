@@ -429,7 +429,7 @@ export const FeaturedCreators: React.FC = () => {
                       {sensory.line}
                     </p>
 
-                    <p className="text-[16px] uppercase tracking-[0.16em] text-[#336467]/75 dark:text-neutral-300 font-medium pt-1">
+                    <p className="text-[16px] font-sans font-bold uppercase tracking-[0.18em] text-[#1A3739] dark:text-white pt-1">
                       {formatFollowerCount(creator.follower_count)} FOLLOWERS
                       {creator.niche ? ` • ${creator.niche.toUpperCase()}` : ""}
                     </p>
