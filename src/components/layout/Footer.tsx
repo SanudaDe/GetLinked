@@ -99,18 +99,24 @@ export const Footer: React.FC = () => {
                   Contact Curators
                 </Link>
               </li>
-              <li>
-                <Link href="/admin/login" className="hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors">
-                  Admin Portal
-                </Link>
-              </li>
             </ul>
           </div>
         </div>
 
         {/* Bottom Hairline & Fine Print */}
         <div className="mt-14 pt-8 border-t border-gray-200 dark:border-neutral-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-[#1A3739]/70 dark:text-neutral-500">
-          <p>© 2026 Get Linked Sri Lanka. All rights reserved.</p>
+          <div className="flex items-center gap-2">
+            <span>© 2026 Get Linked Sri Lanka. All rights reserved.</span>
+            {/* Discreet staff access - hidden from public view */}
+            <Link
+              href="/admin/login"
+              className="text-transparent hover:text-neutral-400/40 select-none transition-colors text-[9px]"
+              tabIndex={-1}
+              aria-hidden="true"
+            >
+              •
+            </Link>
+          </div>
           <div className="flex items-center gap-4 text-[11px] font-mono text-[#336467]/70 dark:text-neutral-500">
             <span>getlinked.today</span>
             <span>•</span>
