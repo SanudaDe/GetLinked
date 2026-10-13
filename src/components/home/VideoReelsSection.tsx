@@ -79,7 +79,7 @@ export const VideoReelsSection: React.FC = () => {
             Real stays through the creator&apos;s lens.
           </h2>
 
-          <p className="text-sm sm:text-base text-[#1A3739]/85 dark:text-neutral-300 leading-relaxed">
+          <p className="text-[16px] text-[#1A3739]/90 dark:text-neutral-200 leading-relaxed">
             Watch recent visual collaborations captured by verified creators at distinctive boutique villas across Sri Lanka.
           </p>
         </div>
@@ -163,17 +163,17 @@ export const VideoReelsSection: React.FC = () => {
               {/* Video Info Footer */}
               <div className="p-5 sm:p-6 bg-white dark:bg-neutral-950 border-t border-gray-200 dark:border-neutral-800 flex items-center justify-between">
                 <div>
-                  <h3 className="font-serif text-lg sm:text-xl font-normal text-[#336467] dark:text-white">
+                  <h3 className="font-serif text-lg sm:text-2xl font-normal text-[#336467] dark:text-white">
                     {reel.title}
                   </h3>
-                  <p className="text-xs text-[#336467]/75 dark:text-neutral-400 mt-0.5">
-                    {reel.location} • <span className="text-[#336467] dark:text-neutral-200 font-semibold">{reel.creator}</span> ({reel.handle})
+                  <p className="text-[16px] text-[#336467]/80 dark:text-neutral-300 mt-1">
+                    {reel.location} • <span className="text-[#336467] dark:text-white font-semibold">{reel.creator}</span> ({reel.handle})
                   </p>
                 </div>
 
                 <button
                   onClick={() => setModalVideo(reel)}
-                  className="text-xs font-semibold uppercase tracking-[0.2em] text-[#D7400B] hover:text-[#BD3607] transition-colors py-1 pl-2 cursor-pointer"
+                  className="text-[16px] font-semibold uppercase tracking-[0.18em] text-[#D7400B] hover:text-[#BD3607] transition-colors py-1 pl-2 cursor-pointer"
                 >
                   WATCH FULL →
                 </button>

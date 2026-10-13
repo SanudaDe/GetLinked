@@ -54,7 +54,7 @@ export const Navbar: React.FC = () => {
               <Link
                 key={link.label}
                 href={link.href}
-                className="text-[15px] lg:text-base font-sans font-medium text-[#336467] dark:text-neutral-300 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors relative py-1"
+                className="text-[16px] font-sans font-medium text-[#336467] dark:text-neutral-300 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors relative py-1"
               >
                 {link.label}
               </Link>
@@ -115,7 +115,7 @@ export const Navbar: React.FC = () => {
             ) : (
               <Link
                 href="/login"
-                className="text-[15px] lg:text-base font-sans font-medium text-[#336467] dark:text-neutral-300 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors"
+                className="text-[16px] font-sans font-medium text-[#336467] dark:text-neutral-300 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors"
               >
                 Log in
               </Link>
@@ -123,7 +123,7 @@ export const Navbar: React.FC = () => {
 
             <button
               onClick={() => setWaitlistOpen(true)}
-              className="px-6 py-2.5 rounded-full bg-[#D7400B] hover:bg-[#BD3607] text-white text-[13px] sm:text-sm font-semibold tracking-wide shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
+              className="px-6 py-2.5 rounded-full bg-[#D7400B] hover:bg-[#BD3607] text-white text-[16px] font-semibold tracking-wide shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
             >
               Join waitlist
             </button>

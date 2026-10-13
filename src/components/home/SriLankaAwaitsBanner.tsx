@@ -24,7 +24,7 @@ export const SriLankaAwaitsBanner: React.FC = () => {
 
         {/* Center Editorial Typography */}
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 py-20">
-          <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.28em] text-white/90">
+          <span className="text-[16px] font-semibold uppercase tracking-[0.24em] text-white/95">
             SRI LANKA AWAITS
           </span>
 
@@ -37,7 +37,7 @@ export const SriLankaAwaitsBanner: React.FC = () => {
           <div className="pt-4">
             <button
               onClick={() => setWaitlistOpen(true)}
-              className="inline-flex items-center gap-2.5 text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] text-white hover:text-white/90 underline underline-offset-8 decoration-white/40 hover:decoration-white transition-all group cursor-pointer"
+              className="inline-flex items-center gap-2.5 text-[16px] font-semibold uppercase tracking-[0.2em] text-white hover:text-white/90 underline underline-offset-8 decoration-white/40 hover:decoration-white transition-all group cursor-pointer"
             >
               <span>JOIN GET LINKED</span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />

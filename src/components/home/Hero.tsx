@@ -88,7 +88,7 @@ export const Hero: React.FC = () => {
         <div className="max-w-2xl">
           {/* Kicker / Tag */}
           <div className="flex items-center gap-3 mb-5">
-            <span className="text-xs sm:text-[13px] font-bold uppercase tracking-[0.28em] text-[#D7400B] drop-shadow-xs">
+            <span className="text-[16px] font-bold uppercase tracking-[0.24em] text-[#D7400B] drop-shadow-xs">
               REAL CREATORS. VERIFIED STAYS.
             </span>
           </div>
@@ -99,7 +99,7 @@ export const Hero: React.FC = () => {
           </h1>
 
           {/* Subtitle */}
-          <p className="mt-5 text-base sm:text-lg text-[#1A3739] dark:text-neutral-200 max-w-xl font-medium leading-relaxed">
+          <p className="mt-5 text-[16px] text-[#1A3739] dark:text-neutral-200 max-w-xl font-medium leading-relaxed">
             We bring Sri Lanka&apos;s finest stays together with the voices worth trusting with them.
           </p>
 
@@ -107,32 +107,32 @@ export const Hero: React.FC = () => {
           <div className="flex items-center gap-4 mt-8 flex-wrap">
             <Link
               href="/creators"
-              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#D7400B] hover:bg-[#BD3607] text-white text-xs sm:text-sm font-semibold tracking-wider shadow-md hover:shadow-lg transition-all duration-200 group"
+              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#D7400B] hover:bg-[#BD3607] text-white text-[16px] font-semibold tracking-wider shadow-md hover:shadow-lg transition-all duration-200 group"
             >
               <span>Find Creators</span>
-              <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
 
             <Link
               href="/list-property"
-              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#1A3739] dark:bg-neutral-800 hover:bg-[#152E30] dark:hover:bg-neutral-700 text-white text-xs sm:text-sm font-semibold tracking-wider border border-[#1A3739] dark:border-neutral-700 shadow-sm hover:shadow-md transition-all duration-200 group"
+              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#1A3739] dark:bg-neutral-800 hover:bg-[#152E30] dark:hover:bg-neutral-700 text-white text-[16px] font-semibold tracking-wider border border-[#1A3739] dark:border-neutral-700 shadow-sm hover:shadow-md transition-all duration-200 group"
             >
               <span>List Your Stay</span>
-              <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
 
           {/* Trust Line */}
-          <p className="mt-8 text-sm sm:text-base md:text-[17px] text-[#1A3739] dark:text-neutral-200 tracking-wide font-medium leading-relaxed">
+          <p className="mt-8 text-[16px] text-[#1A3739] dark:text-neutral-200 tracking-wide font-medium leading-relaxed">
             Every introduction made by hand. Nothing rushed, nothing automated.
           </p>
         </div>
       </div>
 
       {/* Bottom Slogan */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-8 pt-4 flex items-end justify-end text-xs text-[#1A3739] dark:text-neutral-400">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-8 pt-4 flex items-end justify-end text-[#1A3739] dark:text-neutral-400">
         <div className="text-right">
-          <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#1A3739] dark:text-neutral-400">
+          <span className="text-[16px] font-bold uppercase tracking-[0.25em] text-[#1A3739] dark:text-neutral-400">
             A BRIGHTER WAY TO TRAVEL TOGETHER
           </span>
         </div>

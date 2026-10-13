@@ -43,7 +43,7 @@ export const DestinationsGrid: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="max-w-2xl mb-12 sm:mb-16 space-y-3">
-          <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.25em] text-[#D7400B] block">
+          <span className="text-[16px] font-semibold uppercase tracking-[0.22em] text-[#D7400B] block">
             Where To Begin
           </span>
 
@@ -78,7 +78,7 @@ export const DestinationsGrid: React.FC = () => {
                   <ArrowRight className="w-4 h-4 text-white/80 group-hover:translate-x-1 transition-transform" />
                 </div>
 
-                <p className="text-xs sm:text-sm text-white/85 font-normal leading-relaxed">
+                <p className="text-[16px] text-white/85 font-normal leading-relaxed">
                   {dest.line}
                 </p>
               </div>

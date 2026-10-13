@@ -235,7 +235,7 @@ export const FeaturedAccommodations: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* COMO Style Top Category Search / Filter */}
         <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-20">
-          <span className="text-[11px] sm:text-xs font-normal uppercase tracking-[0.32em] text-[#1A3739]/70 dark:text-neutral-400 block mb-3.5">
+          <span className="text-[16px] font-medium uppercase tracking-[0.28em] text-[#1A3739]/80 dark:text-neutral-300 block mb-3.5">
             PLACES WORTH THE STORY
           </span>
 
@@ -408,16 +408,16 @@ export const FeaturedAccommodations: React.FC = () => {
                       </h3>
                     </Link>
 
-                    <p className="text-[11px] sm:text-xs uppercase tracking-[0.24em] font-semibold text-[#D7400B]">
+                    <p className="text-[16px] uppercase tracking-[0.2em] font-semibold text-[#D7400B]">
                       {stay.city || "Sri Lanka"}
                       {stay.property_type ? ` — ${stay.property_type}` : ""}
                     </p>
 
-                    <p className="text-sm sm:text-base text-[#336467]/85 dark:text-neutral-300 font-light leading-relaxed max-w-xl pt-1">
+                    <p className="text-[16px] text-[#336467]/90 dark:text-neutral-200 font-normal leading-relaxed max-w-xl pt-1">
                       {sensory.line}
                     </p>
 
-                    <p className="text-[11px] uppercase tracking-[0.2em] text-[#336467]/60 dark:text-neutral-400 font-medium pt-1">
+                    <p className="text-[16px] uppercase tracking-[0.16em] text-[#336467]/75 dark:text-neutral-300 font-medium pt-1">
                       {sensory.offer.toUpperCase()}
                       {stay.minimum_followers
                         ? ` • MIN. ${formatFollowerCount(stay.minimum_followers)} FOLLOWERS`
@@ -432,7 +432,7 @@ export const FeaturedAccommodations: React.FC = () => {
                         onClick={(e) => {
                           if (!isActive) e.preventDefault();
                         }}
-                        className="group inline-flex items-center gap-3.5 text-xs font-semibold uppercase tracking-[0.24em] text-[#336467] dark:text-neutral-200 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors py-1 cursor-pointer disabled:cursor-default"
+                        className="group inline-flex items-center gap-3.5 text-[16px] font-semibold uppercase tracking-[0.18em] text-[#336467] dark:text-neutral-200 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors py-1 cursor-pointer disabled:cursor-default"
                       >
                         <span className="w-8 h-[1px] bg-[#336467] dark:bg-neutral-400 group-hover:bg-[#D7400B] group-hover:w-12 transition-all duration-300" />
                         <span>Propose Collaboration</span>
@@ -444,7 +444,7 @@ export const FeaturedAccommodations: React.FC = () => {
                         onClick={(e) => {
                           if (!isActive) e.preventDefault();
                         }}
-                        className="group inline-flex items-center gap-3.5 text-xs font-semibold uppercase tracking-[0.24em] text-[#336467] dark:text-neutral-200 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors py-1 disabled:cursor-default"
+                        className="group inline-flex items-center gap-3.5 text-[16px] font-semibold uppercase tracking-[0.18em] text-[#336467] dark:text-neutral-200 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors py-1 disabled:cursor-default"
                       >
                         <span className="w-8 h-[1px] bg-[#336467] dark:bg-neutral-400 group-hover:bg-[#D7400B] group-hover:w-12 transition-all duration-300" />
                         <span>List Your Stay</span>
@@ -460,7 +460,7 @@ export const FeaturedAccommodations: React.FC = () => {
         {/* Bottom Section: Counter & Directory Link */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6 max-w-5xl mx-auto mt-14 sm:mt-18 px-4">
           {/* Counter Indicator: 01 —— 04 */}
-          <div className="flex items-center gap-4 text-xs uppercase tracking-[0.25em] text-[#336467]/70 dark:text-neutral-400 font-light">
+          <div className="flex items-center gap-4 text-[16px] uppercase tracking-[0.2em] text-[#336467]/80 dark:text-neutral-300 font-medium">
             <span className="font-semibold text-[#336467] dark:text-white">
               {String((currentIndex % N) + 1).padStart(2, "0")}
             </span>
@@ -471,10 +471,10 @@ export const FeaturedAccommodations: React.FC = () => {
           {/* Link to List Stays & Eats */}
           <Link
             href="/list-property"
-            className="group inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#336467] dark:text-neutral-300 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors"
+            className="group inline-flex items-center gap-2 text-[16px] font-semibold uppercase tracking-[0.18em] text-[#336467] dark:text-neutral-300 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors"
           >
             <span>List your stay or eatery, free during launch</span>
-            <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
       </div>
