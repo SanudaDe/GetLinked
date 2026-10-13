@@ -19,17 +19,17 @@ export const EditorialStorySection: React.FC = () => {
               Possibilities.
             </h2>
 
-            <p className="text-[16px] text-[#336467]/90 dark:text-neutral-200 leading-relaxed max-w-md pt-2">
+            <p className="text-[20px] sm:text-[24px] lg:text-[26px] text-[#1A3739] dark:text-neutral-100 font-normal leading-relaxed max-w-xl pt-3">
               Travel collaborations should begin with the right fit. Get Linked brings verified creators and distinctive stays together, making it easier to discover, connect and create something worth sharing.
             </p>
 
             <div className="pt-4">
               <Link
                 href="/about"
-                className="inline-flex items-center gap-2 text-[16px] font-semibold uppercase tracking-[0.18em] text-[#336467] dark:text-neutral-300 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors group"
+                className="inline-flex items-center gap-2.5 text-[17px] sm:text-[18px] font-sans font-semibold uppercase tracking-[0.2em] text-[#336467] dark:text-neutral-200 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors group"
               >
                 <span>OUR STORY</span>
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="w-4.5 h-4.5 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
           </div>
