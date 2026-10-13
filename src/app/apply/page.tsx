@@ -396,15 +396,15 @@ export default function ApplyPage() {
     <div className="py-12 bg-white dark:bg-black text-[#1A3739] dark:text-white min-h-screen transition-colors duration-300">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center space-y-3 mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-900/10 dark:bg-teal-950/40 text-teal-900 dark:text-teal-300 text-xs font-semibold uppercase tracking-wider">
-            <ShieldCheck className="w-3.5 h-3.5 text-gold-500" />
-            Verified Creator Application
+        <div className="text-center space-y-4 mb-12">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-900/10 dark:bg-teal-950/40 text-teal-900 dark:text-teal-300 text-xs sm:text-sm font-semibold uppercase tracking-wider">
+            <ShieldCheck className="w-4 h-4 text-gold-500" />
+            <span>Verified Creator Application</span>
           </div>
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-teal-950 dark:text-white">
+          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal text-teal-950 dark:text-white tracking-tight leading-tight">
             Apply to Join Get Linked
           </h1>
-          <p className="text-xs sm:text-sm text-ink-700 dark:text-neutral-400 max-w-lg mx-auto">
+          <p className="text-[19px] sm:text-[22px] lg:text-[24px] text-[#1A3739]/90 dark:text-neutral-200 max-w-xl mx-auto font-normal leading-relaxed pt-1">
             Connect with Sri Lanka&apos;s finest hotels, villas, and boutique stays. 18+ age & 5,000+ authentic followers required.
           </p>
         </div>

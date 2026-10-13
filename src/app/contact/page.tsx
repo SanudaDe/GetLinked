@@ -9,11 +9,11 @@ export default function ContactPage() {
   return (
     <div className="py-16 bg-white dark:bg-black text-[#1A3739] dark:text-white min-h-screen transition-colors duration-300">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center space-y-3 mb-12">
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-teal-950 dark:text-white">
+        <div className="text-center space-y-4 mb-14">
+          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal text-teal-950 dark:text-white tracking-tight leading-tight">
             Contact Get Linked
           </h1>
-          <p className="text-sm sm:text-base text-ink-700 dark:text-neutral-400">
+          <p className="text-[19px] sm:text-[22px] lg:text-[24px] text-[#1A3739]/90 dark:text-neutral-200 leading-relaxed max-w-2xl mx-auto font-normal pt-1">
             Have questions regarding creator verification, property onboarding, or media collaborations?
           </p>
         </div>

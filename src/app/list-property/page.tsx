@@ -390,19 +390,19 @@ function ListPropertyContent() {
     <div className="py-16 bg-white dark:bg-black text-[#1A3739] dark:text-white min-h-screen transition-colors duration-300">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         {/* Header */}
-        <div className="text-center space-y-3 mb-10">
-          <span className="text-xs uppercase font-bold tracking-widest text-[#D7400B] block">
+        <div className="text-center space-y-4 mb-12">
+          <span className="text-[16px] uppercase font-bold tracking-widest text-[#D7400B] block">
             Stays • Eats • Creators
           </span>
-          <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-teal-950 dark:text-white">
+          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal text-teal-950 dark:text-white tracking-tight leading-tight">
             List Your Sri Lankan Venue
           </h1>
-          <p className="text-xs sm:text-sm text-ink-700 dark:text-neutral-400 max-w-lg mx-auto">
+          <p className="text-[19px] sm:text-[22px] lg:text-[24px] text-[#1A3739]/90 dark:text-neutral-200 max-w-xl mx-auto font-normal leading-relaxed pt-1">
             Get matched with verified travel & food creators visiting Sri Lanka.
           </p>
 
           {/* Dynamic Platform Phase Pricing Banner */}
-          <div className="p-3 bg-teal-900/10 dark:bg-teal-950/40 border border-teal-900/20 dark:border-teal-800/40 rounded-xl max-w-xl mx-auto flex items-center justify-center gap-2 text-xs font-semibold text-teal-950 dark:text-teal-200">
+          <div className="p-3.5 bg-teal-900/10 dark:bg-teal-950/40 border border-teal-900/20 dark:border-teal-800/40 rounded-xl max-w-xl mx-auto flex items-center justify-center gap-2 text-[15px] sm:text-[16px] font-semibold text-teal-950 dark:text-teal-200">
             <Sparkles className="w-4 h-4 text-gold-500 shrink-0" />
             <span>
               {settings.platform_phase === "FREE"

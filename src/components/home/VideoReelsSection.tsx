@@ -74,12 +74,12 @@ export const VideoReelsSection: React.FC = () => {
     <section className="py-20 sm:py-28 bg-white dark:bg-black text-[#1A3739] dark:text-white overflow-hidden border-t border-gray-200 dark:border-neutral-800 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-14 sm:mb-18 space-y-3">
-          <h2 className="font-serif text-3xl sm:text-5xl font-normal text-[#1A3739] dark:text-white tracking-tight leading-tight">
+        <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-18 space-y-4">
+          <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal text-[#1A3739] dark:text-white tracking-tight leading-tight">
             Real stays through the creator&apos;s lens.
           </h2>
 
-          <p className="text-[16px] text-[#1A3739]/90 dark:text-neutral-200 leading-relaxed">
+          <p className="text-[20px] sm:text-[24px] lg:text-[26px] text-[#1A3739]/90 dark:text-neutral-200 leading-relaxed font-normal pt-1">
             Watch recent visual collaborations captured by verified creators at distinctive boutique villas across Sri Lanka.
           </p>
         </div>

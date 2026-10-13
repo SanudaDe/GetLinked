@@ -243,7 +243,7 @@ export const FeaturedAccommodations: React.FC = () => {
             <button
               type="button"
               onClick={() => setIsFilterOpen(!isFilterOpen)}
-              className="group inline-flex items-center gap-3 text-2xl sm:text-4xl lg:text-[46px] font-serif font-light uppercase tracking-[0.08em] sm:tracking-[0.12em] text-[#1A3739] dark:text-white hover:text-[#D7400B] transition-colors cursor-pointer select-none"
+              className="group inline-flex items-center gap-3 text-3xl sm:text-5xl lg:text-[56px] font-serif font-light uppercase tracking-[0.08em] sm:tracking-[0.12em] text-[#1A3739] dark:text-white hover:text-[#D7400B] transition-colors cursor-pointer select-none"
             >
               <span>{activeCategory}</span>
               <ChevronDown

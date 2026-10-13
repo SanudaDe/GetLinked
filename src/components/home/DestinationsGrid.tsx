@@ -47,7 +47,7 @@ export const DestinationsGrid: React.FC = () => {
             Where To Begin
           </span>
 
-          <h2 className="font-serif text-3xl sm:text-5xl font-normal text-[#336467] dark:text-white tracking-tight leading-[1.15]">
+          <h2 className="font-serif text-4xl sm:text-6xl font-normal text-[#336467] dark:text-white tracking-tight leading-[1.12]">
             Six places, each holding its own quiet.
           </h2>
         </div>

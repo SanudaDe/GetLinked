@@ -12,43 +12,43 @@ export default function ForCreatorsPage() {
 
   return (
     <div className="py-24 sm:py-32 bg-white dark:bg-black text-[#1A3739] dark:text-white min-h-screen transition-colors duration-300">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         {/* Editorial Header */}
-        <div className="space-y-5 text-center">
-          <h1 className="font-serif text-4xl sm:text-6xl font-normal text-[#1A3739] dark:text-white tracking-tight leading-tight">
+        <div className="space-y-6 text-center">
+          <h1 className="font-serif text-5xl sm:text-7xl font-normal text-[#1A3739] dark:text-white tracking-tight leading-[1.08]">
             For the ones who tell it well.
           </h1>
-          <p className="text-sm sm:text-base text-[#1A3739]/80 dark:text-neutral-400 leading-relaxed max-w-xl mx-auto">
+          <p className="text-[20px] sm:text-[24px] lg:text-[26px] text-[#1A3739]/90 dark:text-neutral-200 leading-relaxed max-w-2xl mx-auto font-normal pt-2">
             Get Linked is free for creators. Tell us where you&apos;re headed and when — we&apos;ll do the rest, quietly, by hand.
           </p>
 
-          <div className="pt-4">
+          <div className="pt-6">
             <Link
               href="/apply"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#D7400B] hover:bg-[#BD3607] text-white text-xs font-semibold tracking-wide shadow-sm transition-all"
+              className="inline-flex items-center gap-3 px-9 py-4 rounded-full bg-[#D7400B] hover:bg-[#BD3607] text-white text-[17px] sm:text-[18px] font-sans font-semibold tracking-wider shadow-md hover:shadow-lg transition-all group"
             >
               <span>Apply as a Creator</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ArrowRight className="w-4.5 h-4.5 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
         </div>
 
         {/* Requirements Card (Functional, plain, clear) */}
         <div className="p-8 sm:p-10 rounded-2xl bg-gray-50 dark:bg-neutral-950 border border-gray-200 dark:border-neutral-800 shadow-sm space-y-6">
-          <div className="space-y-1 border-b border-gray-200 dark:border-neutral-800 pb-4">
-            <h2 className="font-serif text-xl sm:text-2xl font-normal text-[#1A3739] dark:text-white">
+          <div className="space-y-2 border-b border-gray-200 dark:border-neutral-800 pb-4">
+            <h2 className="font-serif text-2xl sm:text-3xl font-normal text-[#1A3739] dark:text-white">
               Requirements
             </h2>
-            <p className="text-xs text-[#1A3739]/70 dark:text-neutral-400">
+            <p className="text-[16px] text-[#1A3739]/80 dark:text-neutral-400">
               Criteria for creator verification across all platforms
             </p>
           </div>
 
           <ul className="space-y-4 pt-2">
             {requirements.map((req, idx) => (
-              <li key={idx} className="flex items-center gap-3 text-xs sm:text-sm text-[#1A3739] dark:text-neutral-200">
-                <div className="w-4 h-4 rounded-full bg-orange-50 dark:bg-orange-950/40 border border-orange-200/60 dark:border-orange-800/40 flex items-center justify-center shrink-0">
-                  <Check className="w-2.5 h-2.5 text-[#D7400B]" />
+              <li key={idx} className="flex items-center gap-3 text-[17px] sm:text-[18px] text-[#1A3739] dark:text-neutral-200">
+                <div className="w-5 h-5 rounded-full bg-orange-50 dark:bg-orange-950/40 border border-orange-200/60 dark:border-orange-800/40 flex items-center justify-center shrink-0">
+                  <Check className="w-3 h-3 text-[#D7400B]" />
                 </div>
                 <span>{req}</span>
               </li>

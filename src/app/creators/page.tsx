@@ -190,11 +190,11 @@ function CreatorDirectoryContent() {
         </div>
 
         {/* Header */}
-        <div className="space-y-3 mb-8">
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-teal-950 dark:text-white">
+        <div className="space-y-4 mb-10">
+          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal text-teal-950 dark:text-white tracking-tight leading-tight">
             Verified Creators Visiting Sri Lanka
           </h1>
-          <p className="text-xs sm:text-sm text-ink-700 dark:text-neutral-400 max-w-2xl">
+          <p className="text-[19px] sm:text-[22px] lg:text-[24px] text-[#1A3739]/90 dark:text-neutral-200 leading-relaxed max-w-3xl font-normal pt-1">
             Search 100% ID-verified travel and lifestyle influencers with confirmed travel dates across Sri Lanka.
           </p>
         </div>

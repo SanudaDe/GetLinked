@@ -89,11 +89,11 @@ export default function FaqPage() {
     <div className="py-24 sm:py-32 bg-white dark:bg-black text-[#1A3739] dark:text-white min-h-screen transition-colors duration-300">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Functional Plain Header */}
-        <div className="text-center space-y-3">
-          <h1 className="font-serif text-4xl sm:text-5xl font-normal text-[#1A3739] dark:text-white">
+        <div className="text-center space-y-4">
+          <h1 className="font-serif text-5xl sm:text-6xl font-normal text-[#1A3739] dark:text-white tracking-tight">
             Frequently Asked Questions
           </h1>
-          <p className="text-sm text-[#1A3739]/85 dark:text-neutral-400 max-w-lg mx-auto">
+          <p className="text-[19px] sm:text-[22px] text-[#1A3739]/90 dark:text-neutral-200 leading-relaxed max-w-xl mx-auto font-normal pt-1">
             Direct answers regarding creator verification, property listings, and how introductions work.
           </p>
         </div>
