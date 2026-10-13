@@ -250,7 +250,7 @@ export type ReviewerRole =
 export interface CreatorRating {
   id: string;
   creator_id: string; // targets creator profile ID (e.g. prof-101) or application ID
-  rating: number; // 1.0 to 10.0 scale (e.g. 9.8)
+  rating: number; // 1.0 to 10.0 scale (or converted 1-5)
   reviewer_name: string;
   reviewer_role: ReviewerRole;
   property_name?: string;
@@ -258,4 +258,56 @@ export interface CreatorRating {
   is_admin: boolean;
   created_at: string;
 }
+
+export interface CollabRatingSubmission {
+  score: number; // 1 to 5 scale
+  feedback: string; // One line comment
+  criteria?: string[]; // e.g. ["Reliability", "Content Quality", "Showed up as agreed"]
+  submitted_at: string;
+  submitted_by?: string;
+}
+
+export type DoubleBlindReviewStatus =
+  | "PENDING"
+  | "PROPERTY_ONLY"
+  | "CREATOR_ONLY"
+  | "REVEALED";
+
+export interface MatchReview {
+  id: string;
+  match_id: string;
+  creator_id: string;
+  creator_name: string;
+  accommodation_id: string;
+  accommodation_name: string;
+  property_review_of_creator?: CollabRatingSubmission;
+  creator_review_of_property?: CollabRatingSubmission;
+  status: DoubleBlindReviewStatus;
+  revealed_at?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface RevealedCollabReviewItem {
+  id: string;
+  match_id: string;
+  partner_name: string;
+  score: number;
+  feedback: string;
+  criteria?: string[];
+  submitted_at: string;
+  target_type: "creator" | "property";
+}
+
+export interface RatingStatsResult {
+  average: number; // 0 if !meetsThreshold
+  count: number;
+  meetsThreshold: boolean;
+  threshold: number; // 3
+  adminRating?: CreatorRating;
+  ratings: CreatorRating[];
+  revealedCollabs: RevealedCollabReviewItem[];
+  criteriaAverages: Record<string, number>;
+}
+
 

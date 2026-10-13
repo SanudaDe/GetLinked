@@ -12,6 +12,7 @@ import {
   createCreatorIntroMessage,
 } from "@/utils/whatsapp";
 import { Match, MatchStatus } from "@/types";
+import { DoubleBlindMatchReview } from "@/components/admin/DoubleBlindMatchReview";
 import {
   CheckCircle2,
   Sparkles,
@@ -241,6 +242,9 @@ export default function AdminMatchesPage() {
                         )}
                       </div>
                     </div>
+
+                    {/* Double-Blind Post-Collaboration Review System */}
+                    <DoubleBlindMatchReview match={match} />
                   </div>
                 );
               })}

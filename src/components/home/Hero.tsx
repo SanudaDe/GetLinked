@@ -123,7 +123,7 @@ export const Hero: React.FC = () => {
           </div>
 
           {/* Trust Line */}
-          <p className="mt-8 text-xs sm:text-sm text-[#1A3739]/90 dark:text-neutral-300 tracking-wide font-medium">
+          <p className="mt-8 text-sm sm:text-base md:text-[17px] text-[#1A3739] dark:text-neutral-200 tracking-wide font-medium leading-relaxed">
             Every introduction made by hand. Nothing rushed, nothing automated.
           </p>
         </div>

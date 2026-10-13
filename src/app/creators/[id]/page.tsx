@@ -185,15 +185,12 @@ export default function CreatorProfilePage({
                 >
                   <Star className="w-3.5 h-3.5 fill-white text-white" />
                   <span>
-                    {ratingStats.average > 0
-                      ? `${ratingStats.average} / 10 Verified Talent`
+                    {ratingStats.meetsThreshold
+                      ? `★ ${ratingStats.average.toFixed(1)} / 5.0 (${ratingStats.count})`
+                      : ratingStats.count > 0
+                      ? `${ratingStats.count}/3 Stays Verified`
                       : "Rate Creator"}
                   </span>
-                  {ratingStats.count > 0 && (
-                    <span className="text-[10px] opacity-80 font-normal ml-0.5">
-                      ({ratingStats.count})
-                    </span>
-                  )}
                 </button>
 
                 {/* Bottom Overlay Info */}
@@ -338,56 +335,163 @@ export default function CreatorProfilePage({
               </div>
 
               {/* Score Summary Banner */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-5 rounded-2xl bg-neutral-50 dark:bg-neutral-900/60 border border-neutral-200/80 dark:border-neutral-800">
-                <div className="sm:border-r border-neutral-200 dark:border-neutral-800 sm:pr-4 text-center sm:text-left space-y-1">
-                  <span className="text-[10px] uppercase tracking-widest text-neutral-500 dark:text-neutral-400 font-bold block">
-                    Composite Rating
-                  </span>
-                  <div className="flex items-baseline justify-center sm:justify-start gap-1.5">
-                    <span className="font-serif text-3xl sm:text-4xl font-light text-neutral-900 dark:text-white">
-                      {ratingStats.average > 0 ? ratingStats.average : "—"}
+              {ratingStats.meetsThreshold ? (
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-5 rounded-2xl bg-neutral-50 dark:bg-neutral-900/60 border border-neutral-200/80 dark:border-neutral-800">
+                  <div className="sm:border-r border-neutral-200 dark:border-neutral-800 sm:pr-4 text-center sm:text-left space-y-1">
+                    <span className="text-[10px] uppercase tracking-widest text-neutral-500 dark:text-neutral-400 font-bold block">
+                      Verified Collaboration Score
                     </span>
-                    <span className="text-xs text-neutral-400 font-medium">/ 10</span>
+                    <div className="flex items-baseline justify-center sm:justify-start gap-1.5">
+                      <span className="font-serif text-3xl sm:text-4xl font-light text-neutral-900 dark:text-white">
+                        {ratingStats.average.toFixed(1)}
+                      </span>
+                      <span className="text-xs text-neutral-400 font-medium">/ 5.0 ⭐</span>
+                    </div>
+                    <span className="text-[11px] text-[#D7400B] font-semibold block">
+                      Earned across {ratingStats.count} verified collaborations
+                    </span>
                   </div>
-                  <span className="text-[11px] text-[#D7400B] font-semibold block">
-                    {ratingStats.count > 0 ? `Based on ${ratingStats.count} verified reviews` : "Be the first to review"}
-                  </span>
-                </div>
 
-                <div className="sm:border-r border-neutral-200 dark:border-neutral-800 sm:px-4 text-center sm:text-left space-y-1">
-                  <span className="text-[10px] uppercase tracking-widest text-neutral-500 dark:text-neutral-400 font-bold block">
-                    Editorial Vetting
-                  </span>
-                  <div className="flex items-center justify-center sm:justify-start gap-1.5 pt-1">
-                    <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                    <span className="text-xs font-semibold text-neutral-800 dark:text-neutral-200">
-                      {ratingStats.adminRating ? "Official Admin Evaluated" : "Platform Verified"}
+                  <div className="sm:border-r border-neutral-200 dark:border-neutral-800 sm:px-4 text-center sm:text-left space-y-1">
+                    <span className="text-[10px] uppercase tracking-widest text-neutral-500 dark:text-neutral-400 font-bold block">
+                      Host Highlights
                     </span>
+                    <div className="space-y-1 pt-1 text-xs text-neutral-700 dark:text-neutral-300">
+                      <div className="flex items-center justify-between">
+                        <span className="text-neutral-500 text-[11px]">Reliability:</span>
+                        <span className="font-bold text-teal-900 dark:text-teal-400">
+                          {ratingStats.criteriaAverages["Reliability"] || ratingStats.average.toFixed(1)} ⭐
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-neutral-500 text-[11px]">Content Quality:</span>
+                        <span className="font-bold text-teal-900 dark:text-teal-400">
+                          {ratingStats.criteriaAverages["Content Quality"] || ratingStats.average.toFixed(1)} ⭐
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-neutral-500 text-[11px]">Showed as Agreed:</span>
+                        <span className="font-bold text-teal-900 dark:text-teal-400">
+                          {ratingStats.criteriaAverages["Showed up as agreed"] || "100%"}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <span className="text-[11px] text-neutral-500 dark:text-neutral-400 block">
-                    Govt ID & Social Metrics Confirmed
-                  </span>
-                </div>
 
-                <div className="sm:pl-4 text-center sm:text-left space-y-1">
-                  <span className="text-[10px] uppercase tracking-widest text-neutral-500 dark:text-neutral-400 font-bold block">
-                    Host Recommendation
-                  </span>
-                  <div className="flex items-center justify-center sm:justify-start gap-1.5 pt-1">
-                    <Award className="w-4 h-4 text-amber-500" />
-                    <span className="text-xs font-semibold text-neutral-800 dark:text-neutral-200">
-                      High-Tier Hospitality Talent
+                  <div className="sm:pl-4 text-center sm:text-left space-y-1">
+                    <span className="text-[10px] uppercase tracking-widest text-neutral-500 dark:text-neutral-400 font-bold block">
+                      Verification Standard
+                    </span>
+                    <div className="flex items-center justify-center sm:justify-start gap-1.5 pt-1">
+                      <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                      <span className="text-xs font-semibold text-neutral-800 dark:text-neutral-200">
+                        Double-Blind Verified
+                      </span>
+                    </div>
+                    <span className="text-[11px] text-neutral-500 dark:text-neutral-400 block">
+                      Both host and creator submit before reviews unlock
                     </span>
                   </div>
-                  <span className="text-[11px] text-neutral-500 dark:text-neutral-400 block">
-                    Strict Zero-Spam Air Gap Protection
-                  </span>
                 </div>
-              </div>
+              ) : (
+                /* Credibility Threshold Banner (Score Withheld Until 3 Reviews) */
+                <div className="p-5 sm:p-6 rounded-2xl bg-amber-50/70 dark:bg-neutral-900/80 border border-amber-200 dark:border-neutral-800 space-y-3">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs uppercase font-bold tracking-widest text-amber-800 dark:text-amber-400 bg-amber-100 dark:bg-amber-950/60 px-2.5 py-0.5 rounded-full border border-amber-300 dark:border-amber-700">
+                          Credibility Threshold Active
+                        </span>
+                        <span className="text-xs text-neutral-500 dark:text-neutral-400 font-mono">
+                          {ratingStats.count} / 3 Reviews Logged
+                        </span>
+                      </div>
+                      <h3 className="font-serif text-lg font-bold text-teal-950 dark:text-white">
+                        Public Score Hidden Until 3 Reviews Earned
+                      </h3>
+                    </div>
+                  </div>
+
+                  <p className="text-xs text-neutral-700 dark:text-neutral-300 leading-relaxed max-w-2xl">
+                    In accordance with Get Linked&apos;s <strong>&ldquo;no fake signals&rdquo;</strong> principle, aggregate scores are only published once a creator earns at least <strong>3 verified collaborations</strong>. Showing &ldquo;5.0 ⭐ (1 review)&rdquo; looks worse than showing nothing; withholding the score until it is earned ensures every rating on our platform is statistically credible.
+                  </p>
+
+                  {/* Progress Bar */}
+                  <div className="space-y-1.5 pt-1 max-w-md">
+                    <div className="flex items-center justify-between text-[11px] font-semibold text-neutral-600 dark:text-neutral-400">
+                      <span>Track Record Progress:</span>
+                      <span>{ratingStats.count} of 3 completed ({3 - ratingStats.count} needed)</span>
+                    </div>
+                    <div className="w-full h-2 rounded-full bg-sand-200 dark:bg-neutral-800 overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-amber-500 to-[#D7400B] transition-all duration-500 rounded-full"
+                        style={{ width: `${Math.min(100, (ratingStats.count / 3) * 100)}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Reviews Feed */}
-              {ratingStats.ratings.length > 0 ? (
+              {ratingStats.count > 0 ? (
                 <div className="space-y-4 pt-2">
+                  {/* 1. Revealed Post-Collab Reviews (Double-Blind Verified) */}
+                  {ratingStats.revealedCollabs.map((collab) => (
+                    <div
+                      key={collab.id}
+                      className="p-5 rounded-2xl border border-neutral-200/80 dark:border-neutral-800/80 bg-white dark:bg-neutral-900/40 space-y-2.5 transition-colors"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-serif text-base font-normal text-neutral-900 dark:text-white">
+                              {collab.partner_name}
+                            </span>
+                            <span className="text-[11px] px-2 py-0.5 rounded-full bg-teal-50 dark:bg-teal-950/60 text-teal-800 dark:text-teal-300 font-semibold border border-teal-200 dark:border-teal-800">
+                              Hosted Stay Collaboration
+                            </span>
+                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 font-bold flex items-center gap-1 border border-emerald-200 dark:border-emerald-800">
+                              <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                              <span>Double-Blind Verified</span>
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Rating Score Badge */}
+                        <div className="flex items-center gap-1 bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 px-2.5 py-1 rounded-full text-xs font-bold shrink-0">
+                          <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                          <span>{collab.score.toFixed(1)} / 5</span>
+                        </div>
+                      </div>
+
+                      <p className="text-xs sm:text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed font-light">
+                        &ldquo;{collab.feedback}&rdquo;
+                      </p>
+
+                      {collab.criteria && collab.criteria.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 pt-1">
+                          {collab.criteria.map((c) => (
+                            <span
+                              key={c}
+                              className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-sand-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300"
+                            >
+                              ✓ {c}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      <span className="text-[10px] text-neutral-400 dark:text-neutral-500 block pt-1 font-mono">
+                        {new Date(collab.submitted_at).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </span>
+                    </div>
+                  ))}
+
+                  {/* 2. Direct Community / Admin Verified Ratings */}
                   {ratingStats.ratings.map((rev) => (
                     <div
                       key={rev.id}
@@ -405,7 +509,7 @@ export default function CreatorProfilePage({
                             {rev.is_admin && (
                               <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold flex items-center gap-1 border border-amber-500/20">
                                 <ShieldCheck className="w-3 h-3 text-amber-500" />
-                                <span>Admin Evaluation</span>
+                                <span>Platform Curation Review</span>
                               </span>
                             )}
                           </div>
@@ -419,7 +523,7 @@ export default function CreatorProfilePage({
                         {/* Rating Score Badge */}
                         <div className="flex items-center gap-1 bg-[#D7400B]/10 dark:bg-[#D7400B]/20 text-[#D7400B] px-2.5 py-1 rounded-full text-xs font-bold shrink-0">
                           <Star className="w-3 h-3 fill-[#D7400B] text-[#D7400B]" />
-                          <span>{rev.rating.toFixed(1)}</span>
+                          <span>{rev.rating.toFixed(1)} / 5</span>
                         </div>
                       </div>
 
@@ -446,7 +550,7 @@ export default function CreatorProfilePage({
                   <button
                     type="button"
                     onClick={() => setIsRateModalOpen(true)}
-                    className="text-xs font-bold text-[#D7400B] hover:underline"
+                    className="text-xs font-bold text-[#D7400B] hover:underline cursor-pointer"
                   >
                     Click here to be the first to leave a rating
                   </button>

@@ -9,6 +9,7 @@ import {
   Advertisement,
   AdminAuditLog,
   CreatorRating,
+  MatchReview,
 } from "@/types";
 import { DEFAULT_ALLOWED_LOCATIONS } from "@/utils/formatters";
 
@@ -590,6 +591,26 @@ export const initialMatches: Match[] = [
     introduced_at: "2026-09-15T15:00:00Z",
     confirmed_by: "admin@getlinked.today",
   },
+  {
+    id: "match-403",
+    creator_id: "prof-102",
+    creator_name: "Marcus Vance",
+    creator_whatsapp: "+61498112233",
+    creator_niche: "Fitness & Wellness",
+    accommodation_id: "acc-202",
+    accommodation_name: "Salty Palms Surf & Yoga Retreat",
+    accommodation_contact: "Malik Fernando",
+    accommodation_whatsapp: "+94719283746",
+    accommodation_city: "Weligama",
+    request_id: "req-302",
+    match_source: "REQUEST",
+    status: "INTRODUCED",
+    admin_notes: "Introductions completed for October sunrise surf session & wellness stay.",
+    created_at: "2026-09-17T10:00:00Z",
+    confirmed_at: "2026-09-17T10:30:00Z",
+    introduced_at: "2026-09-17T11:00:00Z",
+    confirmed_by: "admin@getlinked.today",
+  },
 ];
 
 export const initialAds: Advertisement[] = [
@@ -668,18 +689,18 @@ export const initialRatings: CreatorRating[] = [
   {
     id: "rate-101",
     creator_id: "prof-101",
-    rating: 9.8,
+    rating: 5.0,
     reviewer_name: "Kasun Jayawardena",
     reviewer_role: "Host / Property Owner",
     property_name: "The Dutch Fort Heritage Villa",
-    comment: "Elena stayed with us in Galle Fort. She delivered two breathtaking 4K reels and multiple stories that garnered over 40,000 views. Incredibly polite, punctual, and respectful of our heritage architecture.",
+    comment: "Elena stayed with us in Galle Fort. Delivered two breathtaking 4K reels and multiple stories that garnered over 40,000 views. Incredibly polite, punctual, and respectful of our heritage architecture.",
     is_admin: false,
     created_at: "2026-09-18T11:30:00Z",
   },
   {
     id: "rate-102",
     creator_id: "prof-101",
-    rating: 9.9,
+    rating: 5.0,
     reviewer_name: "GetLinked Editorial Team",
     reviewer_role: "Platform Admin",
     comment: "Verified high-tier cinematic standards, authentic follower engagement, and stellar communication during property hosting.",
@@ -689,7 +710,7 @@ export const initialRatings: CreatorRating[] = [
   {
     id: "rate-201",
     creator_id: "prof-102",
-    rating: 9.6,
+    rating: 4.8,
     reviewer_name: "Weligama Surf Club & Suites",
     reviewer_role: "Host / Property Owner",
     property_name: "Weligama Surf Club",
@@ -698,19 +719,9 @@ export const initialRatings: CreatorRating[] = [
     created_at: "2026-09-20T14:10:00Z",
   },
   {
-    id: "rate-202",
-    creator_id: "prof-102",
-    rating: 9.7,
-    reviewer_name: "GetLinked Admin",
-    reviewer_role: "Platform Admin",
-    comment: "Verified surf & wellness niche with strong Australian traveler audience and high engagement rate.",
-    is_admin: true,
-    created_at: "2026-09-21T08:45:00Z",
-  },
-  {
     id: "rate-301",
     creator_id: "prof-103",
-    rating: 9.8,
+    rating: 5.0,
     reviewer_name: "Cinnamon Colombo Lounge",
     reviewer_role: "Host / Property Owner",
     property_name: "Cinnamon Colombo Lounge",
@@ -721,7 +732,7 @@ export const initialRatings: CreatorRating[] = [
   {
     id: "rate-401",
     creator_id: "prof-104",
-    rating: 9.5,
+    rating: 4.7,
     reviewer_name: "Ella Mist Valley Villa",
     reviewer_role: "Host / Property Owner",
     property_name: "Ella Mist Valley Villa",
@@ -732,13 +743,74 @@ export const initialRatings: CreatorRating[] = [
   {
     id: "rate-501",
     creator_id: "prof-105",
-    rating: 9.9,
+    rating: 5.0,
     reviewer_name: "Sigiriya Eco Forest Lodge",
     reviewer_role: "Host / Property Owner",
     property_name: "Sigiriya Eco Forest Lodge",
     comment: "Wonderful family and inspiring travel storytellers. Showcased our sustainable eco villa and wildlife excursions perfectly.",
     is_admin: false,
     created_at: "2026-09-24T12:00:00Z",
+  },
+];
+
+export const initialMatchReviews: MatchReview[] = [
+  {
+    id: "mrev-401",
+    match_id: "match-401",
+    creator_id: "prof-101",
+    creator_name: "Elena Rostova",
+    accommodation_id: "acc-201",
+    accommodation_name: "The Dutch Fort Heritage Villa",
+    status: "REVEALED",
+    property_review_of_creator: {
+      score: 5,
+      feedback: "Arrived punctually, showed exceptional respect for our heritage property, and delivered gorgeous 4K reels.",
+      criteria: ["Reliability", "Content Quality", "Showed up as agreed"],
+      submitted_at: "2026-09-20T10:00:00Z",
+      submitted_by: "Kasun Jayawardena (Host)",
+    },
+    creator_review_of_property: {
+      score: 5,
+      feedback: "Colonial courtyard was breathtaking, the staff was extremely warm, and breakfast exceeded all expectations.",
+      criteria: ["As described", "Hospitality", "Smooth experience"],
+      submitted_at: "2026-09-20T14:30:00Z",
+      submitted_by: "Elena Rostova",
+    },
+    revealed_at: "2026-09-20T14:30:00Z",
+    created_at: "2026-09-18T10:00:00Z",
+    updated_at: "2026-09-20T14:30:00Z",
+  },
+  {
+    id: "mrev-402",
+    match_id: "match-402",
+    creator_id: "prof-104",
+    creator_name: "Camille Dubois",
+    accommodation_id: "acc-203",
+    accommodation_name: "Nine Arches Mist Estate",
+    status: "PROPERTY_ONLY", // Sealed double-blind! Creator hasn't submitted yet
+    property_review_of_creator: {
+      score: 5,
+      feedback: "Camille was a delight to host. Beautiful photography of the morning mist over the tea fields.",
+      criteria: ["Reliability", "Content Quality", "Showed up as agreed"],
+      submitted_at: "2026-09-24T11:00:00Z",
+      submitted_by: "Anoma Senanayake (Host)",
+    },
+    creator_review_of_property: undefined,
+    created_at: "2026-09-22T09:00:00Z",
+    updated_at: "2026-09-24T11:00:00Z",
+  },
+  {
+    id: "mrev-403",
+    match_id: "match-403",
+    creator_id: "prof-102",
+    creator_name: "Marcus Vance",
+    accommodation_id: "acc-202",
+    accommodation_name: "Salty Palms Surf & Yoga Retreat",
+    status: "PENDING", // Neither side submitted yet
+    property_review_of_creator: undefined,
+    creator_review_of_property: undefined,
+    created_at: "2026-09-25T08:00:00Z",
+    updated_at: "2026-09-25T08:00:00Z",
   },
 ];
 

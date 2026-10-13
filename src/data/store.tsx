@@ -14,6 +14,10 @@ import {
   MatchStatus,
   RequestStatus,
   CreatorRating,
+  MatchReview,
+  RatingStatsResult,
+  DoubleBlindReviewStatus,
+  CollabRatingSubmission,
 } from "@/types";
 import {
   initialApplications,
@@ -25,6 +29,7 @@ import {
   initialAds,
   initialAuditLogs,
   initialRatings,
+  initialMatchReviews,
 } from "./mockStore";
 import { cleanWhatsAppNumber } from "@/utils/whatsapp";
 import { DEFAULT_ALLOWED_LOCATIONS, isEatVenue } from "@/utils/formatters";
@@ -163,6 +168,7 @@ interface StoreContextType {
   ads: Advertisement[];
   auditLogs: AdminAuditLog[];
   ratings: CreatorRating[];
+  matchReviews: MatchReview[];
   adminUser: { email: string; name: string; role: string } | null;
   authUser: AuthUser | null;
   isAuthLoading: boolean;
@@ -231,17 +237,29 @@ interface StoreContextType {
     submittedAt?: string;
   };
 
-  // Ratings actions
+  // Direct Community & Admin Ratings actions
   addCreatorRating: (
     rating: Omit<CreatorRating, "id" | "created_at">
   ) => Promise<CreatorRating>;
   deleteCreatorRating: (ratingId: string) => Promise<void>;
-  getCreatorRatingStats: (creatorId: string) => {
-    average: number;
-    count: number;
-    adminRating?: CreatorRating;
-    ratings: CreatorRating[];
-  };
+
+  // Double-Blind Post-Collaboration Ratings actions
+  logMatchRating: (
+    matchId: string,
+    side: "property" | "creator",
+    rating: {
+      score: number;
+      feedback: string;
+      criteria?: string[];
+      submittedBy?: string;
+    }
+  ) => Promise<void>;
+  revealMatchReview: (matchId: string) => Promise<void>;
+  deleteMatchReview?: (reviewId: string) => Promise<void>;
+
+  // Rating Statistics with 3+ Minimum Credibility Threshold
+  getCreatorRatingStats: (creatorId: string) => RatingStatsResult;
+  getPropertyRatingStats: (accommodationId: string) => RatingStatsResult;
 
   // Reset demo data
   resetDemoData: () => void;
@@ -265,6 +283,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [ads, setAds] = useState<Advertisement[]>(initialAds);
   const [auditLogs, setAuditLogs] = useState<AdminAuditLog[]>(initialAuditLogs);
   const [ratings, setRatings] = useState<CreatorRating[]>(initialRatings);
+  const [matchReviews, setMatchReviews] = useState<MatchReview[]>(initialMatchReviews);
   const [adminUser, setAdminUser] = useState<{ email: string; name: string; role: string } | null>(null);
   const [authUser, setAuthUser] = useState<AuthUser | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
@@ -462,6 +481,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           if (parsed.ads?.length) setAds(parsed.ads);
           if (parsed.auditLogs?.length) setAuditLogs(parsed.auditLogs);
           if (parsed.ratings?.length) setRatings(parsed.ratings);
+          if (parsed.matchReviews?.length) setMatchReviews(parsed.matchReviews);
         }
       }
     } catch (err) {
@@ -514,6 +534,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           ads,
           auditLogs,
           ratings,
+          matchReviews,
         })
       );
     } catch {
@@ -530,6 +551,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     ads,
     auditLogs,
     ratings,
+    matchReviews,
   ]);
 
   const loginAdmin = (password: string): boolean => {
@@ -1166,36 +1188,302 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setAds(initialAds);
     setAuditLogs(initialAuditLogs);
     setRatings(initialRatings);
+    setMatchReviews(initialMatchReviews);
     if (typeof window !== "undefined") {
       localStorage.removeItem(STORAGE_KEY);
     }
   };
 
-  const getCreatorRatingStats = useCallback((creatorId: string) => {
-    // Match by creator profile id or application id
-    const matchedProfile = profiles.find((p) => p.id === creatorId || p.application_id === creatorId);
-    const validIds = new Set<string>([creatorId]);
-    if (matchedProfile) {
-      validIds.add(matchedProfile.id);
-      validIds.add(matchedProfile.application_id);
+  /**
+   * Double-Blind Post-Collaboration Reviews
+   * Property rates Creator (reliability, content quality, showed up as agreed)
+   * Creator rates Property (as described, hospitality, smooth experience)
+   * Neither sees the other's review until both have submitted (Airbnb / Uber model)
+   */
+  const logMatchRating = async (
+    matchId: string,
+    side: "property" | "creator",
+    ratingData: {
+      score: number;
+      feedback: string;
+      criteria?: string[];
+      submittedBy?: string;
+    }
+  ) => {
+    const targetMatch = matches.find((m) => m.id === matchId);
+    const existingRev = matchReviews.find((r) => r.match_id === matchId);
+
+    const submission: CollabRatingSubmission = {
+      score: Math.min(5, Math.max(1, Number(ratingData.score))),
+      feedback: ratingData.feedback.trim(),
+      criteria: ratingData.criteria || [],
+      submitted_at: new Date().toISOString(),
+      submitted_by: ratingData.submittedBy,
+    };
+
+    let updatedReviews: MatchReview[];
+
+    if (existingRev) {
+      let newStatus: DoubleBlindReviewStatus = existingRev.status;
+      let newPropRev = existingRev.property_review_of_creator;
+      let newCreatorRev = existingRev.creator_review_of_property;
+      let revealedAt = existingRev.revealed_at;
+
+      if (side === "property") {
+        newPropRev = submission;
+        if (newCreatorRev) {
+          // Both submitted! Double-blind unlocks and reveals both
+          newStatus = "REVEALED";
+          revealedAt = revealedAt || new Date().toISOString();
+        } else {
+          newStatus = "PROPERTY_ONLY";
+        }
+      } else {
+        newCreatorRev = submission;
+        if (newPropRev) {
+          // Both submitted! Double-blind unlocks and reveals both
+          newStatus = "REVEALED";
+          revealedAt = revealedAt || new Date().toISOString();
+        } else {
+          newStatus = "CREATOR_ONLY";
+        }
+      }
+
+      const updatedRecord: MatchReview = {
+        ...existingRev,
+        property_review_of_creator: newPropRev,
+        creator_review_of_property: newCreatorRev,
+        status: newStatus,
+        revealed_at: revealedAt,
+        updated_at: new Date().toISOString(),
+      };
+
+      updatedReviews = matchReviews.map((r) => (r.id === existingRev.id ? updatedRecord : r));
+    } else {
+      const isProp = side === "property";
+      const newRecord: MatchReview = {
+        id: `mrev-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+        match_id: matchId,
+        creator_id: targetMatch?.creator_id || "",
+        creator_name: targetMatch?.creator_name || "Creator",
+        accommodation_id: targetMatch?.accommodation_id || "",
+        accommodation_name: targetMatch?.accommodation_name || "Property",
+        property_review_of_creator: isProp ? submission : undefined,
+        creator_review_of_property: !isProp ? submission : undefined,
+        status: isProp ? "PROPERTY_ONLY" : "CREATOR_ONLY",
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+      updatedReviews = [newRecord, ...matchReviews];
     }
 
-    const matchedRatings = ratings.filter((r) => validIds.has(r.creator_id));
-    const count = matchedRatings.length;
-    if (count === 0) {
-      return { average: 0, count: 0, ratings: [] };
-    }
-    const sum = matchedRatings.reduce((acc, curr) => acc + curr.rating, 0);
-    const average = Number((sum / count).toFixed(1));
-    const adminRating = matchedRatings.find((r) => r.is_admin);
-    return { average, count, adminRating, ratings: matchedRatings };
-  }, [ratings, profiles]);
+    setMatchReviews(updatedReviews);
+
+    addAuditLog(
+      side === "property" ? "COLLAB_PROPERTY_REVIEW_LOGGED" : "COLLAB_CREATOR_REVIEW_LOGGED",
+      "MatchReview",
+      matchId,
+      undefined,
+      `${ratingData.score}/5 ⭐`,
+      `Logged post-collaboration rating (${side}): ${ratingData.score}⭐ - "${ratingData.feedback.slice(0, 45)}"`
+    );
+  };
+
+  const revealMatchReview = async (matchId: string) => {
+    setMatchReviews((prev) =>
+      prev.map((r) =>
+        r.match_id === matchId
+          ? {
+              ...r,
+              status: "REVEALED",
+              revealed_at: r.revealed_at || new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+            }
+          : r
+      )
+    );
+    addAuditLog(
+      "COLLAB_REVIEW_REVEALED_MANUALLY",
+      "MatchReview",
+      matchId,
+      undefined,
+      "REVEALED",
+      `Admin unsealed double-blind reviews for match ${matchId}`
+    );
+  };
+
+  const deleteMatchReview = async (reviewId: string) => {
+    setMatchReviews((prev) => prev.filter((r) => r.id !== reviewId && r.match_id !== reviewId));
+  };
+
+  /**
+   * Creator Rating Stats with Credibility Threshold (3+ Rule)
+   * Enforces: No public average score is displayed until a creator has 3+ verified ratings.
+   * Below 3 ratings: score is hidden (average = 0, meetsThreshold = false) to prevent fake signals.
+   */
+  const getCreatorRatingStats = useCallback(
+    (creatorId: string): RatingStatsResult => {
+      const THRESHOLD = 3;
+      const matchedProfile = profiles.find((p) => p.id === creatorId || p.application_id === creatorId);
+      const validIds = new Set<string>([creatorId]);
+      if (matchedProfile) {
+        validIds.add(matchedProfile.id);
+        validIds.add(matchedProfile.application_id);
+      }
+
+      // 1. Direct verified ratings
+      const matchedDirectRatings = ratings.filter((r) => validIds.has(r.creator_id));
+
+      // 2. Revealed double-blind post-collab reviews
+      const revealedMatchCollabs = matchReviews
+        .filter(
+          (m) =>
+            m.status === "REVEALED" &&
+            (validIds.has(m.creator_id) || (matchedProfile && m.creator_name === matchedProfile.display_name)) &&
+            !!m.property_review_of_creator
+        )
+        .map((m) => ({
+          id: m.id,
+          match_id: m.match_id,
+          partner_name: m.accommodation_name,
+          score: m.property_review_of_creator!.score,
+          feedback: m.property_review_of_creator!.feedback,
+          criteria: m.property_review_of_creator!.criteria,
+          submitted_at: m.property_review_of_creator!.submitted_at,
+          target_type: "creator" as const,
+        }));
+
+      const totalCount = matchedDirectRatings.length + revealedMatchCollabs.length;
+      const meetsThreshold = totalCount >= THRESHOLD;
+
+      // Calculate criteria breakdowns
+      const criteriaSums: Record<string, { sum: number; count: number }> = {};
+      revealedMatchCollabs.forEach((item) => {
+        if (item.criteria && item.criteria.length > 0) {
+          item.criteria.forEach((crit) => {
+            if (!criteriaSums[crit]) criteriaSums[crit] = { sum: 0, count: 0 };
+            criteriaSums[crit].sum += item.score;
+            criteriaSums[crit].count += 1;
+          });
+        }
+      });
+
+      const criteriaAverages: Record<string, number> = {};
+      Object.keys(criteriaSums).forEach((k) => {
+        criteriaAverages[k] = Number((criteriaSums[k].sum / criteriaSums[k].count).toFixed(1));
+      });
+
+      if (totalCount === 0) {
+        return {
+          average: 0,
+          count: 0,
+          meetsThreshold: false,
+          threshold: THRESHOLD,
+          ratings: [],
+          revealedCollabs: [],
+          criteriaAverages: {},
+        };
+      }
+
+      const totalSum =
+        matchedDirectRatings.reduce((acc, curr) => acc + curr.rating, 0) +
+        revealedMatchCollabs.reduce((acc, curr) => acc + curr.score, 0);
+
+      // Average score is ONLY exposed if the 3+ reviews threshold is met!
+      const average = meetsThreshold ? Number((totalSum / totalCount).toFixed(1)) : 0;
+      const adminRating = matchedDirectRatings.find((r) => r.is_admin);
+
+      return {
+        average,
+        count: totalCount,
+        meetsThreshold,
+        threshold: THRESHOLD,
+        adminRating,
+        ratings: matchedDirectRatings,
+        revealedCollabs: revealedMatchCollabs,
+        criteriaAverages,
+      };
+    },
+    [ratings, matchReviews, profiles]
+  );
+
+  /**
+   * Property Rating Stats with Credibility Threshold (3+ Rule)
+   * Same Airbnb/Uber style double-blind aggregation for stays and restaurants.
+   */
+  const getPropertyRatingStats = useCallback(
+    (propertyIdOrName: string): RatingStatsResult => {
+      const THRESHOLD = 3;
+      const targetAcc = accommodations.find(
+        (a) => a.id === propertyIdOrName || a.accommodation_name.toLowerCase() === propertyIdOrName.toLowerCase()
+      );
+      const validNames = new Set<string>([propertyIdOrName.toLowerCase()]);
+      const validIds = new Set<string>([propertyIdOrName]);
+      if (targetAcc) {
+        validNames.add(targetAcc.accommodation_name.toLowerCase());
+        validIds.add(targetAcc.id);
+      }
+
+      // Creator reviews of property from revealed double-blind matches
+      const revealedCollabs = matchReviews
+        .filter(
+          (m) =>
+            m.status === "REVEALED" &&
+            (validIds.has(m.accommodation_id) || validNames.has(m.accommodation_name.toLowerCase())) &&
+            !!m.creator_review_of_property
+        )
+        .map((m) => ({
+          id: m.id,
+          match_id: m.match_id,
+          partner_name: m.creator_name,
+          score: m.creator_review_of_property!.score,
+          feedback: m.creator_review_of_property!.feedback,
+          criteria: m.creator_review_of_property!.criteria,
+          submitted_at: m.creator_review_of_property!.submitted_at,
+          target_type: "property" as const,
+        }));
+
+      const totalCount = revealedCollabs.length;
+      const meetsThreshold = totalCount >= THRESHOLD;
+
+      const criteriaSums: Record<string, { sum: number; count: number }> = {};
+      revealedCollabs.forEach((item) => {
+        if (item.criteria && item.criteria.length > 0) {
+          item.criteria.forEach((crit) => {
+            if (!criteriaSums[crit]) criteriaSums[crit] = { sum: 0, count: 0 };
+            criteriaSums[crit].sum += item.score;
+            criteriaSums[crit].count += 1;
+          });
+        }
+      });
+
+      const criteriaAverages: Record<string, number> = {};
+      Object.keys(criteriaSums).forEach((k) => {
+        criteriaAverages[k] = Number((criteriaSums[k].sum / criteriaSums[k].count).toFixed(1));
+      });
+
+      const totalSum = revealedCollabs.reduce((acc, curr) => acc + curr.score, 0);
+      const average = meetsThreshold && totalCount > 0 ? Number((totalSum / totalCount).toFixed(1)) : 0;
+
+      return {
+        average,
+        count: totalCount,
+        meetsThreshold,
+        threshold: THRESHOLD,
+        ratings: [],
+        revealedCollabs,
+        criteriaAverages,
+      };
+    },
+    [matchReviews, accommodations]
+  );
 
   const addCreatorRating = async (
     ratingData: Omit<CreatorRating, "id" | "created_at">
   ): Promise<CreatorRating> => {
     const newRating: CreatorRating = {
       ...ratingData,
+      rating: Math.min(5, Math.max(1, Number(ratingData.rating))),
       id: `rate-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
       created_at: new Date().toISOString(),
     };
@@ -1210,8 +1498,8 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       "CreatorRating",
       newRating.id,
       undefined,
-      `${newRating.rating}/10`,
-      `${newRating.reviewer_name} (${newRating.reviewer_role}) rated creator ${newRating.creator_id}: ${newRating.rating}/10`
+      `${newRating.rating}/5 ⭐`,
+      `${newRating.reviewer_name} (${newRating.reviewer_role}) rated creator ${newRating.creator_id}: ${newRating.rating}/5 ⭐`
     );
 
     return newRating;
@@ -1243,6 +1531,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         ads,
         auditLogs,
         ratings,
+        matchReviews,
         adminUser,
         authUser,
         isAuthLoading,
@@ -1275,7 +1564,11 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         resetDemoData,
         addCreatorRating,
         deleteCreatorRating,
+        logMatchRating,
+        revealMatchReview,
+        deleteMatchReview,
         getCreatorRatingStats,
+        getPropertyRatingStats,
       }}
     >
       {children}

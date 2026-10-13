@@ -226,6 +226,7 @@ export const STAY_VENUE_TYPES = [
   "Hotel",
   "Villa",
   "Guesthouse",
+  "Restaurant",
   "Resort",
   "Boutique Hotel",
   "Eco Lodge",

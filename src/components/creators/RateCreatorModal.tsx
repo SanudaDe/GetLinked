@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Star, ShieldCheck, X, Check, Award, Building, Sparkles } from "lucide-react";
+import { Star, ShieldCheck, X, Check, Award, Building, Sparkles, Info } from "lucide-react";
 import { useStore } from "@/data/store";
 import { ReviewerRole } from "@/types";
 
@@ -20,7 +20,7 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
 }) => {
   const { addCreatorRating, adminUser } = useStore();
 
-  const [ratingScore, setRatingScore] = useState<number>(9.5);
+  const [ratingScore, setRatingScore] = useState<number>(5);
   const [reviewerName, setReviewerName] = useState("");
   const [reviewerRole, setReviewerRole] = useState<ReviewerRole>(
     adminUser ? "Platform Admin" : "Host / Property Owner"
@@ -53,15 +53,24 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
     setTimeout(() => {
       setSubmittedSuccess(false);
       onClose();
-    }, 1600);
+    }, 1800);
   };
 
   const getScoreLabel = (score: number) => {
-    if (score >= 9.8) return "World-Class / Flawless";
-    if (score >= 9.0) return "Superb / Exceptional";
-    if (score >= 8.0) return "Very Good / High Quality";
-    if (score >= 7.0) return "Good / Reliable";
-    return "Average";
+    switch (score) {
+      case 5:
+        return "Exceptional / Flawless";
+      case 4:
+        return "Very Good / Reliable";
+      case 3:
+        return "Satisfactory / As Agreed";
+      case 2:
+        return "Below Expectations";
+      case 1:
+        return "Poor Experience";
+      default:
+        return "Good";
+    }
   };
 
   return (
@@ -71,7 +80,7 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
         <div className="relative px-6 pt-6 pb-4 border-b border-neutral-100 dark:border-neutral-800 flex items-center justify-between">
           <div className="space-y-1">
             <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#D7400B] block">
-              Authentic Evaluation
+              Verified Rating
             </span>
             <h3 className="font-serif text-xl sm:text-2xl font-normal text-neutral-900 dark:text-white">
               Rate {creatorName}
@@ -80,7 +89,7 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="p-2 text-neutral-400 hover:text-neutral-700 dark:hover:text-white rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+            className="p-2 text-neutral-400 hover:text-neutral-700 dark:hover:text-white rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -92,45 +101,57 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
               <Check className="w-7 h-7" />
             </div>
             <h4 className="font-serif text-2xl font-light text-neutral-900 dark:text-white">
-              Rating Published!
+              Rating Logged!
             </h4>
             <p className="text-xs text-neutral-600 dark:text-neutral-300 max-w-sm mx-auto leading-relaxed">
-              Thank you for contributing authentic feedback. Your review has updated {creatorName}&apos;s verified score.
+              Thank you for providing honest feedback. Verified ratings contribute to {creatorName}&apos;s collaboration track record.
             </p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="p-6 space-y-5 max-h-[80vh] overflow-y-auto">
-            {/* Score Selector (1 to 10) */}
-            <div className="space-y-3">
+          <form onSubmit={handleSubmit} className="p-6 space-y-5 max-h-[82vh] overflow-y-auto">
+            {/* Authenticity Threshold Notice */}
+            <div className="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60 flex items-start gap-2.5 text-xs text-amber-900 dark:text-amber-200">
+              <Info className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+              <div className="space-y-0.5 leading-relaxed">
+                <strong>No Fake Signals:</strong> Public average star scores only display once a creator earns 3+ verified reviews. Until then, ratings build behind the scenes to keep data credible.
+              </div>
+            </div>
+
+            {/* Score Selector (1 to 5 Stars Airbnb / Uber style) */}
+            <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <label className="text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider">
-                  Rating Score (/ 10) *
+                  Rating (1–5 Stars) *
                 </label>
                 <div className="flex items-center gap-1.5 text-xs font-bold text-[#D7400B]">
                   <Star className="w-4 h-4 fill-[#D7400B] text-[#D7400B]" />
-                  <span className="text-base font-serif">{ratingScore.toFixed(1)}</span>
-                  <span className="text-neutral-400 font-normal text-[11px]">
+                  <span className="text-base font-serif">{ratingScore} / 5</span>
+                  <span className="text-neutral-500 dark:text-neutral-400 font-normal text-[11px]">
                     • {getScoreLabel(ratingScore)}
                   </span>
                 </div>
               </div>
 
-              {/* Number Buttons 5.0 to 10.0 */}
-              <div className="grid grid-cols-6 sm:grid-cols-11 gap-1.5">
-                {[5, 6, 7, 7.5, 8, 8.5, 9, 9.3, 9.5, 9.8, 10].map((score) => (
-                  <button
-                    key={score}
-                    type="button"
-                    onClick={() => setRatingScore(score)}
-                    className={`py-2 rounded-xl text-xs font-bold transition-all ${
-                      ratingScore === score
-                        ? "bg-[#D7400B] text-white shadow-md scale-105"
-                        : "bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800 border border-transparent dark:border-neutral-800"
-                    }`}
-                  >
-                    {score}
-                  </button>
-                ))}
+              {/* 1 to 5 Star Buttons */}
+              <div className="grid grid-cols-5 gap-2">
+                {[1, 2, 3, 4, 5].map((score) => {
+                  const isSelected = ratingScore === score;
+                  return (
+                    <button
+                      key={score}
+                      type="button"
+                      onClick={() => setRatingScore(score)}
+                      className={`py-3 rounded-xl text-xs font-bold transition-all flex flex-col items-center justify-center gap-1 cursor-pointer ${
+                        isSelected
+                          ? "bg-amber-500 text-white shadow-md scale-102 border-amber-600"
+                          : "bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800 border border-transparent dark:border-neutral-800"
+                      }`}
+                    >
+                      <Star className={`w-4 h-4 ${score <= ratingScore ? "fill-current" : ""}`} />
+                      <span>{score} ⭐</span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -187,15 +208,15 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
               />
             </div>
 
-            {/* Review Comment */}
+            {/* Review Comment (One line / concise) */}
             <div>
               <label className="block text-[11px] font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-1.5">
-                Detailed Feedback & Experience *
+                Feedback & Experience (One Line) *
               </label>
               <textarea
                 required
                 rows={3}
-                placeholder="Describe your collaboration, punctuality, content quality, or deliverables..."
+                placeholder="e.g. Arrived on time, respected our heritage villa, and produced stunning 4K reels."
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 text-neutral-900 dark:text-white text-xs placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-[#D7400B] transition-colors resize-none"
@@ -223,13 +244,13 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                className="w-1/3 py-3 rounded-xl border border-neutral-200 dark:border-neutral-800 text-xs font-semibold uppercase tracking-wider text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors"
+                className="w-1/3 py-3 rounded-xl border border-neutral-200 dark:border-neutral-800 text-xs font-semibold uppercase tracking-wider text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !comment.trim()}
                 className="w-2/3 py-3 rounded-xl bg-[#D7400B] hover:bg-[#BD3607] text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
               >
                 <Sparkles className="w-3.5 h-3.5" />

@@ -382,7 +382,7 @@ function ListPropertyContent() {
     );
   }
 
-  const isEats = category === "EATS";
+  const isEats = category === "EATS" || isEatVenue(formData.propertyType);
   const venueTypeOptions = isEats ? EATS_VENUE_TYPES : STAY_VENUE_TYPES;
   const offerTypeOptions = isEats ? EATS_OFFER_TYPES : STAY_OFFER_TYPES;
 
@@ -501,9 +501,18 @@ function ListPropertyContent() {
               </label>
               <select
                 value={formData.propertyType}
-                onChange={(e) =>
-                  setFormData({ ...formData, propertyType: e.target.value as PropertyType })
-                }
+                onChange={(e) => {
+                  const newType = e.target.value as PropertyType;
+                  const isFood = isEatVenue(newType);
+                  setCategory(isFood ? "EATS" : "STAYS");
+                  setFormData((prev) => ({
+                    ...prev,
+                    propertyType: newType,
+                    offerType: isFood
+                      ? (EATS_OFFER_TYPES.includes(prev.offerType as any) ? prev.offerType : "Dinner for Two")
+                      : (STAY_OFFER_TYPES.includes(prev.offerType as any) ? prev.offerType : "Free accommodation + meals"),
+                  }));
+                }}
                 className="w-full px-4 py-3 rounded-lg border border-sand-400 dark:border-neutral-700 bg-sand-50 dark:bg-neutral-900 text-sm focus:outline-none focus:ring-2 focus:ring-teal-900 dark:focus:ring-[#D7400B]"
               >
                 {venueTypeOptions.map((t) => (
