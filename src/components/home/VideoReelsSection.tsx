@@ -1,12 +1,15 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { Volume2, VolumeX, Play, Pause, Maximize2, X, Sparkles } from "lucide-react";
+import { Volume2, VolumeX, Play, Pause, Maximize2, X, ExternalLink } from "lucide-react";
 import { GoogleDrivePlayer } from "@/components/common/GoogleDrivePlayer";
 
 interface ReelItem {
   id: string;
   src: string;
+  driveUrl: string;
+  driveId: string;
+  poster: string;
   title: string;
   location: string;
   creator: string;
@@ -18,16 +21,22 @@ export const VideoReelsSection: React.FC = () => {
   const reels: ReelItem[] = [
     {
       id: "reel-1",
-      src: "https://gpkljpnbgnylcekrcluy.supabase.co/storage/v1/object/public/images/web-bg-video-optimized.mp4",
+      src: "/videos/reel-1.mp4",
+      driveUrl: "https://drive.google.com/file/d/1slXg9JqTjf6U_bpFwyiUCqp9Pn0n3PAc/view?usp=drive_link",
+      driveId: "1slXg9JqTjf6U_bpFwyiUCqp9Pn0n3PAc",
+      poster: "/images/reel-1-thumb.jpg",
       title: "Coastal Villa Awakening",
       location: "Thalpe, Southern Province",
       creator: "Elena Rostova",
       handle: "@elenatravels",
-      tag: "FEATURED STAY REEL",
+      tag: "CURATED PARTNERSHIP",
     },
     {
       id: "reel-2",
-      src: "https://gpkljpnbgnylcekrcluy.supabase.co/storage/v1/object/public/images/web-bg-video-optimized.mp4",
+      src: "/videos/reel-2.mp4",
+      driveUrl: "https://drive.google.com/file/d/1CFSnaRrPgJZP_LKkhcjB_5dvUGe1i0W2/view?usp=drive_link",
+      driveId: "1CFSnaRrPgJZP_LKkhcjB_5dvUGe1i0W2",
+      poster: "/images/reel-2-thumb.jpg",
       title: "Heritage Courtyard Escape",
       location: "Galle Fort, Sri Lanka",
       creator: "Marcus Vance",
@@ -45,6 +54,10 @@ export const VideoReelsSection: React.FC = () => {
     "reel-1": true,
     "reel-2": true,
   });
+  const [durations, setDurations] = useState<{ [key: string]: string }>({
+    "reel-1": "0:15 HD",
+    "reel-2": "0:15 HD",
+  });
   const [modalVideo, setModalVideo] = useState<ReelItem | null>(null);
 
   const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
@@ -54,7 +67,7 @@ export const VideoReelsSection: React.FC = () => {
     if (!video) return;
 
     if (video.paused) {
-      video.play();
+      video.play().catch(() => {});
       setIsPlaying((prev) => ({ ...prev, [id]: true }));
     } else {
       video.pause();
@@ -95,24 +108,43 @@ export const VideoReelsSection: React.FC = () => {
               <div className="relative aspect-[16/9] bg-[#1A3739] dark:bg-black overflow-hidden">
                 <video
                   ref={(el) => {
+                    if (el) {
+                      el.defaultMuted = true;
+                      el.muted = isMuted[reel.id] ?? true;
+                    }
                     videoRefs.current[reel.id] = el;
                   }}
-                  src={reel.src}
                   autoPlay
                   loop
                   muted
                   playsInline
+                  poster={reel.poster}
+                  onLoadedMetadata={(e) => {
+                    const v = e.currentTarget;
+                    if (v.duration && !isNaN(v.duration)) {
+                      const mins = Math.floor(v.duration / 60);
+                      const secs = Math.floor(v.duration % 60);
+                      setDurations((prev) => ({
+                        ...prev,
+                        [reel.id]: `${mins}:${secs < 10 ? "0" : ""}${secs} HD`,
+                      }));
+                    }
+                  }}
                   className="w-full h-full object-cover cursor-pointer"
                   onClick={() => togglePlay(reel.id)}
                   aria-label={`${reel.title} video`}
-                />
+                >
+                  <source src={reel.src} type="video/mp4" />
+                  <source src={`/api/drive/stream?id=${reel.driveId}`} type="video/mp4" />
+                  <source src={`https://drive.google.com/uc?export=download&id=${reel.driveId}`} type="video/mp4" />
+                </video>
 
                 {/* Subtle Gradient Overlays */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
 
                 {/* Top Badge Overlay */}
                 <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
-                  <span className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-md text-[10px] uppercase font-semibold tracking-[0.2em] text-white border border-white/20">
+                  <span className="px-3.5 py-1.5 rounded-full bg-black/50 backdrop-blur-md text-[11px] uppercase font-semibold tracking-[0.2em] text-white border border-white/20 shadow-sm">
                     {reel.tag}
                   </span>
                 </div>
@@ -154,8 +186,8 @@ export const VideoReelsSection: React.FC = () => {
                     </button>
                   </div>
 
-                  <span className="text-[11px] font-mono text-white/90 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-full border border-white/10">
-                    0:10 HD
+                  <span className="text-[12px] font-mono font-medium text-white/95 bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full border border-white/15">
+                    {durations[reel.id] || "0:15 HD"}
                   </span>
                 </div>
               </div>
@@ -197,18 +229,29 @@ export const VideoReelsSection: React.FC = () => {
                 <h4 className="font-serif text-lg">{modalVideo.title}</h4>
                 <p className="text-xs text-white/70">{modalVideo.location} • {modalVideo.creator}</p>
               </div>
-              <button
-                onClick={() => setModalVideo(null)}
-                className="p-2 rounded-full hover:bg-white/10 text-white transition-colors"
-                aria-label="Close video player"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <div className="flex items-center gap-3">
+                <a
+                  href={modalVideo.driveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-xs font-sans font-medium tracking-wide text-white transition-colors flex items-center gap-1.5 border border-white/20"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>Open Drive</span>
+                </a>
+                <button
+                  onClick={() => setModalVideo(null)}
+                  className="p-2 rounded-full hover:bg-white/10 text-white transition-colors"
+                  aria-label="Close video player"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
             </div>
 
             <div className="relative aspect-[16/9] bg-black">
               <GoogleDrivePlayer
-                url={modalVideo.src}
+                url={modalVideo.driveUrl || modalVideo.src}
                 title={`${modalVideo.title} — ${modalVideo.creator}`}
                 aspectRatio="16/9"
                 autoPlay
