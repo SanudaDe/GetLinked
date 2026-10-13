@@ -99,31 +99,31 @@ export const Hero: React.FC = () => {
           </h1>
 
           {/* Subtitle */}
-          <p className="mt-5 text-[16px] text-[#1A3739] dark:text-neutral-200 max-w-xl font-medium leading-relaxed">
+          <p className="mt-6 text-[22px] sm:text-[26px] lg:text-[28px] text-[#1A3739] dark:text-neutral-100 max-w-2xl font-normal leading-relaxed">
             We bring Sri Lanka&apos;s finest stays together with the voices worth trusting with them.
           </p>
 
           {/* Dual CTAs */}
-          <div className="flex items-center gap-4 mt-8 flex-wrap">
+          <div className="flex items-center gap-4 mt-9 flex-wrap">
             <Link
               href="/creators"
-              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#D7400B] hover:bg-[#BD3607] text-white text-[16px] font-semibold tracking-wider shadow-md hover:shadow-lg transition-all duration-200 group"
+              className="inline-flex items-center gap-3 px-9 py-4 rounded-full bg-[#D7400B] hover:bg-[#BD3607] text-white text-[17px] sm:text-[18px] font-sans font-semibold tracking-wider shadow-md hover:shadow-lg transition-all duration-200 group"
             >
               <span>Find Creators</span>
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="w-4.5 h-4.5 transition-transform group-hover:translate-x-1" />
             </Link>
 
             <Link
               href="/list-property"
-              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#1A3739] dark:bg-neutral-800 hover:bg-[#152E30] dark:hover:bg-neutral-700 text-white text-[16px] font-semibold tracking-wider border border-[#1A3739] dark:border-neutral-700 shadow-sm hover:shadow-md transition-all duration-200 group"
+              className="inline-flex items-center gap-3 px-9 py-4 rounded-full bg-[#1A3739] dark:bg-neutral-800 hover:bg-[#152E30] dark:hover:bg-neutral-700 text-white text-[17px] sm:text-[18px] font-sans font-semibold tracking-wider border border-[#1A3739] dark:border-neutral-700 shadow-sm hover:shadow-md transition-all duration-200 group"
             >
               <span>List Your Stay</span>
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="w-4.5 h-4.5 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
 
           {/* Trust Line */}
-          <p className="mt-8 text-[16px] text-[#1A3739] dark:text-neutral-200 tracking-wide font-medium leading-relaxed">
+          <p className="mt-9 text-[18px] sm:text-[20px] text-[#1A3739] dark:text-neutral-200 tracking-wide font-normal leading-relaxed">
             Every introduction made by hand. Nothing rushed, nothing automated.
           </p>
         </div>
