@@ -106,12 +106,6 @@ export const Hero: React.FC = () => {
             </span>
           </h1>
 
-          {/* Subtitle */}
-          <p className="mt-5 sm:mt-6 text-[22px] sm:text-[26px] lg:text-[20px] text-[#1A3739] dark:text-neutral-100 max-w-2xl font-normal leading-relaxed">
-            Real places through the creator&apos;s lens.
-            Watch recent visual collaborations captured by verified creators at distinctive boutique villas and standout kitchens across Sri Lanka.
-          </p>
-
           {/* Dual CTAs */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4 mt-8 sm:mt-9">
             <Link
@@ -130,6 +124,11 @@ export const Hero: React.FC = () => {
               <ArrowRight className="w-4.5 h-4.5 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
+
+          {/* Line after CTAs */}
+          <p className="mt-7 sm:mt-9 text-[18px] sm:text-[20px] lg:text-[22px] text-[#1A3739] dark:text-neutral-200 font-normal leading-relaxed max-w-2xl">
+            Real places through the creator&apos;s lens. Watch recent visual collaborations captured by verified creators at distinctive boutique villas and standout kitchens across Sri Lanka.
+          </p>
         </div>
       </div>
 
