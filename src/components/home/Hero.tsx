@@ -89,18 +89,26 @@ export const Hero: React.FC = () => {
           {/* Kicker / Tag */}
           <div className="flex items-center gap-3 mb-5">
             <span className="text-[16px] font-bold uppercase tracking-[0.24em] text-[#D7400B] drop-shadow-xs">
-              REAL CREATORS. VERIFIED STAYS.
+              An island tells its story best through the people who stay.
+              We bring Sri Lanka&apos;s finest stays and kitchens together with the voices worth trusting with them.
             </span>
           </div>
 
           {/* Editorial Display Headline */}
-          <h1 className="font-serif text-3xl sm:text-5xl lg:text-[68px] font-normal tracking-tight text-[#1A3739] dark:text-white leading-[1.14]">
-            An island tells its story best through the people who stay.
+          <h1 className="font-serif text-3xl sm:text-5xl lg:text-[40px] font-normal tracking-tight text-[#1A3739] dark:text-white leading-[1.25]">
+            People.
+            <br />
+            Places.
+            <br />
+            Possibilities.
+            <br />
+            Travel collaborations should begin with the right fit. Get Linked brings verified creators and distinctive places together, making it easier to discover, connect and create something worth sharing.
           </h1>
 
           {/* Subtitle */}
-          <p className="mt-5 sm:mt-6 text-[22px] sm:text-[26px] lg:text-[28px] text-[#1A3739] dark:text-neutral-100 max-w-2xl font-normal leading-relaxed">
-            We bring Sri Lanka&apos;s finest stays and kitchens together with the voices worth trusting with them.
+          <p className="mt-5 sm:mt-6 text-[22px] sm:text-[26px] lg:text-[20px] text-[#1A3739] dark:text-neutral-100 max-w-2xl font-normal leading-relaxed">
+            Real places through the creator&apos;s lens.
+            Watch recent visual collaborations captured by verified creators at distinctive boutique villas and standout kitchens across Sri Lanka.
           </p>
 
           {/* Dual CTAs */}
