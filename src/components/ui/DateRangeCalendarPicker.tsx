@@ -391,36 +391,36 @@ export const DateRangeCalendarPicker: React.FC<DateRangeCalendarPickerProps> = (
             : "border-sand-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:border-teal-800 dark:hover:border-neutral-700 hover:bg-sand-50/50 dark:hover:bg-neutral-800"
         }`}
       >
-        <div className="flex items-center gap-2.5 min-w-0">
+        <div className="flex items-center gap-3 min-w-0">
           <div
-            className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+            className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
               localStart && localEnd
-                ? "bg-sinopia text-white shadow-xs"
-                : "bg-sand-100 dark:bg-neutral-800 text-teal-900 dark:text-teal-400 group-hover:bg-sand-200 dark:group-hover:bg-neutral-700"
+                ? "bg-[#D7400B] text-white shadow-xs"
+                : "bg-sand-100 dark:bg-neutral-800 text-[#1A3739] dark:text-teal-400 group-hover:bg-sand-200 dark:group-hover:bg-neutral-700"
             }`}
           >
-            <CalendarIcon className="w-4 h-4" />
+            <CalendarIcon className="w-4.5 h-4.5" />
           </div>
 
           <div className="truncate">
-            <span className="block text-[10px] font-bold uppercase tracking-wider text-ink-500 dark:text-neutral-400">
+            <span className="block text-[12px] sm:text-[13px] font-extrabold uppercase tracking-[0.14em] text-[#1A3739] dark:text-white">
               Travel Window
             </span>
-            <span className="block text-xs font-semibold text-teal-950 dark:text-white truncate">
+            <span className="block text-sm sm:text-[15px] font-bold text-[#1A3739] dark:text-white truncate">
               {localStart && localEnd ? (
                 <>
-                  <span className="font-bold">{formatHumanDate(localStart, false)}</span>
+                  <span className="font-extrabold">{formatHumanDate(localStart, false)}</span>
                   <span className="text-ink-400 dark:text-neutral-500 mx-1.5">—</span>
-                  <span className="font-bold">{formatHumanDate(localEnd, true)}</span>
+                  <span className="font-extrabold">{formatHumanDate(localEnd, true)}</span>
                 </>
               ) : localStart ? (
                 <>
-                  <span className="font-bold text-sinopia">{formatHumanDate(localStart, false)}</span>
+                  <span className="font-extrabold text-[#D7400B]">{formatHumanDate(localStart, false)}</span>
                   <span className="text-ink-400 dark:text-neutral-500 mx-1.5">→</span>
-                  <span className="italic text-ink-500 dark:text-neutral-400">Select departure date</span>
+                  <span className="italic text-ink-600 dark:text-neutral-300">Select departure date</span>
                 </>
               ) : (
-                <span className="text-ink-500 dark:text-neutral-400 font-normal">{placeholder}</span>
+                <span className="text-ink-600 dark:text-neutral-300 font-semibold">{placeholder}</span>
               )}
             </span>
           </div>

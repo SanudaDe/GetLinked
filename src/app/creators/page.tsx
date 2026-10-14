@@ -201,29 +201,29 @@ function CreatorDirectoryContent() {
 
         {/* Luxury Modern Filter & Search Hub */}
         <div className="relative z-30 bg-white/95 dark:bg-neutral-950/95 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-sand-300 dark:border-neutral-800 shadow-warm-lg p-4 sm:p-6 mb-8 space-y-4 transition-all">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4">
             {/* Search Input */}
             <div className="lg:col-span-4">
-              <label className="block text-[10px] font-bold text-ink-600 dark:text-neutral-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                <Search className="w-3 h-3 text-sinopia" />
+              <label className="block text-[12px] sm:text-[13px] font-extrabold text-[#1A3739] dark:text-white uppercase tracking-[0.14em] mb-2 flex items-center gap-1.5">
+                <Search className="w-4 h-4 text-[#D7400B]" />
                 <span>Search Creator or City</span>
               </label>
               <div className="relative">
-                <Search className="w-4 h-4 text-ink-400 dark:text-neutral-500 absolute left-3 top-3 pointer-events-none" />
+                <Search className="w-5 h-5 text-ink-500 dark:text-neutral-400 absolute left-3.5 top-3.5 pointer-events-none" />
                 <input
                   type="text"
                   placeholder="e.g. Elena, Galle, Surfing, Luxury..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-8 py-2.5 rounded-xl border border-sand-300 dark:border-neutral-800 bg-sand-50/60 dark:bg-neutral-900 hover:bg-white dark:hover:bg-neutral-900 focus:bg-white dark:focus:bg-neutral-900 text-xs text-teal-950 dark:text-white placeholder:text-ink-400 dark:placeholder:text-neutral-500 font-medium focus:outline-none focus:ring-2 focus:ring-teal-900/20 focus:border-teal-900 dark:focus:border-neutral-700 transition-all shadow-xs"
+                  className="w-full pl-10 pr-9 py-3 rounded-xl border border-sand-300 dark:border-neutral-800 bg-sand-50/60 dark:bg-neutral-900 hover:bg-white dark:hover:bg-neutral-900 focus:bg-white dark:focus:bg-neutral-900 text-sm sm:text-[15px] text-[#1A3739] dark:text-white placeholder:text-ink-400 dark:placeholder:text-neutral-500 font-semibold focus:outline-none focus:ring-2 focus:ring-[#1A3739]/20 focus:border-[#1A3739] dark:focus:border-neutral-600 transition-all shadow-xs"
                 />
                 {searchQuery && (
                   <button
                     type="button"
                     onClick={() => setSearchQuery("")}
-                    className="absolute right-2.5 top-2.5 p-0.5 rounded-full text-ink-400 dark:text-neutral-400 hover:text-sinopia hover:bg-sand-200/60 dark:hover:bg-neutral-800 transition-colors"
+                    className="absolute right-3 top-3 p-1 rounded-full text-ink-400 dark:text-neutral-400 hover:text-[#D7400B] hover:bg-sand-200/60 dark:hover:bg-neutral-800 transition-colors"
                   >
-                    <X className="w-3.5 h-3.5" />
+                    <X className="w-4 h-4" />
                   </button>
                 )}
               </div>
@@ -231,16 +231,16 @@ function CreatorDirectoryContent() {
 
             {/* City Dropdown */}
             <div className="lg:col-span-3">
-              <label className="block text-[10px] font-bold text-ink-600 dark:text-neutral-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                <MapPin className="w-3 h-3 text-sinopia" />
+              <label className="block text-[12px] sm:text-[13px] font-extrabold text-[#1A3739] dark:text-white uppercase tracking-[0.14em] mb-2 flex items-center gap-1.5">
+                <MapPin className="w-4 h-4 text-[#D7400B]" />
                 <span>Destination City</span>
               </label>
               <div className="relative">
-                <MapPin className="w-4 h-4 text-sinopia absolute left-3 top-3 pointer-events-none" />
+                <MapPin className="w-5 h-5 text-[#D7400B] absolute left-3.5 top-3.5 pointer-events-none" />
                 <select
                   value={selectedCity}
                   onChange={(e) => setSelectedCity(e.target.value)}
-                  className="w-full appearance-none pl-9 pr-8 py-2.5 rounded-xl border border-sand-300 dark:border-neutral-800 bg-sand-50/60 dark:bg-neutral-900 hover:bg-white dark:hover:bg-neutral-900 focus:bg-white dark:focus:bg-neutral-900 text-xs text-teal-950 dark:text-white font-semibold focus:outline-none focus:ring-2 focus:ring-teal-900/20 focus:border-teal-900 dark:focus:border-neutral-700 cursor-pointer transition-all shadow-xs"
+                  className="w-full appearance-none pl-10 pr-9 py-3 rounded-xl border border-sand-300 dark:border-neutral-800 bg-sand-50/60 dark:bg-neutral-900 hover:bg-white dark:hover:bg-neutral-900 focus:bg-white dark:focus:bg-neutral-900 text-sm sm:text-[15px] text-[#1A3739] dark:text-white font-bold focus:outline-none focus:ring-2 focus:ring-[#1A3739]/20 focus:border-[#1A3739] dark:focus:border-neutral-600 cursor-pointer transition-all shadow-xs"
                 >
                   {SRI_LANKA_CITIES.map((c) => (
                     <option key={c} value={c} className="dark:bg-neutral-900 dark:text-white">
@@ -248,22 +248,22 @@ function CreatorDirectoryContent() {
                     </option>
                   ))}
                 </select>
-                <ChevronDown className="w-4 h-4 text-ink-400 dark:text-neutral-500 absolute right-3 top-3 pointer-events-none" />
+                <ChevronDown className="w-4.5 h-4.5 text-[#1A3739] dark:text-neutral-400 absolute right-3.5 top-3.5 pointer-events-none" />
               </div>
             </div>
 
             {/* Niche Dropdown */}
             <div className="lg:col-span-3">
-              <label className="block text-[10px] font-bold text-ink-600 dark:text-neutral-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                <Sparkles className="w-3 h-3 text-sinopia" />
+              <label className="block text-[12px] sm:text-[13px] font-extrabold text-[#1A3739] dark:text-white uppercase tracking-[0.14em] mb-2 flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-[#D7400B]" />
                 <span>Creative Niche</span>
               </label>
               <div className="relative">
-                <Sparkles className="w-4 h-4 text-amber-500 absolute left-3 top-3 pointer-events-none" />
+                <Sparkles className="w-5 h-5 text-amber-500 absolute left-3.5 top-3.5 pointer-events-none" />
                 <select
                   value={selectedNiche}
                   onChange={(e) => setSelectedNiche(e.target.value)}
-                  className="w-full appearance-none pl-9 pr-8 py-2.5 rounded-xl border border-sand-300 dark:border-neutral-800 bg-sand-50/60 dark:bg-neutral-900 hover:bg-white dark:hover:bg-neutral-900 focus:bg-white dark:focus:bg-neutral-900 text-xs text-teal-950 dark:text-white font-semibold focus:outline-none focus:ring-2 focus:ring-teal-900/20 focus:border-teal-900 dark:focus:border-neutral-700 cursor-pointer transition-all shadow-xs"
+                  className="w-full appearance-none pl-10 pr-9 py-3 rounded-xl border border-sand-300 dark:border-neutral-800 bg-sand-50/60 dark:bg-neutral-900 hover:bg-white dark:hover:bg-neutral-900 focus:bg-white dark:focus:bg-neutral-900 text-sm sm:text-[15px] text-[#1A3739] dark:text-white font-bold focus:outline-none focus:ring-2 focus:ring-[#1A3739]/20 focus:border-[#1A3739] dark:focus:border-neutral-600 cursor-pointer transition-all shadow-xs"
                 >
                   <option value="All Niches" className="dark:bg-neutral-900 dark:text-white">All Niches</option>
                   {CREATOR_NICHES.map((n) => (
@@ -272,35 +272,35 @@ function CreatorDirectoryContent() {
                     </option>
                   ))}
                 </select>
-                <ChevronDown className="w-4 h-4 text-ink-400 dark:text-neutral-500 absolute right-3 top-3 pointer-events-none" />
+                <ChevronDown className="w-4.5 h-4.5 text-[#1A3739] dark:text-neutral-400 absolute right-3.5 top-3.5 pointer-events-none" />
               </div>
             </div>
 
             {/* Follower Tier */}
             <div className="lg:col-span-2">
-              <label className="block text-[10px] font-bold text-ink-600 dark:text-neutral-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                <Users className="w-3 h-3 text-sinopia" />
+              <label className="block text-[12px] sm:text-[13px] font-extrabold text-[#1A3739] dark:text-white uppercase tracking-[0.14em] mb-2 flex items-center gap-1.5">
+                <Users className="w-4 h-4 text-[#D7400B]" />
                 <span>Audience Tier</span>
               </label>
               <div className="relative">
-                <Users className="w-4 h-4 text-teal-800 dark:text-teal-400 absolute left-3 top-3 pointer-events-none" />
+                <Users className="w-5 h-5 text-[#2C5A5D] dark:text-teal-400 absolute left-3.5 top-3.5 pointer-events-none" />
                 <select
                   value={minFollowers}
                   onChange={(e) => setMinFollowers(Number(e.target.value))}
-                  className="w-full appearance-none pl-9 pr-8 py-2.5 rounded-xl border border-sand-300 dark:border-neutral-800 bg-sand-50/60 dark:bg-neutral-900 hover:bg-white dark:hover:bg-neutral-900 focus:bg-white dark:focus:bg-neutral-900 text-xs text-teal-950 dark:text-white font-semibold focus:outline-none focus:ring-2 focus:ring-teal-900/20 focus:border-teal-900 dark:focus:border-neutral-700 cursor-pointer transition-all shadow-xs"
+                  className="w-full appearance-none pl-10 pr-9 py-3 rounded-xl border border-sand-300 dark:border-neutral-800 bg-sand-50/60 dark:bg-neutral-900 hover:bg-white dark:hover:bg-neutral-900 focus:bg-white dark:focus:bg-neutral-900 text-sm sm:text-[15px] text-[#1A3739] dark:text-white font-bold focus:outline-none focus:ring-2 focus:ring-[#1A3739]/20 focus:border-[#1A3739] dark:focus:border-neutral-600 cursor-pointer transition-all shadow-xs"
                 >
                   <option value={5000} className="dark:bg-neutral-900 dark:text-white">5K+ Followers</option>
                   <option value={20000} className="dark:bg-neutral-900 dark:text-white">20K+ Followers</option>
                   <option value={50000} className="dark:bg-neutral-900 dark:text-white">50K+ Followers</option>
                   <option value={100000} className="dark:bg-neutral-900 dark:text-white">100K+ Followers</option>
                 </select>
-                <ChevronDown className="w-4 h-4 text-ink-400 dark:text-neutral-500 absolute right-3 top-3 pointer-events-none" />
+                <ChevronDown className="w-4.5 h-4.5 text-[#1A3739] dark:text-neutral-400 absolute right-3.5 top-3.5 pointer-events-none" />
               </div>
             </div>
           </div>
 
           {/* Secondary Controls Bar: Interactive Date Range Calendar & Sort Options */}
-          <div className="pt-3 border-t border-sand-200 dark:border-neutral-800 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+          <div className="pt-3.5 border-t border-sand-200 dark:border-neutral-800 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
             {/* Interactive Calendar Picker (No dd/mm/yyyy typing!) */}
             <div className="flex-1 max-w-xl">
               <DateRangeCalendarPicker
@@ -315,23 +315,23 @@ function CreatorDirectoryContent() {
             </div>
 
             {/* Right Controls: Sort & Reset */}
-            <div className="flex items-center gap-2.5 justify-between md:justify-end shrink-0">
+            <div className="flex items-center gap-3 justify-between md:justify-end shrink-0">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-ink-500 dark:text-neutral-400 whitespace-nowrap hidden sm:inline">
+                <span className="text-[12px] sm:text-[13px] font-extrabold uppercase tracking-wider text-[#1A3739] dark:text-neutral-200 whitespace-nowrap hidden sm:inline">
                   Sort by:
                 </span>
                 <div className="relative">
-                  <ArrowUpDown className="w-3.5 h-3.5 text-sinopia absolute left-3 top-3 pointer-events-none" />
+                  <ArrowUpDown className="w-4 h-4 text-[#D7400B] absolute left-3 top-3.5 pointer-events-none" />
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as "recommended" | "followers" | "dates")}
-                    className="appearance-none pl-8 pr-7 py-2 rounded-xl border border-sand-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-xs font-bold text-teal-950 dark:text-white hover:border-teal-800 dark:hover:border-neutral-700 focus:outline-none focus:ring-2 focus:ring-teal-900/20 transition-all cursor-pointer shadow-xs"
+                    className="appearance-none pl-9 pr-8 py-2.5 rounded-xl border border-sand-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-sm font-bold text-[#1A3739] dark:text-white hover:border-[#1A3739] dark:hover:border-neutral-700 focus:outline-none focus:ring-2 focus:ring-[#1A3739]/20 transition-all cursor-pointer shadow-xs"
                   >
                     <option value="recommended" className="dark:bg-neutral-900 dark:text-white">⭐ Recommended</option>
                     <option value="followers" className="dark:bg-neutral-900 dark:text-white">🔥 Highest Followers</option>
                     <option value="dates" className="dark:bg-neutral-900 dark:text-white">🗓️ Earliest Travel Date</option>
                   </select>
-                  <ChevronDown className="w-3.5 h-3.5 text-ink-400 dark:text-neutral-500 absolute right-2.5 top-3 pointer-events-none" />
+                  <ChevronDown className="w-4 h-4 text-[#1A3739] dark:text-neutral-400 absolute right-2.5 top-3.5 pointer-events-none" />
                 </div>
               </div>
 
@@ -340,14 +340,14 @@ function CreatorDirectoryContent() {
                 type="button"
                 onClick={handleResetFilters}
                 disabled={!hasActiveFilters}
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all ${
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold border transition-all ${
                   hasActiveFilters
-                    ? "bg-sand-100 dark:bg-neutral-900 hover:bg-sand-200 dark:hover:bg-neutral-800 text-teal-950 dark:text-white border-sand-400 dark:border-neutral-700 hover:border-teal-900 shadow-xs cursor-pointer"
+                    ? "bg-sand-100 dark:bg-neutral-900 hover:bg-sand-200 dark:hover:bg-neutral-800 text-[#1A3739] dark:text-white border-sand-400 dark:border-neutral-700 hover:border-[#1A3739] shadow-xs cursor-pointer"
                     : "opacity-40 text-ink-400 dark:text-neutral-500 border-sand-300 dark:border-neutral-800 cursor-not-allowed bg-transparent"
                 }`}
                 title="Reset all filters"
               >
-                <RotateCcw className={`w-3.5 h-3.5 ${hasActiveFilters ? "text-sinopia hover:rotate-180 transition-transform duration-500" : ""}`} />
+                <RotateCcw className={`w-4 h-4 ${hasActiveFilters ? "text-[#D7400B] hover:rotate-180 transition-transform duration-500" : ""}`} />
                 <span>Reset</span>
               </button>
             </div>
