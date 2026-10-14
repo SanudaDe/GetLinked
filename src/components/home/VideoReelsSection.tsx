@@ -34,11 +34,11 @@ export const VideoReelsSection: React.FC = () => {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-18 space-y-3 sm:space-y-4">
           <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal text-[#1A3739] dark:text-white tracking-tight leading-tight">
-            Real stays through the creator&apos;s lens.
+            Real places through the creator&apos;s lens.
           </h2>
 
           <p className="text-[22px] sm:text-[26px] lg:text-[28px] text-[#1A3739] dark:text-neutral-100 leading-relaxed font-normal pt-1">
-            Watch recent visual collaborations captured by verified creators at distinctive boutique villas across Sri Lanka.
+            Watch recent visual collaborations captured by verified creators at distinctive boutique villas and standout kitchens across Sri Lanka.
           </p>
         </div>
 

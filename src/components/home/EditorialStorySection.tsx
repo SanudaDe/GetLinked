@@ -20,7 +20,7 @@ export const EditorialStorySection: React.FC = () => {
             </h2>
 
             <p className="text-[22px] sm:text-[26px] lg:text-[28px] text-[#1A3739] dark:text-neutral-100 font-normal leading-relaxed max-w-xl pt-1 sm:pt-3">
-              Travel collaborations should begin with the right fit. Get Linked brings verified creators and distinctive stays together, making it easier to discover, connect and create something worth sharing.
+              Travel collaborations should begin with the right fit. Get Linked brings verified creators and distinctive places together, making it easier to discover, connect and create something worth sharing.
             </p>
 
             <div className="pt-2 sm:pt-4">

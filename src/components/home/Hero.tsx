@@ -100,7 +100,7 @@ export const Hero: React.FC = () => {
 
           {/* Subtitle */}
           <p className="mt-5 sm:mt-6 text-[22px] sm:text-[26px] lg:text-[28px] text-[#1A3739] dark:text-neutral-100 max-w-2xl font-normal leading-relaxed">
-            We bring Sri Lanka&apos;s finest stays together with the voices worth trusting with them.
+            We bring Sri Lanka&apos;s finest stays and kitchens together with the voices worth trusting with them.
           </p>
 
           {/* Dual CTAs */}
