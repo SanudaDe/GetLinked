@@ -31,7 +31,7 @@ export default function PrivacyPage() {
         </div>
 
         {/* Policy Body */}
-        <div className="bg-neutral-50 dark:bg-[#121212] rounded-3xl border border-neutral-200 dark:border-neutral-800 p-8 sm:p-14 shadow-sm space-y-10 text-neutral-800 dark:text-neutral-200 text-sm leading-relaxed transition-colors">
+        <div className="bg-neutral-50 dark:bg-[#121212] rounded-3xl border border-neutral-200 dark:border-neutral-800 p-8 sm:p-14 shadow-sm space-y-10 text-neutral-800 dark:text-neutral-200 text-[17px] sm:text-[18px] leading-relaxed transition-colors">
           {/* Section 1 */}
           <section className="space-y-3">
             <h2 className="font-serif text-xl sm:text-2xl font-normal text-neutral-900 dark:text-white">
@@ -99,7 +99,7 @@ export default function PrivacyPage() {
               <li><strong>Platform Operations & Integrity:</strong> Maintaining platform safety, preventing bot spam, and upholding service quality.</li>
             </ul>
             <p className="text-xs text-neutral-600 dark:text-neutral-400">
-              The legal basis for this processing under the PDPA is your <strong>explicit consent</strong>, given when submitting an application or venue listing, and—once matched—the <strong>performance of the introduction</strong> you have requested.
+              The legal basis for this processing under the PDPA is your <strong>explicit consent</strong>, given when submitting an application or venue listing, and - once matched - the <strong>performance of the introduction</strong> you have requested.
             </p>
           </section>
 

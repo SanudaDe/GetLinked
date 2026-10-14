@@ -22,7 +22,7 @@ export default function HowItWorksPage() {
     {
       number: "04",
       title: "We make the introduction",
-      body: "When there's a fit, we bring both sides together directly — and step back.",
+      body: "When there's a fit, we bring both sides together directly - and step back.",
     },
   ];
 
@@ -34,8 +34,8 @@ export default function HowItWorksPage() {
           <h1 className="font-serif text-5xl sm:text-7xl font-normal text-[#1A3739] dark:text-white tracking-tight leading-[1.08]">
             How an introduction is made.
           </h1>
-          <p className="text-[20px] sm:text-[24px] lg:text-[26px] text-[#1A3739]/90 dark:text-neutral-200 leading-relaxed pt-2 font-normal">
-            We don&apos;t run an app. We run a quiet, considered process — the same for every creator, every stay.
+          <p className="text-[22px] sm:text-[26px] lg:text-[28px] text-[#1A3739] dark:text-neutral-100 leading-relaxed pt-2 font-normal">
+            We don&apos;t run an app. We run a quiet, considered process - the same for every creator, every stay.
           </p>
         </div>
 
@@ -47,14 +47,14 @@ export default function HowItWorksPage() {
               className="p-8 sm:p-10 rounded-2xl bg-gray-50 dark:bg-neutral-950 border border-gray-200 dark:border-neutral-800 shadow-sm flex flex-col md:flex-row gap-6 md:gap-10 items-start"
             >
               <span className="font-mono text-base sm:text-lg text-[#D7400B] font-semibold tracking-widest pt-1 shrink-0">
-                {step.number} —
+                {step.number} -
               </span>
 
               <div className="space-y-2 flex-1">
                 <h2 className="font-serif text-2xl sm:text-3xl font-normal text-[#1A3739] dark:text-white">
                   {step.title}
                 </h2>
-                <p className="text-[17px] sm:text-[18px] text-[#1A3739]/90 dark:text-neutral-200 leading-relaxed max-w-xl">
+                <p className="text-[20px] sm:text-[22px] lg:text-[24px] text-[#1A3739]/90 dark:text-neutral-200 leading-relaxed max-w-xl">
                   {step.body}
                 </p>
               </div>

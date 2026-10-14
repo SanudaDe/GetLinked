@@ -42,23 +42,23 @@ export const DestinationsGrid: React.FC = () => {
     <section className="py-20 sm:py-28 bg-white dark:bg-black text-[#1A3739] dark:text-white border-t border-gray-200 dark:border-neutral-800 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="max-w-2xl mb-12 sm:mb-16 space-y-3">
-          <span className="text-[16px] font-semibold uppercase tracking-[0.22em] text-[#D7400B] block">
+        <div className="max-w-2xl mb-10 sm:mb-16 space-y-3">
+          <span className="text-[15px] sm:text-[16px] font-semibold uppercase tracking-[0.22em] text-[#D7400B] block">
             Where To Begin
           </span>
 
-          <h2 className="font-serif text-4xl sm:text-6xl font-normal text-[#336467] dark:text-white tracking-tight leading-[1.12]">
+          <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal text-[#336467] dark:text-white tracking-tight leading-[1.12]">
             Six places, each holding its own quiet.
           </h2>
         </div>
 
         {/* Destination Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {destinations.map((dest) => (
             <Link
               key={dest.city}
               href={`/creators?city=${encodeURIComponent(dest.city)}`}
-              className="group relative min-h-[360px] sm:min-h-[420px] rounded-2xl overflow-hidden shadow-warm hover:shadow-warm-lg dark:shadow-none transition-all duration-500 flex flex-col justify-end p-7 sm:p-8 bg-neutral-100 dark:bg-neutral-900 border border-transparent dark:border-neutral-800"
+              className="group relative min-h-[340px] sm:min-h-[420px] rounded-2xl overflow-hidden shadow-warm hover:shadow-warm-lg dark:shadow-none transition-all duration-500 flex flex-col justify-end p-6 sm:p-8 bg-neutral-100 dark:bg-neutral-900 border border-transparent dark:border-neutral-800"
             >
               {/* Image */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -70,15 +70,15 @@ export const DestinationsGrid: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
 
               {/* Sensory Card Content */}
-              <div className="relative z-10 space-y-3 text-white">
+              <div className="relative z-10 space-y-2.5 sm:space-y-3 text-white">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-serif text-3xl sm:text-4xl lg:text-[40px] font-normal text-white tracking-tight drop-shadow-md">
+                  <h3 className="font-serif text-2xl sm:text-3xl lg:text-[40px] font-normal text-white tracking-tight drop-shadow-md">
                     {dest.city}
                   </h3>
                   <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:translate-x-1.5 transition-transform drop-shadow" />
                 </div>
 
-                <p className="text-[18px] sm:text-[20px] text-white/95 font-normal leading-snug drop-shadow-sm">
+                <p className="text-[18px] sm:text-[22px] lg:text-[24px] text-white font-normal leading-snug drop-shadow-md">
                   {dest.line}
                 </p>
               </div>

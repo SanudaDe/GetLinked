@@ -616,7 +616,7 @@ export const initialMatches: Match[] = [
 export const initialAds: Advertisement[] = [
   {
     id: "ad-501",
-    title: "SriLankan Airlines — Fly in Comfort to Colombo",
+    title: "SriLankan Airlines - Fly in Comfort to Colombo",
     sponsor_name: "SriLankan Airlines",
     image_url: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=80",
     destination_url: "https://www.srilankan.com",
@@ -627,7 +627,7 @@ export const initialAds: Advertisement[] = [
   },
   {
     id: "ad-502",
-    title: "Ceylon Artisan Coffee & Spices — Authentic Stays Collection",
+    title: "Ceylon Artisan Coffee & Spices - Authentic Stays Collection",
     sponsor_name: "Ceylon Artisan",
     image_url: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1200&q=80",
     destination_url: "https://ceylonartisan.lk",

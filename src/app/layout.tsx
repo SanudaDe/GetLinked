@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     apple: "/images/logo.png",
   },
   openGraph: {
-    title: "Get Linked — Sri Lanka Creator & Stay Marketplace",
+    title: "Get Linked - Sri Lanka Creator & Stay Marketplace",
     description:
       "Connecting verified social media creators with handpicked hotels, villas, and guesthouses across Sri Lanka through human review and curated introductions.",
     url: "https://getlinked.lk",

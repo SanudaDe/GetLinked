@@ -194,7 +194,7 @@ function CreatorDirectoryContent() {
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal text-teal-950 dark:text-white tracking-tight leading-tight">
             Verified Creators Visiting Sri Lanka
           </h1>
-          <p className="text-[19px] sm:text-[22px] lg:text-[24px] text-[#1A3739]/90 dark:text-neutral-200 leading-relaxed max-w-3xl font-normal pt-1">
+          <p className="text-[22px] sm:text-[26px] lg:text-[28px] text-[#1A3739] dark:text-neutral-100 leading-relaxed max-w-3xl font-normal pt-1">
             Search 100% ID-verified travel and lifestyle influencers with confirmed travel dates across Sri Lanka.
           </p>
         </div>
@@ -315,17 +315,17 @@ function CreatorDirectoryContent() {
             </div>
 
             {/* Right Controls: Sort & Reset */}
-            <div className="flex items-center gap-3 justify-between md:justify-end shrink-0">
-              <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 sm:gap-3 justify-between md:justify-end shrink-0 flex-wrap sm:flex-nowrap">
+              <div className="flex items-center gap-2 flex-1 sm:flex-initial">
                 <span className="text-[12px] sm:text-[13px] font-extrabold uppercase tracking-wider text-[#1A3739] dark:text-neutral-200 whitespace-nowrap hidden sm:inline">
                   Sort by:
                 </span>
-                <div className="relative">
+                <div className="relative w-full sm:w-auto">
                   <ArrowUpDown className="w-4 h-4 text-[#D7400B] absolute left-3 top-3.5 pointer-events-none" />
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as "recommended" | "followers" | "dates")}
-                    className="appearance-none pl-9 pr-8 py-2.5 rounded-xl border border-sand-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-sm font-bold text-[#1A3739] dark:text-white hover:border-[#1A3739] dark:hover:border-neutral-700 focus:outline-none focus:ring-2 focus:ring-[#1A3739]/20 transition-all cursor-pointer shadow-xs"
+                    className="w-full sm:w-auto appearance-none pl-9 pr-8 py-2.5 rounded-xl border border-sand-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-xs sm:text-sm font-bold text-[#1A3739] dark:text-white hover:border-[#1A3739] dark:hover:border-neutral-700 focus:outline-none focus:ring-2 focus:ring-[#1A3739]/20 transition-all cursor-pointer shadow-xs min-h-[42px]"
                   >
                     <option value="recommended" className="dark:bg-neutral-900 dark:text-white">⭐ Recommended</option>
                     <option value="followers" className="dark:bg-neutral-900 dark:text-white">🔥 Highest Followers</option>
@@ -340,7 +340,7 @@ function CreatorDirectoryContent() {
                 type="button"
                 onClick={handleResetFilters}
                 disabled={!hasActiveFilters}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold border transition-all ${
+                className={`flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold border transition-all min-h-[42px] ${
                   hasActiveFilters
                     ? "bg-sand-100 dark:bg-neutral-900 hover:bg-sand-200 dark:hover:bg-neutral-800 text-[#1A3739] dark:text-white border-sand-400 dark:border-neutral-700 hover:border-[#1A3739] shadow-xs cursor-pointer"
                     : "opacity-40 text-ink-400 dark:text-neutral-500 border-sand-300 dark:border-neutral-800 cursor-not-allowed bg-transparent"
@@ -457,7 +457,7 @@ function CreatorDirectoryContent() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
             {filteredProfiles.map((creator) => {
               const stayDays = calculateOverlapDays(
                 creator.visit_start,
@@ -525,7 +525,7 @@ function CreatorDirectoryContent() {
                     <div className="space-y-2.5">
                       <div className="flex items-center justify-between gap-2">
                         <Link href={`/creators/${creator.id}`} className="truncate">
-                          <h3 className="font-serif text-xl font-medium text-white hover:text-[#D7400B] transition-colors truncate">
+                          <h3 className="font-serif text-xl sm:text-2xl font-medium text-white hover:text-[#D7400B] transition-colors truncate">
                             {creator.display_name}
                           </h3>
                         </Link>
@@ -535,18 +535,18 @@ function CreatorDirectoryContent() {
                         </span>
                       </div>
 
-                      <div className="space-y-1 text-xs text-white/80">
+                      <div className="space-y-1.5 text-sm sm:text-[15px] text-white/85">
                         <div className="flex items-center gap-1.5">
-                          <MapPin className="w-3.5 h-3.5 text-[#D7400B] shrink-0" />
+                          <MapPin className="w-4 h-4 text-[#D7400B] shrink-0" />
                           <span className="font-medium text-white">{creator.city}, Sri Lanka</span>
                         </div>
                         <div className="flex items-center gap-1.5">
-                          <Calendar className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                          <span className="text-white/75 font-sans font-medium">{formatDateRange(creator.visit_start, creator.visit_end)}</span>
+                          <Calendar className="w-4 h-4 text-amber-400 shrink-0" />
+                          <span className="text-white/85 font-sans font-medium">{formatDateRange(creator.visit_start, creator.visit_end)}</span>
                         </div>
                       </div>
 
-                      <p className="text-xs text-white/70 line-clamp-2 leading-relaxed pt-0.5 font-light">
+                      <p className="text-sm sm:text-[15px] text-white/80 line-clamp-2 leading-relaxed pt-0.5 font-normal">
                         {creator.trip_brief}
                       </p>
                     </div>
@@ -556,16 +556,16 @@ function CreatorDirectoryContent() {
                   <div className="pt-4 grid grid-cols-2 gap-2 mt-auto">
                     <Link
                       href={`/creators/${creator.id}`}
-                      className="py-2.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold uppercase tracking-wider border border-white/15 text-center transition-all flex items-center justify-center cursor-pointer"
+                      className="py-2.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-semibold uppercase tracking-wider border border-white/15 text-center transition-all flex items-center justify-center cursor-pointer min-h-[44px]"
                     >
                       View Profile
                     </Link>
                     <button
                       type="button"
                       onClick={() => setSelectedCreator(creator)}
-                      className="py-2.5 px-3 rounded-xl bg-[#D7400B] hover:bg-[#BD3607] text-white text-xs font-semibold uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                      className="py-2.5 px-3 rounded-xl bg-[#D7400B] hover:bg-[#BD3607] text-white text-xs sm:text-sm font-semibold uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer min-h-[44px]"
                     >
-                      <Send className="w-3 h-3" />
+                      <Send className="w-3.5 h-3.5" />
                       <span>Request</span>
                     </button>
                   </div>

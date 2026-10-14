@@ -28,7 +28,7 @@ export default function HomePage() {
       {/* 6. Stories in Motion: User Video Reels Showcase (public/videos) */}
       <VideoReelsSection />
 
-      {/* 7. Bottom Hero: Sri Lanka Awaits — Extraordinary stays. Incredible stories */}
+      {/* 7. Bottom Hero: Sri Lanka Awaits - Extraordinary stays. Incredible stories */}
       <SriLankaAwaitsBanner />
     </main>
   );

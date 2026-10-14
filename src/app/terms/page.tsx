@@ -13,7 +13,7 @@ export default function TermsPage() {
           </p>
         </div>
 
-        <div className="bg-sand-50 rounded-2xl border border-sand-300 p-8 sm:p-12 shadow-warm space-y-6 text-ink-800 text-sm leading-relaxed">
+        <div className="bg-sand-50 rounded-2xl border border-sand-300 p-8 sm:p-12 shadow-warm space-y-6 text-ink-800 text-[17px] sm:text-[18px] leading-relaxed">
           <section className="space-y-2">
             <h2 className="font-serif text-xl font-bold text-teal-950">1. Nature of the Service</h2>
             <p>

@@ -1,4 +1,4 @@
-# Get Linked — Sri Lanka Creator & Stay Marketplace
+# Get Linked - Sri Lanka Creator & Stay Marketplace
 
 **Domains**: `getlinkedlk.com` • `getlinked.today`
 
@@ -18,7 +18,7 @@ The platform is strictly human-in-the-middle:
 5. **Date Overlap Algorithm**: Real mathematical overlap (`creator.visit_start <= acc.coverage_end AND creator.visit_end >= acc.coverage_start`).
 6. **1,000 Active Creator Pool Cap**: Enforced with warning thresholds in admin settings and dashboard.
 7. **Two-Phase Commercial Model**:
-   - **Phase 1 (Free / Launch)**: Months 1–3. Free for creators and accommodations. Monetized via sponsor banners.
+   - **Phase 1 (Free / Launch)**: Months 1-3. Free for creators and accommodations. Monetized via sponsor banners.
    - **Phase 2 (Paid)**: Accommodations pay per collaboration or subscription. Configurable via Settings without codebase rewrites.
 
 ---
@@ -44,31 +44,31 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ## 🗺️ Page & Route Map
 
 ### Public Pages
-- `/` — Home page (Hero, Value Proposition, 4-Step Process, Live Match Showcase, Featured Creators, Why Us, PDPA Trust, Ad Banner, FAQ)
-- `/how-it-works` — Detailed operational walkthrough of the human-in-the-middle model
-- `/for-creators` — Creator benefits, eligibility rules (18+, 5k+ followers), supported niches
-- `/for-accommodations` — Host benefits, offer models, and phase-aware pricing notice
-- `/creators` — Public Creator Directory with live search, city filter, niche filter, date overlap filter, follower tier filter, and &ldquo;Request this Creator&rdquo; modal
-- `/apply` — 5-Step Mobile-First Creator Application Wizard with ID upload & PDPA consent
-- `/list-property` — Mobile-First Accommodation Listing Form
-- `/status` — Rate-safe Application Status Lookup using WhatsApp + Reference Code (`GL-C-XXXX` or `GL-A-XXXX`)
-- `/about` — Brand story & Sri Lankan hospitality ethos
-- `/contact` — Support and concierge contacts
-- `/privacy` — Privacy Policy compliant with Sri Lanka Personal Data Protection Act (PDPA)
-- `/terms` — Marketplace terms of service
+- `/` - Home page (Hero, Value Proposition, 4-Step Process, Live Match Showcase, Featured Creators, Why Us, PDPA Trust, Ad Banner, FAQ)
+- `/how-it-works` - Detailed operational walkthrough of the human-in-the-middle model
+- `/for-creators` - Creator benefits, eligibility rules (18+, 5k+ followers), supported niches
+- `/for-accommodations` - Host benefits, offer models, and phase-aware pricing notice
+- `/creators` - Public Creator Directory with live search, city filter, niche filter, date overlap filter, follower tier filter, and &ldquo;Request this Creator&rdquo; modal
+- `/apply` - 5-Step Mobile-First Creator Application Wizard with ID upload & PDPA consent
+- `/list-property` - Mobile-First Accommodation Listing Form
+- `/status` - Rate-safe Application Status Lookup using WhatsApp + Reference Code (`GL-C-XXXX` or `GL-A-XXXX`)
+- `/about` - Brand story & Sri Lankan hospitality ethos
+- `/contact` - Support and concierge contacts
+- `/privacy` - Privacy Policy compliant with Sri Lanka Personal Data Protection Act (PDPA)
+- `/terms` - Marketplace terms of service
 
 ### Staff Admin Backoffice (`/admin`)
-- `/admin/login` — Staff credentials gateway (Secured access for authorized administrators only)
-- `/admin` — Operations Dashboard (KPIs, queues, 1,000 capacity gauge)
-- `/admin/creators` — Creator Queue (Tabs: Pending, Approved, Rejected; Duplicate flags; Private document inspection modal; Approve/Reject actions)
-- `/admin/accommodations` — Accommodations Queue (Review property specs, offer types, Approve/Reject)
-- `/admin/requests` — Creator Requests Queue (Incoming accommodation requests; Convert to Match)
-- `/admin/matching` — Proactive Human Matchmaking Workspace (Dual-column pairing tool with transparent date overlap and follower criteria)
-- `/admin/matches` — Confirmed Matches Manager (Pre-filled WhatsApp click-to-chat links for host and creator, timestamp tracking)
-- `/admin/advertisements` — Phase 1 Ad Campaign Manager (Placements on Home and Accommodation directory)
-- `/admin/analytics` — Operational analytics (Approval rates, review turnaround, city/niche distribution)
-- `/admin/audit-logs` — Chronological administrative decision trail
-- `/admin/settings` — Phase Control (FREE vs PAID), Billing Mode, 1,000 Pool Cap, PDPA Retention Days
+- `/admin/login` - Staff credentials gateway (Secured access for authorized administrators only)
+- `/admin` - Operations Dashboard (KPIs, queues, 1,000 capacity gauge)
+- `/admin/creators` - Creator Queue (Tabs: Pending, Approved, Rejected; Duplicate flags; Private document inspection modal; Approve/Reject actions)
+- `/admin/accommodations` - Accommodations Queue (Review property specs, offer types, Approve/Reject)
+- `/admin/requests` - Creator Requests Queue (Incoming accommodation requests; Convert to Match)
+- `/admin/matching` - Proactive Human Matchmaking Workspace (Dual-column pairing tool with transparent date overlap and follower criteria)
+- `/admin/matches` - Confirmed Matches Manager (Pre-filled WhatsApp click-to-chat links for host and creator, timestamp tracking)
+- `/admin/advertisements` - Phase 1 Ad Campaign Manager (Placements on Home and Accommodation directory)
+- `/admin/analytics` - Operational analytics (Approval rates, review turnaround, city/niche distribution)
+- `/admin/audit-logs` - Chronological administrative decision trail
+- `/admin/settings` - Phase Control (FREE vs PAID), Billing Mode, 1,000 Pool Cap, PDPA Retention Days
 
 ---
 

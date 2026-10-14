@@ -243,11 +243,11 @@ export const FeaturedAccommodations: React.FC = () => {
             <button
               type="button"
               onClick={() => setIsFilterOpen(!isFilterOpen)}
-              className="group inline-flex items-center gap-3 text-3xl sm:text-5xl lg:text-[56px] font-serif font-light uppercase tracking-[0.08em] sm:tracking-[0.12em] text-[#1A3739] dark:text-white hover:text-[#D7400B] transition-colors cursor-pointer select-none"
+              className="group inline-flex items-center gap-2 sm:gap-3 text-2xl sm:text-4xl md:text-5xl lg:text-[56px] font-serif font-light uppercase tracking-[0.04em] sm:tracking-[0.12em] text-[#1A3739] dark:text-white hover:text-[#D7400B] transition-colors cursor-pointer select-none"
             >
               <span>{activeCategory}</span>
               <ChevronDown
-                className={`w-5 h-5 sm:w-7 sm:h-7 transition-transform duration-300 text-[#1A3739]/60 dark:text-neutral-400 group-hover:text-[#D7400B] ${
+                className={`w-4 h-4 sm:w-6 sm:h-6 transition-transform duration-300 text-[#1A3739]/60 dark:text-neutral-400 group-hover:text-[#D7400B] ${
                   isFilterOpen ? "rotate-180" : ""
                 }`}
               />
@@ -293,15 +293,13 @@ export const FeaturedAccommodations: React.FC = () => {
             type="button"
             onClick={handlePrev}
             aria-label="Previous stay"
-            className="absolute left-1 sm:left-4 lg:left-8 top-[32%] -translate-y-1/2 z-30 p-3 text-[#336467] dark:text-neutral-300 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-all duration-300 hover:-translate-x-1.5 cursor-pointer bg-white/80 dark:bg-black/80 sm:bg-transparent dark:sm:bg-transparent backdrop-blur-xs sm:backdrop-blur-none rounded-full group"
+            className="absolute left-1 sm:left-4 lg:left-8 top-[32%] -translate-y-1/2 z-30 p-2 sm:p-3 text-[#336467] dark:text-neutral-300 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-all duration-300 hover:-translate-x-1.5 cursor-pointer bg-white/80 dark:bg-black/80 sm:bg-transparent dark:sm:bg-transparent backdrop-blur-xs sm:backdrop-blur-none rounded-full group"
           >
             <svg
-              width="48"
-              height="16"
               viewBox="0 0 48 16"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className="stroke-current transition-transform duration-300 group-hover:-translate-x-1"
+              className="w-8 h-3 sm:w-12 sm:h-4 stroke-current transition-transform duration-300 group-hover:-translate-x-1"
             >
               <path
                 d="M48 8H2M9 1L2 8L9 15"
@@ -317,15 +315,13 @@ export const FeaturedAccommodations: React.FC = () => {
             type="button"
             onClick={handleNext}
             aria-label="Next stay"
-            className="absolute right-1 sm:right-4 lg:right-8 top-[32%] -translate-y-1/2 z-30 p-3 text-[#336467] dark:text-neutral-300 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-all duration-300 hover:translate-x-1.5 cursor-pointer bg-white/80 dark:bg-black/80 sm:bg-transparent dark:sm:bg-transparent backdrop-blur-xs sm:backdrop-blur-none rounded-full group"
+            className="absolute right-1 sm:right-4 lg:right-8 top-[32%] -translate-y-1/2 z-30 p-2 sm:p-3 text-[#336467] dark:text-neutral-300 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-all duration-300 hover:translate-x-1.5 cursor-pointer bg-white/80 dark:bg-black/80 sm:bg-transparent dark:sm:bg-transparent backdrop-blur-xs sm:backdrop-blur-none rounded-full group"
           >
             <svg
-              width="48"
-              height="16"
               viewBox="0 0 48 16"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className="stroke-current transition-transform duration-300 group-hover:translate-x-1"
+              className="w-8 h-3 sm:w-12 sm:h-4 stroke-current transition-transform duration-300 group-hover:translate-x-1"
             >
               <path
                 d="M0 8H46M39 1L46 8L39 15"
@@ -403,21 +399,21 @@ export const FeaturedAccommodations: React.FC = () => {
                       }}
                       className="block group/title"
                     >
-                      <h3 className="font-serif text-3xl sm:text-4xl lg:text-[44px] font-light uppercase tracking-[0.14em] text-[#336467] dark:text-white group-hover/title:text-[#D7400B] transition-colors leading-[1.1]">
+                      <h3 className="font-serif text-2xl sm:text-4xl lg:text-[44px] font-light uppercase tracking-[0.08em] sm:tracking-[0.14em] text-[#336467] dark:text-white group-hover/title:text-[#D7400B] transition-colors leading-[1.15]">
                         {stay.accommodation_name}
                       </h3>
                     </Link>
 
-                    <p className="text-[16px] uppercase tracking-[0.2em] font-semibold text-[#D7400B]">
+                    <p className="text-[16px] sm:text-[18px] uppercase tracking-[0.18em] sm:tracking-[0.2em] font-semibold text-[#D7400B]">
                       {stay.city || "Sri Lanka"}
-                      {stay.property_type ? ` — ${stay.property_type}` : ""}
+                      {stay.property_type ? ` - ${stay.property_type}` : ""}
                     </p>
 
-                    <p className="text-[16px] text-[#336467]/90 dark:text-neutral-200 font-normal leading-relaxed max-w-xl pt-1">
+                    <p className="text-[20px] sm:text-[24px] lg:text-[26px] text-[#336467] dark:text-neutral-100 font-normal leading-relaxed max-w-xl pt-1">
                       {sensory.line}
                     </p>
 
-                    <p className="text-[16px] font-sans font-bold uppercase tracking-[0.18em] text-[#1A3739] dark:text-white pt-1">
+                    <p className="text-[15px] sm:text-[17px] font-sans font-bold uppercase tracking-[0.16em] sm:tracking-[0.18em] text-[#1A3739] dark:text-white pt-1">
                       {sensory.offer.toUpperCase()}
                       {stay.minimum_followers
                         ? ` • MIN. ${formatFollowerCount(stay.minimum_followers)} FOLLOWERS`
@@ -425,14 +421,14 @@ export const FeaturedAccommodations: React.FC = () => {
                     </p>
 
                     {/* Action Links (COMO Signature Tertiary Buttons with Expanding Line) */}
-                    <div className="pt-6 sm:pt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8">
+                    <div className="pt-6 sm:pt-8 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-8">
                       <Link
                         href={`/apply?stay=${encodeURIComponent(stay.accommodation_name)}`}
                         tabIndex={isActive ? 0 : -1}
                         onClick={(e) => {
                           if (!isActive) e.preventDefault();
                         }}
-                        className="group inline-flex items-center gap-3.5 text-[16px] font-semibold uppercase tracking-[0.18em] text-[#336467] dark:text-neutral-200 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors py-1 cursor-pointer disabled:cursor-default"
+                        className="group inline-flex items-center gap-3.5 text-[16px] sm:text-[18px] font-semibold uppercase tracking-[0.18em] text-[#336467] dark:text-neutral-200 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors py-2 min-h-[44px] cursor-pointer disabled:cursor-default"
                       >
                         <span className="w-8 h-[1px] bg-[#336467] dark:bg-neutral-400 group-hover:bg-[#D7400B] group-hover:w-12 transition-all duration-300" />
                         <span>Propose Collaboration</span>
@@ -444,7 +440,7 @@ export const FeaturedAccommodations: React.FC = () => {
                         onClick={(e) => {
                           if (!isActive) e.preventDefault();
                         }}
-                        className="group inline-flex items-center gap-3.5 text-[16px] font-semibold uppercase tracking-[0.18em] text-[#336467] dark:text-neutral-200 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors py-1 disabled:cursor-default"
+                        className="group inline-flex items-center gap-3.5 text-[16px] sm:text-[18px] font-semibold uppercase tracking-[0.18em] text-[#336467] dark:text-neutral-200 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors py-2 min-h-[44px] disabled:cursor-default"
                       >
                         <span className="w-8 h-[1px] bg-[#336467] dark:bg-neutral-400 group-hover:bg-[#D7400B] group-hover:w-12 transition-all duration-300" />
                         <span>List Your Stay</span>
@@ -458,9 +454,9 @@ export const FeaturedAccommodations: React.FC = () => {
         </div>
 
         {/* Bottom Section: Counter & Directory Link */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 max-w-5xl mx-auto mt-14 sm:mt-18 px-4">
-          {/* Counter Indicator: 01 —— 04 */}
-          <div className="flex items-center gap-4 text-[16px] uppercase tracking-[0.2em] text-[#336467]/80 dark:text-neutral-300 font-medium">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 max-w-5xl mx-auto mt-14 sm:mt-18 px-4 text-center sm:text-left">
+          {/* Counter Indicator: 01 -- 04 */}
+          <div className="flex items-center gap-4 text-[15px] sm:text-[16px] uppercase tracking-[0.2em] text-[#336467]/80 dark:text-neutral-300 font-medium">
             <span className="font-semibold text-[#336467] dark:text-white">
               {String((currentIndex % N) + 1).padStart(2, "0")}
             </span>
@@ -471,7 +467,7 @@ export const FeaturedAccommodations: React.FC = () => {
           {/* Link to List Stays & Eats */}
           <Link
             href="/list-property"
-            className="group inline-flex items-center gap-2 text-[16px] font-semibold uppercase tracking-[0.18em] text-[#336467] dark:text-neutral-300 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors"
+            className="group inline-flex items-center gap-2 text-[15px] sm:text-[16px] font-semibold uppercase tracking-[0.18em] text-[#336467] dark:text-neutral-300 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors py-2 min-h-[44px]"
           >
             <span>List your stay or eatery, free during launch</span>
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />

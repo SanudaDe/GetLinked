@@ -121,7 +121,7 @@ export const RateCreatorModal: React.FC<RateCreatorModalProps> = ({
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <label className="text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider">
-                  Rating (1–5 Stars) *
+                  Rating (1-5 Stars) *
                 </label>
                 <div className="flex items-center gap-1.5 text-xs font-bold text-[#D7400B]">
                   <Star className="w-4 h-4 fill-[#D7400B] text-[#D7400B]" />

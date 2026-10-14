@@ -13,7 +13,7 @@ export default function ContactPage() {
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal text-teal-950 dark:text-white tracking-tight leading-tight">
             Contact Get Linked
           </h1>
-          <p className="text-[19px] sm:text-[22px] lg:text-[24px] text-[#1A3739]/90 dark:text-neutral-200 leading-relaxed max-w-2xl mx-auto font-normal pt-1">
+          <p className="text-[22px] sm:text-[26px] lg:text-[28px] text-[#1A3739] dark:text-neutral-100 leading-relaxed max-w-2xl mx-auto font-normal pt-1">
             Have questions regarding creator verification, property onboarding, or media collaborations?
           </p>
         </div>

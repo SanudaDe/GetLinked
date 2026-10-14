@@ -18,8 +18,8 @@ export default function ForCreatorsPage() {
           <h1 className="font-serif text-5xl sm:text-7xl font-normal text-[#1A3739] dark:text-white tracking-tight leading-[1.08]">
             For the ones who tell it well.
           </h1>
-          <p className="text-[20px] sm:text-[24px] lg:text-[26px] text-[#1A3739]/90 dark:text-neutral-200 leading-relaxed max-w-2xl mx-auto font-normal pt-2">
-            Get Linked is free for creators. Tell us where you&apos;re headed and when — we&apos;ll do the rest, quietly, by hand.
+          <p className="text-[22px] sm:text-[26px] lg:text-[28px] text-[#1A3739] dark:text-neutral-100 leading-relaxed max-w-2xl mx-auto font-normal pt-2">
+            Get Linked is free for creators. Tell us where you&apos;re headed and when - we&apos;ll do the rest, quietly, by hand.
           </p>
 
           <div className="pt-6">
@@ -39,14 +39,14 @@ export default function ForCreatorsPage() {
             <h2 className="font-serif text-2xl sm:text-3xl font-normal text-[#1A3739] dark:text-white">
               Requirements
             </h2>
-            <p className="text-[16px] text-[#1A3739]/80 dark:text-neutral-400">
+            <p className="text-[17px] sm:text-[18px] text-[#1A3739]/80 dark:text-neutral-400">
               Criteria for creator verification across all platforms
             </p>
           </div>
 
           <ul className="space-y-4 pt-2">
             {requirements.map((req, idx) => (
-              <li key={idx} className="flex items-center gap-3 text-[17px] sm:text-[18px] text-[#1A3739] dark:text-neutral-200">
+              <li key={idx} className="flex items-center gap-3 text-[18px] sm:text-[20px] text-[#1A3739] dark:text-neutral-200">
                 <div className="w-5 h-5 rounded-full bg-orange-50 dark:bg-orange-950/40 border border-orange-200/60 dark:border-orange-800/40 flex items-center justify-center shrink-0">
                   <Check className="w-3 h-3 text-[#D7400B]" />
                 </div>

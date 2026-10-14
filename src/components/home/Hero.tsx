@@ -94,20 +94,20 @@ export const Hero: React.FC = () => {
           </div>
 
           {/* Editorial Display Headline */}
-          <h1 className="font-serif text-4xl sm:text-6xl lg:text-[68px] font-normal tracking-tight text-[#1A3739] dark:text-white leading-[1.14]">
+          <h1 className="font-serif text-3xl sm:text-5xl lg:text-[68px] font-normal tracking-tight text-[#1A3739] dark:text-white leading-[1.14]">
             An island tells its story best through the people who stay.
           </h1>
 
           {/* Subtitle */}
-          <p className="mt-6 text-[22px] sm:text-[26px] lg:text-[28px] text-[#1A3739] dark:text-neutral-100 max-w-2xl font-normal leading-relaxed">
+          <p className="mt-5 sm:mt-6 text-[22px] sm:text-[26px] lg:text-[28px] text-[#1A3739] dark:text-neutral-100 max-w-2xl font-normal leading-relaxed">
             We bring Sri Lanka&apos;s finest stays together with the voices worth trusting with them.
           </p>
 
           {/* Dual CTAs */}
-          <div className="flex items-center gap-4 mt-9 flex-wrap">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4 mt-8 sm:mt-9">
             <Link
               href="/creators"
-              className="inline-flex items-center gap-3 px-9 py-4 rounded-full bg-[#D7400B] hover:bg-[#BD3607] text-white text-[17px] sm:text-[18px] font-sans font-semibold tracking-wider shadow-md hover:shadow-lg transition-all duration-200 group"
+              className="inline-flex items-center justify-center gap-3 px-8 sm:px-9 py-3.5 sm:py-4 rounded-full bg-[#D7400B] hover:bg-[#BD3607] text-white text-[16px] sm:text-[18px] font-sans font-semibold tracking-wider shadow-md hover:shadow-lg transition-all duration-200 group text-center min-h-[48px]"
             >
               <span>Find Creators</span>
               <ArrowRight className="w-4.5 h-4.5 transition-transform group-hover:translate-x-1" />
@@ -115,7 +115,7 @@ export const Hero: React.FC = () => {
 
             <Link
               href="/list-property"
-              className="inline-flex items-center gap-3 px-9 py-4 rounded-full bg-[#1A3739] dark:bg-neutral-800 hover:bg-[#152E30] dark:hover:bg-neutral-700 text-white text-[17px] sm:text-[18px] font-sans font-semibold tracking-wider border border-[#1A3739] dark:border-neutral-700 shadow-sm hover:shadow-md transition-all duration-200 group"
+              className="inline-flex items-center justify-center gap-3 px-8 sm:px-9 py-3.5 sm:py-4 rounded-full bg-[#1A3739] dark:bg-neutral-800 hover:bg-[#152E30] dark:hover:bg-neutral-700 text-white text-[16px] sm:text-[18px] font-sans font-semibold tracking-wider border border-[#1A3739] dark:border-neutral-700 shadow-sm hover:shadow-md transition-all duration-200 group text-center min-h-[48px]"
             >
               <span>List Your Stay</span>
               <ArrowRight className="w-4.5 h-4.5 transition-transform group-hover:translate-x-1" />
@@ -123,16 +123,16 @@ export const Hero: React.FC = () => {
           </div>
 
           {/* Trust Line */}
-          <p className="mt-9 text-[18px] sm:text-[20px] text-[#1A3739] dark:text-neutral-200 tracking-wide font-normal leading-relaxed">
+          <p className="mt-7 sm:mt-9 text-[18px] sm:text-[22px] lg:text-[24px] text-[#1A3739] dark:text-neutral-200 tracking-wide font-normal leading-relaxed">
             Every introduction made by hand. Nothing rushed, nothing automated.
           </p>
         </div>
       </div>
 
       {/* Bottom Slogan */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-8 pt-4 flex items-end justify-end text-[#1A3739] dark:text-neutral-400">
-        <div className="text-right">
-          <span className="text-[16px] font-bold uppercase tracking-[0.25em] text-[#1A3739] dark:text-neutral-400">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-8 pt-4 flex items-end justify-center sm:justify-end text-[#1A3739] dark:text-neutral-400">
+        <div className="text-center sm:text-right">
+          <span className="text-[14px] sm:text-[16px] font-bold uppercase tracking-[0.25em] text-[#1A3739] dark:text-neutral-400">
             A BRIGHTER WAY TO TRAVEL TOGETHER
           </span>
         </div>

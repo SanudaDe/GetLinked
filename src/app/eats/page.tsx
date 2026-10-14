@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Utensils, Wine, Coffee, Sparkles, CheckCircle2 } from "lucide-react";
 
 export const metadata = {
-  title: "Eats | Get Linked — Restaurants, Cafés & Bars in Sri Lanka",
+  title: "Eats | Get Linked - Restaurants, Cafés & Bars in Sri Lanka",
   description:
     "Connect your restaurant, café, bar, or culinary venue with verified food & travel creators visiting Sri Lanka.",
 };
@@ -22,7 +22,7 @@ export default function EatsPage() {
           <h1 className="font-serif text-5xl sm:text-7xl font-normal text-[#1A3739] dark:text-white tracking-tight leading-[1.08]">
             For places worth savoring.
           </h1>
-          <p className="text-[20px] sm:text-[24px] lg:text-[26px] text-[#1A3739]/90 dark:text-neutral-200 leading-relaxed max-w-2xl mx-auto font-normal pt-2">
+          <p className="text-[22px] sm:text-[26px] lg:text-[28px] text-[#1A3739] dark:text-neutral-100 leading-relaxed max-w-2xl mx-auto font-normal pt-2">
             From oceanfront cocktail bars to colonial courtyard bistros and specialty cafés. Connect with verified food and lifestyle creators visiting your city.
           </p>
 
@@ -53,7 +53,7 @@ export default function EatsPage() {
             <h3 className="font-serif text-xl sm:text-2xl font-bold text-teal-950 dark:text-white">
               Single-Visit Simplicity
             </h3>
-            <p className="text-[16px] text-ink-600 dark:text-neutral-300 leading-relaxed">
+            <p className="text-[18px] sm:text-[19px] text-ink-600 dark:text-neutral-300 leading-relaxed">
               No need to manage multi-night stays. Offer a complimentary chef tasting, dinner for two, or signature cocktail round for a single visiting creator.
             </p>
           </div>
@@ -65,7 +65,7 @@ export default function EatsPage() {
             <h3 className="font-serif text-xl sm:text-2xl font-bold text-teal-950 dark:text-white">
               Targeted Culinary Creators
             </h3>
-            <p className="text-[16px] text-ink-600 dark:text-neutral-300 leading-relaxed">
+            <p className="text-[18px] sm:text-[19px] text-ink-600 dark:text-neutral-300 leading-relaxed">
               We match you with creators whose aesthetic and audience align with culinary travel, food reviews, and hospitality storytelling.
             </p>
           </div>
@@ -77,7 +77,7 @@ export default function EatsPage() {
             <h3 className="font-serif text-xl sm:text-2xl font-bold text-teal-950 dark:text-white">
               Curated Introductions
             </h3>
-            <p className="text-[16px] text-ink-600 dark:text-neutral-300 leading-relaxed">
+            <p className="text-[18px] sm:text-[19px] text-ink-600 dark:text-neutral-300 leading-relaxed">
               Every introduction is personally facilitated by our concierge over WhatsApp. You review their portfolio and travel dates before welcoming them.
             </p>
           </div>
@@ -92,7 +92,7 @@ export default function EatsPage() {
           <h2 className="font-serif text-2xl sm:text-3xl font-normal text-[#1A3739] dark:text-white">
             Fine Dining, Artisan Cafés, Cocktail Lounges & Bistros
           </h2>
-          <p className="text-[17px] sm:text-[18px] text-[#1A3739]/90 dark:text-neutral-200 leading-relaxed">
+          <p className="text-[20px] sm:text-[22px] lg:text-[24px] text-[#1A3739]/90 dark:text-neutral-200 leading-relaxed">
             Whether you operate an intimate espresso bar in Galle Fort, a cliffside sunset cocktail deck in Mirissa, or a modern seafood restaurant in Colombo, Get Linked brings you international and local travel creators looking for the best tables in Sri Lanka.
           </p>
           <div className="pt-2">

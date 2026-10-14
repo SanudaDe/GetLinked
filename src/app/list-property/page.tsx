@@ -261,7 +261,7 @@ function ListPropertyContent() {
     if (!formData.requirements.trim() || formData.requirements.length < 20) {
       setErrorMsg(
         isEats
-          ? "Please specify what you are looking for from creators (e.g. 1 Reel featuring dishes + 3 stories) — at least 20 characters."
+          ? "Please specify what you are looking for from creators (e.g. 1 Reel featuring dishes + 3 stories) - at least 20 characters."
           : "Please specify what you are looking for from creators (at least 20 characters)."
       );
       return;
@@ -802,7 +802,7 @@ function ListPropertyContent() {
               <div className="flex items-center justify-between">
                 <label className="text-xs font-bold text-teal-950 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
                   <VideoIcon className="w-4 h-4 text-[#D7400B]" />
-                  <span>Video Tour or Reel Link (Optional — Google Drive or MP4)</span>
+                  <span>Video Tour or Reel Link (Optional - Google Drive or MP4)</span>
                 </label>
                 <span className="text-[11px] text-ink-500 dark:text-neutral-400">
                   Google Drive video links stream automatically

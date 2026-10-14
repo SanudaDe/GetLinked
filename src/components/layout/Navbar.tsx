@@ -187,36 +187,36 @@ export const Navbar: React.FC = () => {
               </div>
             )}
 
-            <div className="space-y-3">
+            <div className="space-y-2">
               {navLinks.map((link) => (
                 <Link
                   key={link.label}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className="block text-lg font-serif text-[#336467] dark:text-neutral-100 py-1.5 hover:text-[#D7400B] dark:hover:text-[#D7400B]"
+                  className="block text-xl font-serif text-[#336467] dark:text-neutral-100 py-2.5 hover:text-[#D7400B] dark:hover:text-[#D7400B] min-h-[44px] flex items-center"
                 >
                   {link.label}
                 </Link>
               ))}
-              <div className="pt-2 border-t border-gray-200 dark:border-neutral-800 space-y-2">
+              <div className="pt-2.5 border-t border-gray-200 dark:border-neutral-800 space-y-1.5">
                 <Link
                   href="/apply"
                   onClick={() => setIsOpen(false)}
-                  className="block text-sm uppercase tracking-wider text-[#467679] dark:text-neutral-400 py-1.5 hover:text-[#336467] dark:hover:text-white"
+                  className="block text-sm font-semibold uppercase tracking-wider text-[#467679] dark:text-neutral-400 py-2 hover:text-[#336467] dark:hover:text-white min-h-[42px] flex items-center"
                 >
                   Apply as Creator
                 </Link>
                 <Link
                   href="/list-property"
                   onClick={() => setIsOpen(false)}
-                  className="block text-sm uppercase tracking-wider text-[#467679] dark:text-neutral-400 py-1.5 hover:text-[#336467] dark:hover:text-white"
+                  className="block text-sm font-semibold uppercase tracking-wider text-[#467679] dark:text-neutral-400 py-2 hover:text-[#336467] dark:hover:text-white min-h-[42px] flex items-center"
                 >
                   List Stays & Eats
                 </Link>
                 <Link
                   href="/status"
                   onClick={() => setIsOpen(false)}
-                  className="block text-sm uppercase tracking-wider text-[#467679] dark:text-neutral-400 py-1.5 hover:text-[#336467] dark:hover:text-white"
+                  className="block text-sm font-semibold uppercase tracking-wider text-[#467679] dark:text-neutral-400 py-2 hover:text-[#336467] dark:hover:text-white min-h-[42px] flex items-center"
                 >
                   Check Application Status
                 </Link>
@@ -224,7 +224,7 @@ export const Navbar: React.FC = () => {
                   <Link
                     href="/login"
                     onClick={() => setIsOpen(false)}
-                    className="block text-sm uppercase tracking-wider text-[#336467] dark:text-neutral-200 font-semibold py-1.5 hover:text-[#D7400B]"
+                    className="block text-sm font-bold uppercase tracking-wider text-[#336467] dark:text-neutral-200 py-2 hover:text-[#D7400B] min-h-[42px] flex items-center"
                   >
                     Log in (Creators & Stays) →
                   </Link>

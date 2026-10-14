@@ -70,7 +70,7 @@ export const HowItWorksCurated: React.FC = () => {
 
         {/* Section Header (Centered) */}
         <div className="text-center max-w-2xl mx-auto mb-16 sm:mb-24 space-y-4">
-          <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.25em] text-[#D7400B]">
+          <span className="text-[13px] sm:text-[15px] font-semibold uppercase tracking-[0.25em] text-[#D7400B]">
             HOW IT WORKS
           </span>
 
@@ -78,8 +78,8 @@ export const HowItWorksCurated: React.FC = () => {
             Curated, not crowded.
           </h2>
 
-          <p className="text-sm sm:text-base text-[#336467]/85 leading-relaxed max-w-xl mx-auto pt-1">
-            Every creator and stay on Get Linked is reviewed before joining the platform. We keep it personal, relevant and genuine — so the right connections can happen.
+          <p className="text-[20px] sm:text-[24px] lg:text-[26px] text-[#336467] dark:text-neutral-200 leading-relaxed max-w-2xl mx-auto pt-1 font-normal">
+            Every creator and stay on Get Linked is reviewed before joining the platform. We keep it personal, relevant and genuine - so the right connections can happen.
           </p>
         </div>
 
@@ -91,7 +91,7 @@ export const HowItWorksCurated: React.FC = () => {
               className="relative space-y-3 pt-6 border-t border-gray-200 md:border-t-0 md:pt-0"
             >
               {/* Subtle Step Number */}
-              <span className="font-mono text-xs sm:text-sm text-[#D7400B] tracking-widest font-semibold block">
+              <span className="font-mono text-sm sm:text-base text-[#D7400B] tracking-widest font-semibold block">
                 {step.number}
               </span>
 
@@ -101,7 +101,7 @@ export const HowItWorksCurated: React.FC = () => {
               </h3>
 
               {/* Step Description */}
-              <p className="text-xs sm:text-sm text-[#336467]/80 leading-relaxed max-w-xs">
+              <p className="text-[17px] sm:text-[19px] lg:text-[20px] text-[#336467]/90 leading-relaxed max-w-xs">
                 {step.description}
               </p>
             </div>

@@ -11,8 +11,8 @@ export default function ForAccommodationsPage() {
           <h1 className="font-serif text-5xl sm:text-7xl font-normal text-[#1A3739] dark:text-white tracking-tight leading-[1.08]">
             For stays worth discovering.
           </h1>
-          <p className="text-[20px] sm:text-[24px] lg:text-[26px] text-[#1A3739]/90 dark:text-neutral-200 leading-relaxed max-w-2xl mx-auto font-normal pt-2">
-            List once. We&apos;ll bring you creators already heading your way — reviewed, verified, and matched by hand.
+          <p className="text-[22px] sm:text-[26px] lg:text-[28px] text-[#1A3739] dark:text-neutral-100 leading-relaxed max-w-2xl mx-auto font-normal pt-2">
+            List once. We&apos;ll bring you creators already heading your way - reviewed, verified, and matched by hand.
           </p>
 
           <div className="pt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -38,7 +38,7 @@ export default function ForAccommodationsPage() {
           <h2 className="font-serif text-2xl sm:text-3xl font-normal text-[#1A3739] dark:text-white">
             Considered Collaborations
           </h2>
-          <p className="text-[17px] sm:text-[18px] text-[#1A3739]/90 dark:text-neutral-200 leading-relaxed">
+          <p className="text-[20px] sm:text-[22px] lg:text-[24px] text-[#1A3739]/90 dark:text-neutral-200 leading-relaxed">
             Every introduction is made with care. We confirm creator identities, travel dates, and aesthetic compatibility before initiating conversations on your terms.
           </p>
         </div>

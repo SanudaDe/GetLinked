@@ -269,7 +269,7 @@ export default function CreatorProfilePage({
                 </span>
               </div>
 
-              <p className="text-sm sm:text-base text-neutral-700 dark:text-neutral-300 leading-relaxed font-light whitespace-pre-wrap">
+              <p className="text-[18px] sm:text-[20px] lg:text-[22px] text-neutral-800 dark:text-neutral-200 leading-relaxed font-normal whitespace-pre-wrap">
                 {creator.trip_brief}
               </p>
 

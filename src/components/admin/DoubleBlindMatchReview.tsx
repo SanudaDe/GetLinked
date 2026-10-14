@@ -75,10 +75,10 @@ export const DoubleBlindMatchReview: React.FC<DoubleBlindMatchReviewProps> = ({ 
   const [saveSuccessMsg, setSaveSuccessMsg] = useState<string | null>(null);
 
   // Pre-formatted WhatsApp follow-up messages for admin follow up a few days post-stay
-  const hostFollowUpMsg = `Hi ${match.accommodation_contact || "Host"}, checking in from Get Linked after your collaboration with ${match.creator_name} at ${match.accommodation_name}! Could you share a quick 1–5 rating and a one-line comment on how it went (reliability, content quality, showed up as agreed)? Double-blind active: neither side sees the other's rating until both submit.`;
+  const hostFollowUpMsg = `Hi ${match.accommodation_contact || "Host"}, checking in from Get Linked after your collaboration with ${match.creator_name} at ${match.accommodation_name}! Could you share a quick 1-5 rating and a one-line comment on how it went (reliability, content quality, showed up as agreed)? Double-blind active: neither side sees the other's rating until both submit.`;
   const hostFollowUpLink = generateWhatsAppLink(match.accommodation_whatsapp, hostFollowUpMsg);
 
-  const creatorFollowUpMsg = `Hi ${match.creator_name}, checking in from Get Linked after your stay at ${match.accommodation_name}! Could you share a quick 1–5 rating and a one-line comment on how your experience was (as described, hospitality, smooth experience)? Double-blind active: neither side sees the other's rating until both submit.`;
+  const creatorFollowUpMsg = `Hi ${match.creator_name}, checking in from Get Linked after your stay at ${match.accommodation_name}! Could you share a quick 1-5 rating and a one-line comment on how your experience was (as described, hospitality, smooth experience)? Double-blind active: neither side sees the other's rating until both submit.`;
   const creatorFollowUpLink = generateWhatsAppLink(match.creator_whatsapp, creatorFollowUpMsg);
 
   const handleSavePropertyReview = async (e: React.FormEvent) => {
@@ -259,7 +259,7 @@ export const DoubleBlindMatchReview: React.FC<DoubleBlindMatchReviewProps> = ({ 
           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-600 text-white text-[11px] font-semibold shadow-xs transition-colors"
         >
           <MessageSquareShare className="w-3.5 h-3.5" />
-          <span>Ask Host for 1–5 ⭐ Feedback</span>
+          <span>Ask Host for 1-5 ⭐ Feedback</span>
         </a>
         <a
           href={creatorFollowUpLink}
@@ -268,7 +268,7 @@ export const DoubleBlindMatchReview: React.FC<DoubleBlindMatchReviewProps> = ({ 
           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-teal-900 hover:bg-teal-800 text-sand-50 text-[11px] font-semibold shadow-xs transition-colors"
         >
           <MessageSquareShare className="w-3.5 h-3.5 text-gold-400" />
-          <span>Ask Creator for 1–5 ⭐ Feedback</span>
+          <span>Ask Creator for 1-5 ⭐ Feedback</span>
         </a>
       </div>
 
@@ -340,7 +340,7 @@ export const DoubleBlindMatchReview: React.FC<DoubleBlindMatchReviewProps> = ({ 
             <form onSubmit={handleSavePropertyReview} className="space-y-3">
               <div>
                 <label className="block text-[11px] font-bold text-ink-800 dark:text-neutral-300 uppercase tracking-wider mb-1">
-                  1–5 Star Rating *
+                  1-5 Star Rating *
                 </label>
                 <div className="flex items-center gap-2">
                   {[1, 2, 3, 4, 5].map((s) => (
@@ -488,7 +488,7 @@ export const DoubleBlindMatchReview: React.FC<DoubleBlindMatchReviewProps> = ({ 
             <form onSubmit={handleSaveCreatorReview} className="space-y-3">
               <div>
                 <label className="block text-[11px] font-bold text-ink-800 dark:text-neutral-300 uppercase tracking-wider mb-1">
-                  1–5 Star Rating *
+                  1-5 Star Rating *
                 </label>
                 <div className="flex items-center gap-2">
                   {[1, 2, 3, 4, 5].map((s) => (

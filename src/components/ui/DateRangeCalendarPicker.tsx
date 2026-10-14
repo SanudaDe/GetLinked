@@ -359,7 +359,7 @@ export const DateRangeCalendarPicker: React.FC<DateRangeCalendarPickerProps> = (
                 <button
                   type="button"
                   onClick={() => handleDayClick(item.ymd)}
-                  className={`relative z-10 w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-all ${
+                  className={`relative z-10 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-all ${
                     isSelected
                       ? "bg-sinopia text-white shadow-md font-bold scale-105"
                       : isInRange
@@ -410,7 +410,7 @@ export const DateRangeCalendarPicker: React.FC<DateRangeCalendarPickerProps> = (
               {localStart && localEnd ? (
                 <>
                   <span className="font-extrabold">{formatHumanDate(localStart, false)}</span>
-                  <span className="text-ink-400 dark:text-neutral-500 mx-1.5">—</span>
+                  <span className="text-ink-400 dark:text-neutral-500 mx-1.5">-</span>
                   <span className="font-extrabold">{formatHumanDate(localEnd, true)}</span>
                 </>
               ) : localStart ? (
@@ -457,7 +457,7 @@ export const DateRangeCalendarPicker: React.FC<DateRangeCalendarPickerProps> = (
       {isOpen && (
         <div
           onMouseLeave={() => setHoveredDate(null)}
-          className="absolute left-0 mt-2 z-[100] w-full sm:w-[620px] max-w-[95vw] bg-white dark:bg-neutral-950 rounded-2xl border border-sand-300 dark:border-neutral-800 shadow-[0_20px_50px_rgba(0,0,0,0.22)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.8)] p-4 sm:p-5 animate-in fade-in zoom-in-95 duration-150 text-[#1A3739] dark:text-white"
+          className="absolute left-0 sm:left-auto mt-2 z-[100] w-[calc(100vw-2.5rem)] sm:w-[620px] max-w-[92vw] sm:max-w-none bg-white dark:bg-neutral-950 rounded-2xl border border-sand-300 dark:border-neutral-800 shadow-[0_20px_50px_rgba(0,0,0,0.22)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.8)] p-3 sm:p-5 animate-in fade-in zoom-in-95 duration-150 text-[#1A3739] dark:text-white"
         >
           {/* Top Bar with Presets & Navigation */}
           <div className="flex items-center justify-between pb-3 mb-3 border-b border-sand-200 dark:border-neutral-800 gap-2 flex-wrap">

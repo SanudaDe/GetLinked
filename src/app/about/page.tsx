@@ -144,24 +144,24 @@ export default function AboutPage() {
           ABOUT GET LINKED
         </span>
 
-        <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-normal uppercase tracking-[0.08em] sm:tracking-[0.12em] text-[#1A3739] dark:text-white leading-[1.08] mb-8">
+        <h1 className="font-serif text-3xl sm:text-6xl lg:text-7xl font-normal uppercase tracking-[0.06em] sm:tracking-[0.12em] text-[#1A3739] dark:text-white leading-[1.12] mb-6 sm:mb-8">
           An island told with care.
         </h1>
 
         {/* Narrative Manifesto Paragraphs */}
-        <div className="max-w-3xl mx-auto space-y-6 text-base sm:text-lg lg:text-xl text-[#1A3739] dark:text-neutral-200 font-normal leading-relaxed">
+        <div className="max-w-3xl mx-auto space-y-6 text-[22px] sm:text-[26px] lg:text-[28px] text-[#1A3739] dark:text-neutral-100 font-normal leading-relaxed">
           <p>
             Get Linked is a handpicked collective of distinctive boutique hotels, historic tea
             bungalows, and private coastal villas across Sri Lanka, thoughtfully paired with verified
             creators worth trusting with their story.
           </p>
           <p>
-            All our partnerships share the same values — a commitment to thoughtful design, genuine
+            All our partnerships share the same values - a commitment to thoughtful design, genuine
             hospitality, and an unwavering sense of place. We celebrate how each property honours its
             location, reflecting Ceylon culture, craftsmanship, and dramatic landscapes through a
             contemporary lens.
           </p>
-          <p className="text-sm sm:text-base uppercase tracking-[0.22em] text-[#D7400B] font-semibold pt-2">
+          <p className="text-[16px] sm:text-[18px] uppercase tracking-[0.22em] text-[#D7400B] font-semibold pt-2">
             Private island pavilions &bull; Highland tea bungalows &bull; Heritage fort manses &bull;
             Wild nature sanctuaries
           </p>
@@ -216,7 +216,7 @@ export default function AboutPage() {
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-14 items-center">
                     {/* Left: Vertical / Portrait Image (COMO Style) */}
                     <div className="md:col-span-5 lg:col-span-5 relative">
-                      <div className="relative aspect-[3/4] sm:aspect-[4/5] md:aspect-[3/4] w-full overflow-hidden rounded-xl sm:rounded-2xl bg-neutral-100 dark:bg-neutral-900 shadow-warm-lg">
+                      <div className="relative aspect-[16/10] sm:aspect-[4/5] md:aspect-[3/4] w-full overflow-hidden rounded-xl sm:rounded-2xl bg-neutral-100 dark:bg-neutral-900 shadow-warm-lg">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={chapter.image}
@@ -230,7 +230,7 @@ export default function AboutPage() {
                     </div>
 
                     {/* Right: Typography & Storytelling Content */}
-                    <div className="md:col-span-7 lg:col-span-7 flex flex-col justify-between space-y-6">
+                    <div className="md:col-span-7 lg:col-span-7 flex flex-col justify-between space-y-5 sm:space-y-6">
                       {/* Top Hairline Navigation Arrows */}
                       <div className="hidden sm:flex items-center gap-6">
                         <button
@@ -288,22 +288,22 @@ export default function AboutPage() {
                       </div>
 
                       {/* Region Title */}
-                      <div className="space-y-2.5">
-                        <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal uppercase tracking-[0.12em] text-[#1A3739] dark:text-white leading-[1.15]">
+                      <div className="space-y-2 sm:space-y-2.5">
+                        <h2 className="font-serif text-2xl sm:text-4xl lg:text-5xl font-normal uppercase tracking-[0.06em] sm:tracking-[0.12em] text-[#1A3739] dark:text-white leading-[1.15]">
                           {chapter.region}
                         </h2>
-                        <p className="text-sm sm:text-base uppercase tracking-[0.2em] font-bold text-[#D7400B]">
+                        <p className="text-[15px] sm:text-lg uppercase tracking-[0.18em] sm:tracking-[0.2em] font-bold text-[#D7400B]">
                           {chapter.tagline}
                         </p>
                       </div>
 
                       {/* Body Paragraph */}
-                      <p className="text-base sm:text-lg text-[#1A3739] dark:text-neutral-200 font-normal leading-relaxed max-w-xl">
+                      <p className="text-[20px] sm:text-[24px] lg:text-[26px] text-[#1A3739] dark:text-neutral-100 font-normal leading-relaxed max-w-xl">
                         {chapter.description}
                       </p>
 
                       {/* Region Stays Tag */}
-                      <p className="text-sm sm:text-[15px] uppercase tracking-[0.18em] text-[#2C5A5D] dark:text-neutral-300 font-semibold pt-1">
+                      <p className="text-[15px] sm:text-[17px] uppercase tracking-[0.16em] sm:tracking-[0.18em] text-[#2C5A5D] dark:text-neutral-300 font-semibold pt-1">
                         {chapter.details}
                       </p>
 
@@ -315,7 +315,7 @@ export default function AboutPage() {
                           onClick={(e) => {
                             if (!isActive) e.preventDefault();
                           }}
-                          className="group inline-flex items-center gap-3.5 text-sm sm:text-base font-bold uppercase tracking-[0.22em] text-[#1A3739] dark:text-white hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors py-1"
+                          className="group inline-flex items-center gap-3.5 text-sm sm:text-base font-bold uppercase tracking-[0.18em] sm:tracking-[0.22em] text-[#1A3739] dark:text-white hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors py-2 min-h-[44px]"
                         >
                           <span className="w-8 h-[2px] bg-[#1A3739] dark:bg-neutral-400 group-hover:bg-[#D7400B] group-hover:w-12 transition-all duration-300" />
                           <span>Explore {chapter.id} Stays</span>
@@ -385,7 +385,7 @@ export default function AboutPage() {
           </div>
         </div>
 
-        {/* Counter Indicator: 01 —— 06 */}
+        {/* Counter Indicator: 01 -- 06 */}
         <div className="flex items-center justify-center gap-4 text-sm sm:text-base font-mono uppercase tracking-[0.25em] text-[#1A3739] dark:text-neutral-200 font-semibold mt-10">
           <span className="text-[#D7400B] font-bold">
             {String((currentIndex % N) + 1).padStart(2, "0")}
@@ -407,9 +407,9 @@ export default function AboutPage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 text-base sm:text-lg lg:text-xl text-[#1A3739] dark:text-neutral-200 font-normal leading-relaxed">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 text-[20px] sm:text-[24px] lg:text-[26px] text-[#1A3739] dark:text-neutral-100 font-normal leading-relaxed">
             <p>
-              Sri Lanka holds some of the world&apos;s most evocative places to stay — from stone
+              Sri Lanka holds some of the world&apos;s most evocative places to stay - from stone
               courtyards in Galle Fort to misty tea bungalows in the central hills and wooden
               pavilions above southern surf breaks.
             </p>
@@ -452,7 +452,7 @@ export default function AboutPage() {
                 <h3 className="font-serif text-2xl sm:text-3xl font-normal tracking-wide text-[#1A3739] dark:text-white">
                   Every introduction made by hand
                 </h3>
-                <p className="text-[15px] sm:text-base text-[#1A3739] dark:text-neutral-200 leading-relaxed font-normal">
+                <p className="text-[18px] sm:text-[20px] lg:text-[22px] text-[#1A3739] dark:text-neutral-200 leading-relaxed font-normal">
                   We do not use automated algorithms or auto-approvals. A member of our team reviews
                   every profile and application by hand to guarantee mutual alignment.
                 </p>
@@ -468,7 +468,7 @@ export default function AboutPage() {
                 <h3 className="font-serif text-2xl sm:text-3xl font-normal tracking-wide text-[#1A3739] dark:text-white">
                   Quiet by default
                 </h3>
-                <p className="text-[15px] sm:text-base text-[#1A3739] dark:text-neutral-200 leading-relaxed font-normal">
+                <p className="text-[18px] sm:text-[20px] lg:text-[22px] text-[#1A3739] dark:text-neutral-200 leading-relaxed font-normal">
                   Passports, identification documents, and direct personal numbers are never published
                   or shared publicly. All conversations begin through curated private handoffs.
                 </p>
@@ -484,7 +484,7 @@ export default function AboutPage() {
                 <h3 className="font-serif text-2xl sm:text-3xl font-normal tracking-wide text-[#1A3739] dark:text-white">
                   Sri Lanka focused
                 </h3>
-                <p className="text-[15px] sm:text-base text-[#1A3739] dark:text-neutral-200 leading-relaxed font-normal">
+                <p className="text-[18px] sm:text-[20px] lg:text-[22px] text-[#1A3739] dark:text-neutral-200 leading-relaxed font-normal">
                   Dedicated entirely to celebrating distinctive properties, authentic local culture,
                   and thoughtful travel across the island&apos;s unique micro-regions.
                 </p>
@@ -498,10 +498,10 @@ export default function AboutPage() {
       <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-t border-gray-200 dark:border-neutral-800 bg-white dark:bg-black">
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-8">
           <div className="space-y-1.5 text-center sm:text-left">
-            <p className="text-sm sm:text-base text-[#1A3739] dark:text-neutral-200 font-medium tracking-wide">
+            <p className="text-base sm:text-lg text-[#1A3739] dark:text-neutral-200 font-medium tracking-wide">
               Operating across Colombo, Galle, Weligama, Ella, Kandy, and Sigiriya.
             </p>
-            <p className="font-mono text-base font-bold text-[#D7400B]">getlinked.lk</p>
+            <p className="font-mono text-lg font-bold text-[#D7400B]">getlinked.lk</p>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
