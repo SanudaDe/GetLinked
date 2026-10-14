@@ -121,11 +121,6 @@ export const Hero: React.FC = () => {
               <ArrowRight className="w-4.5 h-4.5 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
-
-          {/* Trust Line */}
-          <p className="mt-7 sm:mt-9 text-[18px] sm:text-[22px] lg:text-[24px] text-[#1A3739] dark:text-neutral-200 tracking-wide font-normal leading-relaxed">
-            Every introduction made by hand. Nothing rushed, nothing automated.
-          </p>
         </div>
       </div>
 
