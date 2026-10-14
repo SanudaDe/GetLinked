@@ -45,7 +45,7 @@ Our team has verified ${params.creatorName}'s identity and travel plans. Please 
 
 Warm regards,
 Get Linked Team
-getlinked.today`;
+getlinked.lk`;
 }
 
 export interface CreatorIntroParams {
@@ -70,5 +70,5 @@ Both your profile and the property have been reviewed and approved by our team. 
 
 Warm regards,
 Get Linked Team
-getlinked.today`;
+getlinked.lk`;
 }

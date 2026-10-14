@@ -38,7 +38,7 @@ export default function PrivacyPage() {
               1. Who we are
             </h2>
             <p>
-              Get Linked (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;) operates <strong className="text-neutral-900 dark:text-white font-mono text-xs">getlinkedlk.com</strong> and <strong className="text-neutral-900 dark:text-white font-mono text-xs">getlinked.today</strong>, a verified hospitality and creator introduction platform connecting social media creators with hotels, villas, guesthouses, restaurants, cafés, and other venues across Sri Lanka.
+              Get Linked (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;) operates <strong className="text-neutral-900 dark:text-white font-mono text-xs">getlinked.lk</strong>, a verified hospitality and creator introduction platform connecting social media creators with hotels, villas, guesthouses, restaurants, cafés, and other venues across Sri Lanka.
             </p>
             <p>
               For the purposes of applicable data protection law, including the Sri Lanka Personal Data Protection Act No. 9 of 2022 (PDPA), Get Linked operates as the <strong>data controller</strong> of the personal data described in this policy.

@@ -9,7 +9,7 @@ export default function TermsPage() {
             Terms of Service & Collaboration Guidelines
           </h1>
           <p className="text-xs sm:text-sm text-ink-600">
-            Governing Get Linked Sri Lanka (getlinkedlk.com & getlinked.today)
+            Governing Get Linked Sri Lanka (getlinked.lk)
           </p>
         </div>
 

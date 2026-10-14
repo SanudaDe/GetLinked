@@ -501,7 +501,7 @@ export default function AboutPage() {
             <p className="text-xs sm:text-sm text-[#336467]/85 dark:text-neutral-300 font-medium tracking-wide">
               Operating across Colombo, Galle, Weligama, Ella, Kandy, and Sigiriya.
             </p>
-            <p className="font-mono text-xs text-[#336467]/60 dark:text-neutral-400">getlinked.today</p>
+            <p className="font-mono text-sm text-[#336467]/80 dark:text-neutral-400">getlinked.lk</p>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center gap-6">

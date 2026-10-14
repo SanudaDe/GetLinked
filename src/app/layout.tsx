@@ -4,7 +4,7 @@ import { StoreProvider } from "@/data/store";
 import { AppShell } from "@/components/layout/AppShell";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://getlinked.today"),
+  metadataBase: new URL("https://getlinked.lk"),
   title: "Get Linked | Verified Creators & Stays in Sri Lanka",
   description:
     "Connecting verified social media creators with handpicked hotels, villas, and guesthouses across Sri Lanka through human review and curated introductions.",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     title: "Get Linked — Sri Lanka Creator & Stay Marketplace",
     description:
       "Connecting verified social media creators with handpicked hotels, villas, and guesthouses across Sri Lanka through human review and curated introductions.",
-    url: "https://getlinked.today",
+    url: "https://getlinked.lk",
     siteName: "Get Linked Sri Lanka",
     images: [
       {
