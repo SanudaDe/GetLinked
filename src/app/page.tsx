@@ -13,11 +13,11 @@ export default function HomePage() {
       {/* 1. Hero: An island tells its story best through the people who stay */}
       <Hero />
 
-      {/* 2. Influencers / Creators First: A few of the voices heading to Sri Lanka this season */}
-      <FeaturedCreators />
-
-      {/* 3. Editorial Story: People. Places. Possibilities */}
+      {/* 2. Editorial Story: People. Places. Possibilities */}
       <EditorialStorySection />
+
+      {/* 3. Influencers / Creators: A few of the voices heading to Sri Lanka this season */}
+      <FeaturedCreators />
 
       {/* 4. Destinations: Six places, each holding its own quiet */}
       <DestinationsGrid />
