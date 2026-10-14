@@ -95,14 +95,15 @@ export const Hero: React.FC = () => {
           </div>
 
           {/* Editorial Display Headline */}
-          <h1 className="font-serif text-3xl sm:text-5xl lg:text-[40px] font-normal tracking-tight text-[#1A3739] dark:text-white leading-[1.25]">
+          <h1 className="font-serif text-3xl sm:text-5xl lg:text-[54px] font-normal tracking-tight text-[#1A3739] dark:text-white leading-[1.12]">
             People.
             <br />
             Places.
             <br />
             Possibilities.
-            <br />
-            Travel collaborations should begin with the right fit. Get Linked brings verified creators and distinctive places together, making it easier to discover, connect and create something worth sharing.
+            <span className="block mt-4 text-[18px] sm:text-[20px] lg:text-[22px] font-serif font-normal leading-relaxed tracking-normal text-[#1A3739] dark:text-neutral-200">
+              Travel collaborations should begin with the right fit. Get Linked brings verified creators and distinctive places together, making it easier to discover, connect and create something worth sharing.
+            </span>
           </h1>
 
           {/* Subtitle */}
