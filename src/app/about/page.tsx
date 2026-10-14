@@ -140,16 +140,16 @@ export default function AboutPage() {
     <div className="bg-white dark:bg-black text-[#1A3739] dark:text-white min-h-screen transition-colors duration-300">
       {/* 1. Top Editorial Header (COMO Hotels Style) */}
       <section className="pt-24 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
-        <span className="text-[11px] sm:text-xs font-normal uppercase tracking-[0.32em] text-[#1A3739]/70 dark:text-neutral-400 block mb-4">
+        <span className="text-sm sm:text-base font-semibold uppercase tracking-[0.28em] text-[#D7400B] block mb-4">
           ABOUT GET LINKED
         </span>
 
-        <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-light uppercase tracking-[0.08em] sm:tracking-[0.12em] text-[#1A3739] dark:text-white leading-[1.08] mb-8">
+        <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-normal uppercase tracking-[0.08em] sm:tracking-[0.12em] text-[#1A3739] dark:text-white leading-[1.08] mb-8">
           An island told with care.
         </h1>
 
         {/* Narrative Manifesto Paragraphs */}
-        <div className="max-w-3xl mx-auto space-y-6 text-sm sm:text-base lg:text-lg text-[#1A3739]/85 dark:text-neutral-300 font-light leading-relaxed">
+        <div className="max-w-3xl mx-auto space-y-6 text-base sm:text-lg lg:text-xl text-[#1A3739] dark:text-neutral-200 font-normal leading-relaxed">
           <p>
             Get Linked is a handpicked collective of distinctive boutique hotels, historic tea
             bungalows, and private coastal villas across Sri Lanka, thoughtfully paired with verified
@@ -161,7 +161,7 @@ export default function AboutPage() {
             location, reflecting Ceylon culture, craftsmanship, and dramatic landscapes through a
             contemporary lens.
           </p>
-          <p className="text-xs sm:text-sm uppercase tracking-[0.22em] text-[#D7400B] font-medium pt-2">
+          <p className="text-sm sm:text-base uppercase tracking-[0.22em] text-[#D7400B] font-semibold pt-2">
             Private island pavilions &bull; Highland tea bungalows &bull; Heritage fort manses &bull;
             Wild nature sanctuaries
           </p>
@@ -287,23 +287,23 @@ export default function AboutPage() {
                         </button>
                       </div>
 
-                      {/* Region Title (Thin Uppercase Serif) */}
-                      <div className="space-y-2">
-                        <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-light uppercase tracking-[0.14em] text-[#336467] dark:text-white leading-[1.12]">
+                      {/* Region Title */}
+                      <div className="space-y-2.5">
+                        <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal uppercase tracking-[0.12em] text-[#1A3739] dark:text-white leading-[1.15]">
                           {chapter.region}
                         </h2>
-                        <p className="text-[11px] sm:text-xs uppercase tracking-[0.24em] font-semibold text-[#D7400B]">
+                        <p className="text-sm sm:text-base uppercase tracking-[0.2em] font-bold text-[#D7400B]">
                           {chapter.tagline}
                         </p>
                       </div>
 
                       {/* Body Paragraph */}
-                      <p className="text-sm sm:text-base text-[#336467]/85 dark:text-neutral-300 font-light leading-relaxed max-w-xl">
+                      <p className="text-base sm:text-lg text-[#1A3739] dark:text-neutral-200 font-normal leading-relaxed max-w-xl">
                         {chapter.description}
                       </p>
 
                       {/* Region Stays Tag */}
-                      <p className="text-[11px] uppercase tracking-[0.2em] text-[#336467]/60 dark:text-neutral-400 font-medium pt-1">
+                      <p className="text-sm sm:text-[15px] uppercase tracking-[0.18em] text-[#2C5A5D] dark:text-neutral-300 font-semibold pt-1">
                         {chapter.details}
                       </p>
 
@@ -315,9 +315,9 @@ export default function AboutPage() {
                           onClick={(e) => {
                             if (!isActive) e.preventDefault();
                           }}
-                          className="group inline-flex items-center gap-3.5 text-xs font-semibold uppercase tracking-[0.24em] text-[#336467] dark:text-neutral-200 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors py-1"
+                          className="group inline-flex items-center gap-3.5 text-sm sm:text-base font-bold uppercase tracking-[0.22em] text-[#1A3739] dark:text-white hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors py-1"
                         >
-                          <span className="w-8 h-[1px] bg-[#336467] dark:bg-neutral-500 group-hover:bg-[#D7400B] group-hover:w-12 transition-all duration-300" />
+                          <span className="w-8 h-[2px] bg-[#1A3739] dark:bg-neutral-400 group-hover:bg-[#D7400B] group-hover:w-12 transition-all duration-300" />
                           <span>Explore {chapter.id} Stays</span>
                         </Link>
 
@@ -386,11 +386,11 @@ export default function AboutPage() {
         </div>
 
         {/* Counter Indicator: 01 —— 06 */}
-        <div className="flex items-center justify-center gap-4 text-xs uppercase tracking-[0.25em] text-[#336467]/70 dark:text-neutral-400 font-light mt-10">
-          <span className="font-semibold text-[#336467] dark:text-white">
+        <div className="flex items-center justify-center gap-4 text-sm sm:text-base font-mono uppercase tracking-[0.25em] text-[#1A3739] dark:text-neutral-200 font-semibold mt-10">
+          <span className="text-[#D7400B] font-bold">
             {String((currentIndex % N) + 1).padStart(2, "0")}
           </span>
-          <span className="w-12 h-px bg-[#336467]/30 dark:bg-neutral-700" />
+          <span className="w-12 h-px bg-[#1A3739]/40 dark:bg-neutral-600" />
           <span>{String(N).padStart(2, "0")}</span>
         </div>
       </section>
@@ -399,15 +399,15 @@ export default function AboutPage() {
       <section className="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 border-t border-gray-200 dark:border-neutral-800 bg-white dark:bg-black">
         <div className="max-w-4xl mx-auto space-y-12">
           <div className="text-center space-y-3">
-            <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.28em] text-[#D7400B] block">
+            <span className="text-sm sm:text-base font-bold uppercase tracking-[0.26em] text-[#D7400B] block">
               OUR FOUNDING ETHOS
             </span>
-            <h2 className="font-serif text-3xl sm:text-5xl font-light uppercase tracking-[0.1em] text-[#1A3739] dark:text-white">
+            <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal uppercase tracking-[0.08em] text-[#1A3739] dark:text-white">
               Why We Began
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 text-sm sm:text-base text-[#1A3739]/85 dark:text-neutral-300 font-light leading-relaxed">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 text-base sm:text-lg lg:text-xl text-[#1A3739] dark:text-neutral-200 font-normal leading-relaxed">
             <p>
               Sri Lanka holds some of the world&apos;s most evocative places to stay — from stone
               courtyards in Galle Fort to misty tea bungalows in the central hills and wooden
@@ -420,8 +420,8 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="p-8 sm:p-10 rounded-2xl bg-gray-50 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 shadow-warm text-center max-w-2xl mx-auto">
-            <p className="font-serif text-xl sm:text-2xl font-normal text-[#1A3739] dark:text-white leading-relaxed italic">
+          <div className="p-8 sm:p-12 rounded-2xl bg-gray-50 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 shadow-warm text-center max-w-3xl mx-auto">
+            <p className="font-serif text-2xl sm:text-3xl lg:text-4xl font-normal text-[#1A3739] dark:text-white leading-relaxed italic">
               &ldquo;Get Linked exists to slow that process down. We review each creator and stay by
               hand, verify identities, confirm travel dates, and introduce both sides when there is a
               genuine fit.&rdquo;
@@ -434,25 +434,25 @@ export default function AboutPage() {
       <section className="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 border-t border-gray-200 dark:border-neutral-800 bg-gray-50/60 dark:bg-neutral-950">
         <div className="max-w-6xl mx-auto space-y-16">
           <div className="text-center space-y-3">
-            <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.28em] text-[#D7400B] block">
+            <span className="text-sm sm:text-base font-bold uppercase tracking-[0.26em] text-[#D7400B] block">
               OPERATIONAL STANDARDS
             </span>
-            <h2 className="font-serif text-3xl sm:text-5xl font-light uppercase tracking-[0.1em] text-[#1A3739] dark:text-white">
+            <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal uppercase tracking-[0.08em] text-[#1A3739] dark:text-white">
               How We Operate
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
             {/* Pillar 01 */}
-            <div className="p-8 rounded-2xl bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 space-y-4 flex flex-col justify-between shadow-xs">
-              <div className="space-y-3">
-                <span className="text-xs font-mono font-semibold tracking-widest text-[#D7400B] block">
+            <div className="p-8 rounded-2xl bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 space-y-5 flex flex-col justify-between shadow-xs">
+              <div className="space-y-3.5">
+                <span className="text-sm font-mono font-bold tracking-widest text-[#D7400B] block">
                   01 / CURATION
                 </span>
-                <h3 className="font-serif text-2xl font-light uppercase tracking-wider text-[#1A3739] dark:text-white">
+                <h3 className="font-serif text-2xl sm:text-3xl font-normal tracking-wide text-[#1A3739] dark:text-white">
                   Every introduction made by hand
                 </h3>
-                <p className="text-xs sm:text-sm text-[#1A3739]/80 dark:text-neutral-300 leading-relaxed font-light">
+                <p className="text-[15px] sm:text-base text-[#1A3739] dark:text-neutral-200 leading-relaxed font-normal">
                   We do not use automated algorithms or auto-approvals. A member of our team reviews
                   every profile and application by hand to guarantee mutual alignment.
                 </p>
@@ -460,15 +460,15 @@ export default function AboutPage() {
             </div>
 
             {/* Pillar 02 */}
-            <div className="p-8 rounded-2xl bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 space-y-4 flex flex-col justify-between shadow-xs">
-              <div className="space-y-3">
-                <span className="text-xs font-mono font-semibold tracking-widest text-[#D7400B] block">
+            <div className="p-8 rounded-2xl bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 space-y-5 flex flex-col justify-between shadow-xs">
+              <div className="space-y-3.5">
+                <span className="text-sm font-mono font-bold tracking-widest text-[#D7400B] block">
                   02 / PRIVACY
                 </span>
-                <h3 className="font-serif text-2xl font-light uppercase tracking-wider text-[#1A3739] dark:text-white">
+                <h3 className="font-serif text-2xl sm:text-3xl font-normal tracking-wide text-[#1A3739] dark:text-white">
                   Quiet by default
                 </h3>
-                <p className="text-xs sm:text-sm text-[#1A3739]/80 dark:text-neutral-300 leading-relaxed font-light">
+                <p className="text-[15px] sm:text-base text-[#1A3739] dark:text-neutral-200 leading-relaxed font-normal">
                   Passports, identification documents, and direct personal numbers are never published
                   or shared publicly. All conversations begin through curated private handoffs.
                 </p>
@@ -476,15 +476,15 @@ export default function AboutPage() {
             </div>
 
             {/* Pillar 03 */}
-            <div className="p-8 rounded-2xl bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 space-y-4 flex flex-col justify-between shadow-xs">
-              <div className="space-y-3">
-                <span className="text-xs font-mono font-semibold tracking-widest text-[#D7400B] block">
+            <div className="p-8 rounded-2xl bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 space-y-5 flex flex-col justify-between shadow-xs">
+              <div className="space-y-3.5">
+                <span className="text-sm font-mono font-bold tracking-widest text-[#D7400B] block">
                   03 / INTEGRITY
                 </span>
-                <h3 className="font-serif text-2xl font-light uppercase tracking-wider text-[#1A3739] dark:text-white">
+                <h3 className="font-serif text-2xl sm:text-3xl font-normal tracking-wide text-[#1A3739] dark:text-white">
                   Sri Lanka focused
                 </h3>
-                <p className="text-xs sm:text-sm text-[#1A3739]/80 dark:text-neutral-300 leading-relaxed font-light">
+                <p className="text-[15px] sm:text-base text-[#1A3739] dark:text-neutral-200 leading-relaxed font-normal">
                   Dedicated entirely to celebrating distinctive properties, authentic local culture,
                   and thoughtful travel across the island&apos;s unique micro-regions.
                 </p>
@@ -496,28 +496,28 @@ export default function AboutPage() {
 
       {/* 5. Footer Strip & Actions */}
       <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-t border-gray-200 dark:border-neutral-800 bg-white dark:bg-black">
-        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-8">
-          <div className="space-y-1 text-center sm:text-left">
-            <p className="text-xs sm:text-sm text-[#336467]/85 dark:text-neutral-300 font-medium tracking-wide">
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-8">
+          <div className="space-y-1.5 text-center sm:text-left">
+            <p className="text-sm sm:text-base text-[#1A3739] dark:text-neutral-200 font-medium tracking-wide">
               Operating across Colombo, Galle, Weligama, Ella, Kandy, and Sigiriya.
             </p>
-            <p className="font-mono text-sm text-[#336467]/80 dark:text-neutral-400">getlinked.lk</p>
+            <p className="font-mono text-base font-bold text-[#D7400B]">getlinked.lk</p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center gap-6">
+          <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
             <Link
               href="/creators"
-              className="group inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.24em] text-[#336467] dark:text-neutral-200 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors py-2"
+              className="group inline-flex items-center gap-3 text-sm sm:text-base font-bold uppercase tracking-[0.22em] text-[#1A3739] dark:text-neutral-200 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors py-2"
             >
-              <span className="w-8 h-[1px] bg-[#336467] dark:bg-neutral-500 group-hover:bg-[#D7400B] group-hover:w-12 transition-all duration-300" />
+              <span className="w-8 h-[2px] bg-[#1A3739] dark:bg-neutral-500 group-hover:bg-[#D7400B] group-hover:w-12 transition-all duration-300" />
               <span>Find Creators</span>
             </Link>
 
             <Link
               href="/list-property"
-              className="group inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.24em] text-[#336467] dark:text-neutral-200 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors py-2"
+              className="group inline-flex items-center gap-3 text-sm sm:text-base font-bold uppercase tracking-[0.22em] text-[#1A3739] dark:text-neutral-200 hover:text-[#D7400B] dark:hover:text-[#D7400B] transition-colors py-2"
             >
-              <span className="w-8 h-[1px] bg-[#336467] dark:bg-neutral-500 group-hover:bg-[#D7400B] group-hover:w-12 transition-all duration-300" />
+              <span className="w-8 h-[2px] bg-[#1A3739] dark:bg-neutral-500 group-hover:bg-[#D7400B] group-hover:w-12 transition-all duration-300" />
               <span>List Your Stay</span>
             </Link>
           </div>

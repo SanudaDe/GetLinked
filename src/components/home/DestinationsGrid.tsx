@@ -58,7 +58,7 @@ export const DestinationsGrid: React.FC = () => {
             <Link
               key={dest.city}
               href={`/creators?city=${encodeURIComponent(dest.city)}`}
-              className="group relative h-80 sm:h-96 rounded-2xl overflow-hidden shadow-warm hover:shadow-warm-lg dark:shadow-none transition-all duration-500 flex flex-col justify-end p-6 sm:p-7 bg-neutral-100 dark:bg-neutral-900 border border-transparent dark:border-neutral-800"
+              className="group relative min-h-[360px] sm:min-h-[420px] rounded-2xl overflow-hidden shadow-warm hover:shadow-warm-lg dark:shadow-none transition-all duration-500 flex flex-col justify-end p-7 sm:p-8 bg-neutral-100 dark:bg-neutral-900 border border-transparent dark:border-neutral-800"
             >
               {/* Image */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -67,18 +67,18 @@ export const DestinationsGrid: React.FC = () => {
                 alt={dest.city}
                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-103 transition-transform duration-700 ease-out"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
 
               {/* Sensory Card Content */}
-              <div className="relative z-10 space-y-2 text-white">
+              <div className="relative z-10 space-y-3 text-white">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-serif text-2xl sm:text-3xl font-normal text-white">
+                  <h3 className="font-serif text-3xl sm:text-4xl lg:text-[40px] font-normal text-white tracking-tight drop-shadow-md">
                     {dest.city}
                   </h3>
-                  <ArrowRight className="w-4 h-4 text-white/80 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:translate-x-1.5 transition-transform drop-shadow" />
                 </div>
 
-                <p className="text-[16px] text-white/85 font-normal leading-relaxed">
+                <p className="text-[18px] sm:text-[20px] text-white/95 font-normal leading-snug drop-shadow-sm">
                   {dest.line}
                 </p>
               </div>
