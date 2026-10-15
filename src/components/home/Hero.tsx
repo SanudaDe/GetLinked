@@ -89,22 +89,19 @@ export const Hero: React.FC = () => {
           {/* Kicker / Tag */}
           <div className="flex items-center gap-3 mb-5">
             <span className="text-[16px] font-bold uppercase tracking-[0.24em] text-[#D7400B] drop-shadow-xs">
-              An island tells its story best through the people who stay.
-              We bring Sri Lanka&apos;s finest stays and kitchens together with the voices worth trusting with them.
+              Real creators, verified spaces
             </span>
           </div>
 
           {/* Editorial Display Headline */}
-          <h1 className="font-serif text-3xl sm:text-5xl lg:text-[54px] font-normal tracking-tight text-[#1A3739] dark:text-white leading-[1.12]">
-            People.
-            <br />
-            Places.
-            <br />
-            Possibilities.
-            <span className="block mt-4 text-[18px] sm:text-[20px] lg:text-[22px] font-serif font-normal leading-relaxed tracking-normal text-[#1A3739] dark:text-neutral-200">
-              Travel collaborations should begin with the right fit. Get Linked brings verified creators and distinctive places together, making it easier to discover, connect and create something worth sharing.
-            </span>
+          <h1 className="font-serif text-3xl sm:text-5xl lg:text-[68px] font-normal tracking-tight text-[#1A3739] dark:text-white leading-[1.14]">
+            An island tells its story best through the people who stay.
           </h1>
+
+          {/* Subtitle */}
+          <p className="mt-5 sm:mt-6 text-[22px] sm:text-[26px] lg:text-[28px] text-[#1A3739] dark:text-neutral-100 max-w-2xl font-normal leading-relaxed">
+            We bring Sri Lanka&apos;s finest stays and kitchens together with the voices worth trusting with them.
+          </p>
 
           {/* Dual CTAs */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4 mt-8 sm:mt-9">
@@ -124,11 +121,6 @@ export const Hero: React.FC = () => {
               <ArrowRight className="w-4.5 h-4.5 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
-
-          {/* Line after CTAs */}
-          <p className="mt-7 sm:mt-9 text-[18px] sm:text-[20px] lg:text-[22px] text-[#1A3739] dark:text-neutral-200 font-normal leading-relaxed max-w-2xl">
-            Real places through the creator&apos;s lens. Watch recent visual collaborations captured by verified creators at distinctive boutique villas and standout kitchens across Sri Lanka.
-          </p>
         </div>
       </div>
 
